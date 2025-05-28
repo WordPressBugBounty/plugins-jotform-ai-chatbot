@@ -1,0 +1,34 @@
+.jfInfobox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  &--icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    padding: 8px;
+    color: var(--jfv-white);
+    flex-shrink: 0;
+    &:not(.success) {
+      background-color: var(--jfv-purple-400);
+    }
+    &.success {
+      background-color: var(--jfv-green-400);
+    }
+  }
+  &--content {
+    display: flex;
+    flex-direction: column;
+  }
+  &--name {
+    font-weight: 500;
+    color: var(--jfv-navy-700);
+    font-size: 16px;
+    line-height: 20px;
+  }
+  &--desc {
+    color: var(--jfv-navy-300);
+    font-size: 14px;
+    line-height: 18px;
+  }
+}

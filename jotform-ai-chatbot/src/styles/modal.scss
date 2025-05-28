@@ -1,0 +1,116 @@
+.jfModal {
+  background-color: rgba(8, 9, 11, 0.6);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2147483647 !important;
+  animation: fadeIn 0.15s;
+  padding: 16px;
+  &--title {
+    padding: 32px 32px 0 32px;
+    &-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      margin-left: auto;
+      margin-right: auto;
+      svg {
+        width: 32px;
+        height: 32px;
+      }
+      &-error {
+        background-color: rgba(254, 202, 202, 0.5);
+        color: var(--jfv-red-500);
+      }
+      &-success {
+        background-color: rgba(203, 251, 123, 0.5);
+        color: var(--jfv-green-500);
+      }
+      &-warning {
+        background-color: rgba(255, 220, 123, 0.5);
+        color: var(--jfv-yellow-500);
+      }
+      &-informative {
+        background-color: rgba(119, 207, 255, 0.5);
+        color: var(--jfv-blue-200);
+      }
+      @media (min-width: 480px) {
+        width: 80px;
+        height: 80px;
+        svg {
+          width: 40px;
+          height: 40px;
+        }
+      }
+    }
+    h3 {
+      color: var(--jfv-navy-700);
+      text-align: center;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 20px;
+    }
+    p {
+      color: var(--jfv-navy-300);
+      text-align: center;
+      font-size: 14px;
+      line-height: 18px;
+      margin-top: 8px;
+    }
+    @media (min-width: 480px) {
+      h3 {
+        font-size: 18px;
+        line-height: 22px;
+      }
+    }
+  }
+  &--close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+  &--container {
+    background-color: var(--jfv-white);
+    width: 100%;
+    border-radius: 8px;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 0;
+    &-small {
+      max-width: 480px;
+    }
+    &-medium {
+      max-width: 640px;
+    }
+    &-large {
+      max-width: 800px;
+    }
+  }
+  &--actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 32px;
+    box-sizing: border-box;
+    @media (min-width: 480px) {
+      flex-direction: row;
+    }
+  }
+  @media (max-width: 480px) {
+    padding: 32px;
+  }
+}

@@ -1,0 +1,42 @@
+.jfMaterialEditor {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  &--container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  &--inner {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    background-color: var(--jfv-white);
+    padding: 24px;
+    border-radius: 8px;
+    border: 1px solid var(--jfv-navy-100);
+  }
+  &--footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+  &--label-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+    line-height: 18px;
+    h3 {
+      font-size: 16px;
+      line-height: 20px;
+      font-weight: 500;
+      color: var(--jfv-navy-700);
+    }
+    p {
+      font-size: 14px;
+      line-height: 18px;
+      color: var(--jfv-navy-300);
+    }
+  }
+}
