@@ -4,7 +4,7 @@ Contributors: Jotform
 Tags: AI, chatbot, ChatGPT, live chat, customer support
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 2.2.3
+Stable tag: 2.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -170,6 +170,9 @@ See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org
 5. How It Works
 
 == Changelog ==
+= 2.2.4 (2025-05-28) =
+* Update: Plugin icon replaced from SVG to GIF
+
 = 2.2.3 (2025-05-20) =
 * Update: Plugin title updated for improve clarity and visibility.
 

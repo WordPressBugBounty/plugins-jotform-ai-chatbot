@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 2.2.3
+* Version: 2.2.4
 * Author URI: https://www.jotform.com/
 */
 
@@ -54,6 +54,13 @@ function jotform_ai_chatbot_initialize_plugin($action) {
             "Content-Type" => "application/json"
         ]
     ];
+
+    // Add the API Key if already generated
+    $options = get_option("jotform_ai_chatbot_options");
+    $options = !empty($options) ? json_decode($options, true) : [];
+    if (isset($options["apiKey"]) && !empty($options["apiKey"])) {
+        $args["headers"]["APIKEY"] = $options["apiKey"];
+    }
 
     // Make the request
     wp_remote_request($url, $args);
@@ -226,7 +233,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "2.2.3";
+        $jaic_assetVersion = "2.2.4";
     } catch (\Exception $e) {
     }
 }
