@@ -3,11 +3,11 @@
 /**
 * Plugin Name: AI Chatbot for WordPress - Jotform
 * Plugin URI: http://wordpress.org/plugins/jotform-ai-chatbot/
-* Description: Create a custom AI chatbot in minutes to engage visitors, answer FAQs, and generate leads — no coding needed. Powered by Jotform’s advanced AI.
+* Description: Create a custom AI chatbot to engage visitors, answer FAQs, provide customer support, and generate leads — no coding needed. Powered by Jotform's advanced AI.
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 2.2.4
+* Version: 2.2.5
 * Author URI: https://www.jotform.com/
 */
 
@@ -233,7 +233,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "2.2.4";
+        $jaic_assetVersion = "2.2.5";
     } catch (\Exception $e) {
     }
 }

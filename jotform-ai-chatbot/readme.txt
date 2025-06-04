@@ -1,14 +1,14 @@
 === AI Chatbot for WordPress - Jotform ===
 
 Contributors: Jotform
-Tags: AI, chatbot, ChatGPT, live chat, customer support
+Tags: AI, chatbot, chatGPT, helpdesk, live chat
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 2.2.4
+Stable tag: 2.2.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Create a custom AI chatbot in minutes to engage visitors, answer FAQs, and generate leads — no coding needed. Powered by Jotform’s advanced AI.
+Create a custom AI chatbot to engage visitors, answer FAQs, provide customer support, and generate leads — no coding needed. Powered by Jotform's advanced AI.
 
 == Description ==
 **Jotform AI Chatbot is an advanced AI-powered solution that enhances customer interactions with intelligent automation.**
@@ -170,6 +170,10 @@ See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org
 5. How It Works
 
 == Changelog ==
+= 2.2.5 (2025-06-04) =
+* Update: Minor improvements on chatbot creation flow
+* Update: Plugin description and tags updated for improve clarity and visibility
+
 = 2.2.4 (2025-05-28) =
 * Update: Plugin icon replaced from SVG to GIF
 

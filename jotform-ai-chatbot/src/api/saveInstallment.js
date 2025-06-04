@@ -1,8 +1,9 @@
+import { DELETE_INST_NAME } from '../constants';
 import { platformSettings } from '../utils';
 import { setInstallment } from './api';
 
 const installmentQueue = [];
-const installmentCache = {};
+let installmentCache = {};
 window.__jaic_queue = installmentQueue;
 window.__jaic_installment_cache = installmentCache;
 
@@ -20,7 +21,7 @@ export const saveInstallment = (action) => {
           action: queuedAction,
           platform: PLATFORM,
           domain: PLATFORM_DOMAIN
-        });
+        }, PROVIDER_API_KEY);
       }
     }
   };
@@ -37,8 +38,13 @@ export const saveInstallment = (action) => {
       action,
       platform: PLATFORM,
       domain: PLATFORM_DOMAIN
-    });
+    }, PROVIDER_API_KEY);
 
-    installmentCache[action] = true;
+    if (action.includes(DELETE_INST_NAME)) {
+      installmentCache = {};
+      window.__jaic_installment_cache = installmentCache;
+    } else {
+      installmentCache[action] = true;
+    }
   }
 };

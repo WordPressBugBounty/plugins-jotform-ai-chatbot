@@ -105,4 +105,7 @@ export const getSentenceRecommendations = string => getRequestLayer().post('chat
 
 export const getAllAgents = apiKey => getRequestLayer().get(`mixed-listing/assets?offset=0&limit=1000&orderby=created_at&status=active&assetTypes[0]=ai-agent&addAIAgents=1&apiKey=${apiKey}`);
 
-export const setInstallment = params => getRequestLayer()?.post('ai-chatbot/installment', params);
+export const setInstallment = (params, apiKey = '') => {
+  const url = addApiKeyToUrl('ai-chatbot/installment', apiKey);
+  return getRequestLayer()?.post(url, params);
+};

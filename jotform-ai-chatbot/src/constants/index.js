@@ -224,3 +224,5 @@ export const GREETING_MESSAGE = {
 
 export const EU_PROVIDER_URL = 'https://eu.jotform.com';
 export const EU_PROVIDER_API_URL = 'https://eu-api.jotform.com';
+
+export const DELETE_INST_NAME = 'deleteWpChatbotButton';

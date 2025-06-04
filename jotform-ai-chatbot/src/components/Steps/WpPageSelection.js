@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { interactWithPlatform, saveInstallment } from '../../api';
 import IconCheck from '../../assets/svg/IconCheck.svg';
-import { ALL_TEXTS } from '../../constants';
+import { ALL_TEXTS, DELETE_INST_NAME } from '../../constants';
 import { useEffectIgnoreFirst, useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
 import {
@@ -174,7 +174,7 @@ const WpPageSelection = () => {
   };
 
   const handleDeleteWpChatbot = async () => {
-    saveInstallment(`deleteWpChatbotButton_${toCamelCase(step)}Step`);
+    saveInstallment(`${DELETE_INST_NAME}_${toCamelCase(step)}Step`);
     const data = { action: 'delete' };
     await asyncDispatch(
       () => interactWithPlatform(data),
