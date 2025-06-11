@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 2.2.5
+* Version: 2.2.6
 * Author URI: https://www.jotform.com/
 */
 
@@ -233,7 +233,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "2.2.5";
+        $jaic_assetVersion = "2.2.6";
     } catch (\Exception $e) {
     }
 }
@@ -265,6 +265,9 @@ function jotform_ai_chatbot_developers_callback($args) {
 
     wp_enqueue_script("plugin-preloader-script", plugin_dir_url(__FILE__) . "lib/admin.js", [], $jaic_assetVersion, true);
     wp_enqueue_style("plugin-preloader-css", plugin_dir_url(__FILE__) . "lib/css/admin.css", [], $jaic_assetVersion, "all");
+
+    // Temporary ui issue fix for the plugin conflicts
+    echo '<link rel="stylesheet" href="' . plugin_dir_url(__FILE__) . $buildDir . "/app/app.css" . '">';
 
     ?>
     <input type="hidden" id="platform_api_url" name="platform_api_url" value="<?php echo esc_html($jaic_core->getPlatformAPIURL()); ?>" />
