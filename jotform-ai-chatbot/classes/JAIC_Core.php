@@ -37,6 +37,16 @@ class JAIC_Core {
     private static $pluginOptionKey = "jotform_ai_chatbot_options";
     private static $pluginKnowledgeBaseOptionKey = "jotform_ai_chatbot_knowledgebase";
     private static $getPluginPreviewModeKey = "jotform_ai_chatbot_preview";
+    private static $serviceURLs = [
+        "geu" => [
+            "site" => "https://eu.jotform.com",
+            "api"  => "https://eu-api.jotform.com"
+        ],
+        "us" => [
+            "site" => "https://www.jotform.com",
+            "api"  => "https://api.jotform.com"
+        ]
+    ];
     private static $siteURL;
     private static $siteAPIURL;
 
@@ -47,8 +57,8 @@ class JAIC_Core {
      * the corresponding method if it exists. If the method does not exist,
      * it returns a 400 error response.
      */
-    public function __construct(array $properties = []) {
-        $this->setServiceURLs($properties);
+    public function __construct() {
+        $this->setServiceURLs();
 
         // Validate request
         $nounce = isset($_POST["_nonce"]) ? sanitize_text_field(wp_unslash($_POST["_nonce"])) : false;
@@ -336,6 +346,11 @@ class JAIC_Core {
         // Save updated options back to the database
         update_option(self::$pluginOptionKey, wp_json_encode($options));
 
+        // Reset service urls according to user location
+        if ($optionKey === "apiKey") {
+            $this->setServiceURLs(true);
+        }
+
         // Send a success response in JSON format
         JAIC_Request::responseJSON(
             200,
@@ -481,40 +496,59 @@ class JAIC_Core {
     /**
      * Function to set Service URLS
      *
-     * @param array $properties
+     * @param bool $forceUserRegionCheck
      *
      * @return string The Jotform website URL.
      */
-    private function setServiceURLs(array $properties = []) {
-        if (!empty(self::$siteURL) && empty($properties["checkUserRegion"])) {
-            return;
+    private function setServiceURLs(bool $forceUserRegionCheck = false) {
+        self::$siteURL = self::$serviceURLs["us"]["site"];
+        self::$siteAPIURL = self::$serviceURLs["us"]["api"];
+
+        if (!$forceUserRegionCheck) {
+            // Retrieve chatbot options from the WordPress settings
+            $options = get_option(self::$pluginOptionKey);
+            $options = !empty($options) ? json_decode($options, true) : [];
+
+            // Check user region settings
+            $region = (isset($options["region"]) && in_array($options["region"], array_keys(self::$serviceURLs))) ? $options["region"] : false;
+            if (!empty($region)) {
+                if (in_array($region, ["geu"])) {
+                    self::$siteURL = self::$serviceURLs["geu"]["site"];
+                    self::$siteAPIURL = self::$serviceURLs["geu"]["api"];
+                }
+                return;
+            }
         }
 
-        self::$siteURL = 'https://www.jotform.com';
-        self::$siteAPIURL = 'https://api.jotform.com';
+        // Check user location
+        $response = wp_remote_request($this->getSiteAPIURL() . "/user/", [
+            "method"    => "GET",
+            "headers"   => [
+                "Content-Type"  => "application/json",
+                "APIKEY" => $this->getAPIKey()
+            ],
+            "timeout"   => 10
+        ]);
 
-        if (!empty($properties["checkUserRegion"])) {
-            $response = wp_remote_request($this->getSiteAPIURL() . "/user/", [
-                "method"    => "GET",
-                "headers"   => [
-                    "Content-Type"  => "application/json",
-                    "APIKEY" => $this->getAPIKey()
-                ],
-                "timeout"   => 10
-            ]);
+        if (!is_wp_error($response)) {
+            $statusCode = wp_remote_retrieve_response_code($response);
+            if ($statusCode == 200) {
+                $response = wp_remote_retrieve_body($response);
+                $response = json_decode($response, true);
+                if (!empty($response["location"]) && strstr($response["location"], "https://eu-api.jotform.com")) {
+                    self::$siteURL = self::$serviceURLs["geu"]["site"];
+                    self::$siteAPIURL = self::$serviceURLs["geu"]["api"];
 
-            if (!is_wp_error($response)) {
-                $statusCode = wp_remote_retrieve_response_code($response);
-                if ($statusCode == 200) {
-                    $response = wp_remote_retrieve_body($response);
-                    $response = json_decode($response, true);
-                    if (!empty($response["location"]) && strstr($response["location"], "https://eu-api.jotform.com")) {
-                        self::$siteURL = 'https://eu.jotform.com';
-                        self::$siteAPIURL = 'https://eu-api.jotform.com';
-                    }
-
+                    // Update user region settings
+                    $options["region"] = "geu";
+                    update_option(self::$pluginOptionKey, wp_json_encode($options));
                     return;
                 }
+
+                // Update user region settings
+                $options["region"] = "us";
+                update_option(self::$pluginOptionKey, wp_json_encode($options));
+                return;
             }
         }
 
@@ -540,9 +574,18 @@ class JAIC_Core {
         $location = json_decode($location, true);
         $excludedCountries = [];
         if (json_last_error() === JSON_ERROR_NONE && $location['responseCode'] === 200 && is_array($location['content']) && $location['content']['continent_code'] === 'EU' && !in_array($location['content']['country_code'], $excludedCountries)) {
-            self::$siteURL = 'https://eu.jotform.com';
-            self::$siteAPIURL = 'https://eu-api.jotform.com';
+            self::$siteURL = self::$serviceURLs["geu"]["site"];
+            self::$siteAPIURL = self::$serviceURLs["geu"]["api"];
+
+            // Update user region settings
+            $options["region"] = "geu";
+            update_option(self::$pluginOptionKey, wp_json_encode($options));
+            return;
         }
+
+        // Update user region settings
+        $options["region"] = "us";
+        update_option(self::$pluginOptionKey, wp_json_encode($options));
     }
 
     /**
