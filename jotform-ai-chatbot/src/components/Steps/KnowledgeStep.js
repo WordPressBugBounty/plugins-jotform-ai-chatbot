@@ -78,7 +78,7 @@ const KnowledgeStep = ({ savePlatformAgentEmbed = f => f }) => {
 
   return (
     <>
-      <div className='content-wrapper--knowledge' data-js='knowledge-scroll-container'>
+      <div className='jfpContent-wrapper--knowledge' data-js='knowledge-scroll-container'>
         <KnowledgeBase
           materials={materials}
           requestBaseURL={PROVIDER_API_URL}
@@ -88,7 +88,7 @@ const KnowledgeStep = ({ savePlatformAgentEmbed = f => f }) => {
           handleBulkDelete={handleBulkDelete}
         />
       </div>
-      <div className='content-wrapper--actions'>
+      <div className='jfpContent-wrapper--actions'>
         <BackButton />
         <NextButton />
         {/* add to my website button */}

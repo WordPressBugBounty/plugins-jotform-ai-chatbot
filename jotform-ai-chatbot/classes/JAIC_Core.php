@@ -42,6 +42,10 @@ class JAIC_Core {
             "site" => "https://eu.jotform.com",
             "api"  => "https://eu-api.jotform.com"
         ],
+        "hipaa" => [
+            "site" => "https://hipaa.jotform.com",
+            "api"  => "https://hipaa-api.jotform.com"
+        ],
         "us" => [
             "site" => "https://www.jotform.com",
             "api"  => "https://api.jotform.com"
@@ -354,7 +358,13 @@ class JAIC_Core {
         // Send a success response in JSON format
         JAIC_Request::responseJSON(
             200,
-            ["message" => self::$pluginName . " successfully updated!"]
+            [
+                "message" => self::$pluginName . " successfully updated!",
+                "data" => [
+                    "PROVIDER_URL"      => $this->getSiteURL(),
+                    "PROVIDER_API_URL"  => $this->getSiteAPIURL()
+                ]
+            ]
         );
     }
 
@@ -501,20 +511,20 @@ class JAIC_Core {
      * @return string The Jotform website URL.
      */
     private function setServiceURLs(bool $forceUserRegionCheck = false) {
+        // Retrieve chatbot options from the WordPress settings
+        $options = get_option(self::$pluginOptionKey);
+        $options = !empty($options) ? json_decode($options, true) : [];
+
         self::$siteURL = self::$serviceURLs["us"]["site"];
         self::$siteAPIURL = self::$serviceURLs["us"]["api"];
 
         if (!$forceUserRegionCheck) {
-            // Retrieve chatbot options from the WordPress settings
-            $options = get_option(self::$pluginOptionKey);
-            $options = !empty($options) ? json_decode($options, true) : [];
-
             // Check user region settings
             $region = (isset($options["region"]) && in_array($options["region"], array_keys(self::$serviceURLs))) ? $options["region"] : false;
             if (!empty($region)) {
-                if (in_array($region, ["geu"])) {
-                    self::$siteURL = self::$serviceURLs["geu"]["site"];
-                    self::$siteAPIURL = self::$serviceURLs["geu"]["api"];
+                if (in_array($region, ["geu", "hipaa"])) {
+                    self::$siteURL = self::$serviceURLs[$region]["site"];
+                    self::$siteAPIURL = self::$serviceURLs[$region]["api"];
                 }
                 return;
             }
@@ -541,6 +551,14 @@ class JAIC_Core {
 
                     // Update user region settings
                     $options["region"] = "geu";
+                    update_option(self::$pluginOptionKey, wp_json_encode($options));
+                    return;
+                } elseif (!empty($response["location"]) && strstr($response["location"], "https://hipaa-api.jotform.com")) {
+                    self::$siteURL = self::$serviceURLs["hipaa"]["site"];
+                    self::$siteAPIURL = self::$serviceURLs["hipaa"]["api"];
+
+                    // Update user region settings
+                    $options["region"] = "hipaa";
                     update_option(self::$pluginOptionKey, wp_json_encode($options));
                     return;
                 }

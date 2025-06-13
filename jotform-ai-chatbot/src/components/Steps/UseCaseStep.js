@@ -116,12 +116,12 @@ const UseCaseStep = () => {
 
   return (
     <>
-      <div className='content-wrapper--title'>
+      <div className='jfpContent-wrapper--title'>
         <h2>{t(ALL_TEXTS.SETUP_YOUR_AI_CHATBOT)}</h2>
         <p>{t(ALL_TEXTS.USE_TEMPLATE_READY_OR_START_FROM_SCRATCH)}</p>
       </div>
       {!isEmpty(existingAgents) && (
-        <div className='content-wrapper--tabs'>
+        <div className='jfpContent-wrapper--tabs'>
           <Tab
             label={ALL_TEXTS.DESCRIBE}
             isActive={tab === 'create'}
@@ -134,13 +134,13 @@ const UseCaseStep = () => {
           />
         </div>
       )}
-      <div className='content-wrapper--use-cases'>
+      <div className='jfpContent-wrapper--use-cases'>
         {tab === 'create' && (
           <>
-            <div className='content-wrapper--customization-title'>
+            <div className='jfpContent-wrapper--customization-title'>
               <h3>{t(ALL_TEXTS.DESCRIBE_THE_AGENT_YOU_WANT_TO_CREATE)}</h3>
             </div>
-            <div className='content-wrapper--input'>
+            <div className='jfpContent-wrapper--input'>
               <Textarea
                 ref={textareaRef}
                 placeholder={t(ALL_TEXTS.EXAMPLE_PROVIDE_CUSTOMER_SUPPORT_BY_ANSWERING_FAQS_AND_GUIDING_USERS_THROUGH)}
@@ -154,7 +154,7 @@ const UseCaseStep = () => {
                 onSelect={handleSelect}
               />
             </div>
-            <div className='content-wrapper--buttons'>
+            <div className='jfpContent-wrapper--buttons'>
               {PROMPTS.map(data => (
                 <Button
                   colorStyle={activeButton === data.buttonText ? 'primary' : 'secondary'}
@@ -174,7 +174,7 @@ const UseCaseStep = () => {
           </>
         )}
         {tab === 'select' && !isEmpty(existingAgents) && (
-          <ul className='content-wrapper--select-agent'>
+          <ul className='jfpContent-wrapper--select-agent'>
             {existingAgents.map(agent => (
               <AgentRadio
                 key={agent.id}
@@ -193,7 +193,7 @@ const UseCaseStep = () => {
           </ul>
         )}
       </div>
-      <div className='content-wrapper--actions'>
+      <div className='jfpContent-wrapper--actions'>
         {/* use chatbot button */}
         <BackButton />
         <Button

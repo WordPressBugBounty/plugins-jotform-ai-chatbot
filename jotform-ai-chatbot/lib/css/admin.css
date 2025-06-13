@@ -22,13 +22,13 @@
   box-sizing: border-box;
 }
 
-#chatbot-app h2,
-#chatbot-app h3,
-#chatbot-app p {
+#jfpChatbot-app h2,
+#jfpChatbot-app h3,
+#jfpChatbot-app p {
   margin: 0;
 }
 
-#chatbot-app .chatbot-container {
+#jfpChatbot-app .jfpChatbot-container {
   width: 100%;
   height: 540px;
   border: 1px solid #E3E5F5;
@@ -38,30 +38,30 @@
   overflow: hidden;
 }
 @media screen and (min-width: 1024px) {
-  #chatbot-app .chatbot-container {
+  #jfpChatbot-app .jfpChatbot-container {
     height: 672px;
   }
 }
 @media screen and (max-width: 1024px) {
-  #chatbot-app .chatbot-container {
+  #jfpChatbot-app .jfpChatbot-container {
     overflow: inherit;
   }
 }
 
-.loader-wrapper {
+.jfLoader-wrapper {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-top: 34px;
 }
 
-.loader-wrapper strong {
+.jfLoader-wrapper strong {
   font-size: 16px;
   line-height: 20px;
   font-weight: 500;
 }
 
-.loader {
+.jfLoader {
   position: relative;
   width: 20px;
   height: 20px;
@@ -69,7 +69,7 @@
   border: 2px solid rgba(52, 60, 106, 0.2);
 }
 
-.loader:before {
+.jfLoader:before {
   content: "";
   position: absolute;
   inset: -2px;
@@ -89,83 +89,83 @@
 }
 
 /* Panel Reset  */
-.chatbot-container input[type=color],
-.chatbot-container input[type=date],
-.chatbot-container input[type=datetime-local],
-.chatbot-container input[type=datetime],
-.chatbot-container input[type=email],
-.chatbot-container input[type=month],
-.chatbot-container input[type=number],
-.chatbot-container input[type=password],
-.chatbot-container input[type=search],
-.chatbot-container input[type=tel],
-.chatbot-container input[type=text],
-.chatbot-container input[type=time],
-.chatbot-container input[type=url],
-.chatbot-container input[type=week],
-.chatbot-container select,
-.chatbot-container textarea {
+.jfpChatbot-container input[type=color],
+.jfpChatbot-container input[type=date],
+.jfpChatbot-container input[type=datetime-local],
+.jfpChatbot-container input[type=datetime],
+.jfpChatbot-container input[type=email],
+.jfpChatbot-container input[type=month],
+.jfpChatbot-container input[type=number],
+.jfpChatbot-container input[type=password],
+.jfpChatbot-container input[type=search],
+.jfpChatbot-container input[type=tel],
+.jfpChatbot-container input[type=text],
+.jfpChatbot-container input[type=time],
+.jfpChatbot-container input[type=url],
+.jfpChatbot-container input[type=week],
+.jfpChatbot-container select,
+.jfpChatbot-container textarea {
   border: 0;
 }
 
-.chatbot-container input[type=checkbox]:focus,
-.chatbot-container input[type=color]:focus,
-.chatbot-container input[type=date]:focus,
-.chatbot-container input[type=datetime-local]:focus,
-.chatbot-container input[type=datetime]:focus,
-.chatbot-container input[type=email]:focus,
-.chatbot-container input[type=month]:focus,
-.chatbot-container input[type=number]:focus,
-.chatbot-container input[type=password]:focus,
-.chatbot-container input[type=radio]:focus,
-.chatbot-container input[type=search]:focus,
-.chatbot-container input[type=tel]:focus,
-.chatbot-container input[type=text]:focus,
-.chatbot-container input[type=time]:focus,
-.chatbot-container input[type=url]:focus,
-.chatbot-container input[type=week]:focus,
-.chatbot-container select:focus,
-.chatbot-container textarea:focus {
+.jfpChatbot-container input[type=checkbox]:focus,
+.jfpChatbot-container input[type=color]:focus,
+.jfpChatbot-container input[type=date]:focus,
+.jfpChatbot-container input[type=datetime-local]:focus,
+.jfpChatbot-container input[type=datetime]:focus,
+.jfpChatbot-container input[type=email]:focus,
+.jfpChatbot-container input[type=month]:focus,
+.jfpChatbot-container input[type=number]:focus,
+.jfpChatbot-container input[type=password]:focus,
+.jfpChatbot-container input[type=radio]:focus,
+.jfpChatbot-container input[type=search]:focus,
+.jfpChatbot-container input[type=tel]:focus,
+.jfpChatbot-container input[type=text]:focus,
+.jfpChatbot-container input[type=time]:focus,
+.jfpChatbot-container input[type=url]:focus,
+.jfpChatbot-container input[type=week]:focus,
+.jfpChatbot-container select:focus,
+.jfpChatbot-container textarea:focus {
   outline: 0;
   border: 0;
   box-shadow: none;
 }
 
-.chatbot-container input[type=checkbox],
-.chatbot-container input[type=radio] {
+.jfpChatbot-container input[type=checkbox],
+.jfpChatbot-container input[type=radio] {
   margin: 0;
 }
 
-.chatbot-container input[type=radio] {
+.jfpChatbot-container input[type=radio] {
   border: 2px solid #c8ceed;
 }
 
-.chatbot-container input[type=radio]:hover {
+.jfpChatbot-container input[type=radio]:hover {
   border-color: #0075e3;
 }
 
-.chatbot-container input[type=radio]:checked {
+.jfpChatbot-container input[type=radio]:checked {
   background-color: #0075e3;
   border-color: #0075e3;
 }
 
-.chatbot-container input[type=checkbox] {
+.jfpChatbot-container input[type=checkbox] {
   background-color: #fff !important;
   border: 2px solid #c8ceed !important;
   box-shadow: none;
 }
 
-.chatbot-container input[type=checkbox]:not(:disabled):hover,
-.chatbot-container input[type=checkbox]:not(:disabled):focus {
+.jfpChatbot-container input[type=checkbox]:not(:disabled):hover,
+.jfpChatbot-container input[type=checkbox]:not(:disabled):focus {
   border: 2px solid #0075E3 !important;
 }
 
-.chatbot-container input[type=checkbox]:not(:disabled):focus {
+.jfpChatbot-container input[type=checkbox]:not(:disabled):focus {
   outline: 2px solid #77cfff !important;
 }
 
 
-.chatbot-container input[type=checkbox]:checked {
+.jfpChatbot-container input[type=checkbox]:checked {
   background-color: #0075E3 !important;
   border: 2px solid #0075E3 !important;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M18.707 7.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L10 14.586l7.293-7.293a1 1 0 0 1 1.414 0Z' clip-rule='evenodd' /%3E%3C/svg%3E");
@@ -174,11 +174,11 @@
   background-repeat: no-repeat;
 }
 
-.chatbot-container input[type=checkbox]:checked::before {
+.jfpChatbot-container input[type=checkbox]:checked::before {
   display: none;
 }
 
-.chatbot-plugin-section > h2 {
+.jfpChatbot-plugin-section > h2 {
   display: none;
 }
 

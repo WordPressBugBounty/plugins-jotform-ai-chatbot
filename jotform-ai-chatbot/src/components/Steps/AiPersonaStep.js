@@ -95,13 +95,13 @@ const AiPersonaStep = () => {
 
   return (
     <>
-      <div className='content-wrapper--title'>
+      <div className='jfpContent-wrapper--title'>
         <h2>{t(ALL_TEXTS.AI_PERSONA)}</h2>
         <p>{t(ALL_TEXTS.WRITE_AND_CUSTOMIZE_HOW_AI_TALKS)}</p>
       </div>
-      <div className='content-wrapper--ai-persona'>
+      <div className='jfpContent-wrapper--ai-persona'>
         {/* agent name */}
-        <div className='content-wrapper--ai-persona-title'>
+        <div className='jfpContent-wrapper--ai-persona-title'>
           <div>
             <h3>{t(ALL_TEXTS.AGENT_NAME)}</h3>
             <p>{t(ALL_TEXTS.GIVE_A_NAME_TO_YOUR_AGENT_THAT_WILL_BE_DISPLAYED_IN_THE_CONVERSATION)}</p>
@@ -109,13 +109,13 @@ const AiPersonaStep = () => {
           <input
             type='text'
             value={agentName}
-            className='content-wrapper--ai-persona-input'
+            className='jfpContent-wrapper--ai-persona-input'
             onChange={e => handleNameChange(e.target.value)}
           />
         </div>
-        <hr className='content-wrapper--line line-2x' />
+        <hr className='jfpContent-wrapper--line line-2x' />
         {/* agent role */}
-        <div className='content-wrapper--ai-persona-title'>
+        <div className='jfpContent-wrapper--ai-persona-title'>
           <div>
             <h3>{t(ALL_TEXTS.AGENT_ROLE)}</h3>
             <p>{t(ALL_TEXTS.DESCRIPTION_YOUR_AGENTS_JOB_TITLE)}</p>
@@ -123,7 +123,7 @@ const AiPersonaStep = () => {
           <input
             type='text'
             value={agentRole}
-            className='content-wrapper--ai-persona-input'
+            className='jfpContent-wrapper--ai-persona-input'
             onChange={e => handleAgentPropChange('role', e.target.value)}
           />
           <div className='role-options'>
@@ -144,9 +144,9 @@ const AiPersonaStep = () => {
             ))}
           </div>
         </div>
-        <hr className='content-wrapper--line line-2x' />
+        <hr className='jfpContent-wrapper--line line-2x' />
         {/* agent chattiness */}
-        <div className='content-wrapper--ai-persona-title'>
+        <div className='jfpContent-wrapper--ai-persona-title'>
           <div>
             <h3>{t(ALL_TEXTS.CHATTINESS)}</h3>
             <p>{t(ALL_TEXTS.SPECIFY_THE_DESIRED_LEVEL_OF_DETAIL_IN_THE_AGENTS_RESPONSES)}</p>
@@ -169,9 +169,9 @@ const AiPersonaStep = () => {
             ))}
           </div>
         </div>
-        <hr className='content-wrapper--line line-2x' />
+        <hr className='jfpContent-wrapper--line line-2x' />
         {/* default language */}
-        <div className='content-wrapper--ai-persona-title'>
+        <div className='jfpContent-wrapper--ai-persona-title'>
           <div>
             <h3>{t(ALL_TEXTS.DEFAULT_LANGUAGE)}</h3>
             <p>{t(ALL_TEXTS.SELECT_THE_LANGUAGE)}</p>
@@ -194,9 +194,9 @@ const AiPersonaStep = () => {
             ))}
           </Dropdown>
         </div>
-        <hr className='content-wrapper--line line-2x' />
+        <hr className='jfpContent-wrapper--line line-2x' />
         {/* tone of voice */}
-        <div className='content-wrapper--ai-persona-title'>
+        <div className='jfpContent-wrapper--ai-persona-title'>
           <div>
             <h3>{t(ALL_TEXTS.TONE_OF_VOICE)}</h3>
             <p>{t(ALL_TEXTS.SELECT_HOW_TO_COMMUNICATE)}</p>
@@ -220,7 +220,7 @@ const AiPersonaStep = () => {
           </Dropdown>
         </div>
       </div>
-      <div className='content-wrapper--actions'>
+      <div className='jfpContent-wrapper--actions'>
         <BackButton />
         <NextButton />
       </div>

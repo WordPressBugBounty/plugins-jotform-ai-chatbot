@@ -82,12 +82,12 @@ const StyleStep = () => {
 
   return (
     <>
-      <div className='content-wrapper--title'>
+      <div className='jfpContent-wrapper--title'>
         <h2>{t(ALL_TEXTS.SETUP_YOUR_AI_CHATBOT)}</h2>
         <p>{t(ALL_TEXTS.CONFIGURE_OPTIONS_FOR_AI_CHATBOT)}</p>
       </div>
-      <div className='content-wrapper--style'>
-        <ul className='content-wrapper--style-colors'>
+      <div className='jfpContent-wrapper--style'>
+        <ul className='jfpContent-wrapper--style-colors'>
           <h3>{t(ALL_TEXTS.COLOR_SCHEME)}</h3>
           {themes.map(theme => (
             <li
@@ -103,17 +103,17 @@ const StyleStep = () => {
             </li>
           ))}
         </ul>
-        <hr className='content-wrapper--line' />
-        <div className='content-wrapper--style-color-select'>
+        <hr className='jfpContent-wrapper--line' />
+        <div className='jfpContent-wrapper--style-color-select'>
           <h3>{t(ALL_TEXTS.AGENT_BACKGROUND_STYLE)}</h3>
-          <div className='content-wrapper--style-color-select-col'>
+          <div className='jfpContent-wrapper--style-color-select-col'>
             <h4>{t(ALL_TEXTS.START_COLOR)}</h4>
             <InputColor
               defaultValue={themeCustomizations[THEME_CUSTOMIZATION_KEYS.AGENT_BG_START_COLOR]}
               onChange={handleInputChange(THEME_CUSTOMIZATION_KEYS.AGENT_BG_START_COLOR)}
             />
           </div>
-          <div className='content-wrapper--style-color-select-col'>
+          <div className='jfpContent-wrapper--style-color-select-col'>
             <h4>{t(ALL_TEXTS.END_COLOR)}</h4>
             <InputColor
               defaultValue={themeCustomizations[THEME_CUSTOMIZATION_KEYS.AGENT_BG_END_COLOR]}
@@ -121,17 +121,17 @@ const StyleStep = () => {
             />
           </div>
         </div>
-        <hr className='content-wrapper--line' />
-        <div className='content-wrapper--style-color-select'>
+        <hr className='jfpContent-wrapper--line' />
+        <div className='jfpContent-wrapper--style-color-select'>
           <h3>{t(ALL_TEXTS.CHAT_STYLE)}</h3>
-          <div className='content-wrapper--style-color-select-full'>
+          <div className='jfpContent-wrapper--style-color-select-full'>
             <h4>{t(ALL_TEXTS.CHAT_BACKGROUND_COLOR)}</h4>
             <InputColor
               defaultValue={themeCustomizations[THEME_CUSTOMIZATION_KEYS.CHAT_BG_COLOR]}
               onChange={handleInputChange(THEME_CUSTOMIZATION_KEYS.CHAT_BG_COLOR)}
             />
           </div>
-          <div className='content-wrapper--style-color-select-col'>
+          <div className='jfpContent-wrapper--style-color-select-col'>
             <h4>{t(ALL_TEXTS.FONT_FAMILY)}</h4>
             <Dropdown
               value={themeCustomizations.fontFamily}
@@ -147,7 +147,7 @@ const StyleStep = () => {
               ))}
             </Dropdown>
           </div>
-          <div className='content-wrapper--style-color-select-col'>
+          <div className='jfpContent-wrapper--style-color-select-col'>
             <h4>{t(ALL_TEXTS.FONT_COLOR)}</h4>
             <InputColor
               defaultValue={themeCustomizations[THEME_CUSTOMIZATION_KEYS.FONT_COLOR]}
@@ -155,17 +155,17 @@ const StyleStep = () => {
             />
           </div>
         </div>
-        <hr className='content-wrapper--line' />
-        <div className='content-wrapper--style-color-select'>
+        <hr className='jfpContent-wrapper--line' />
+        <div className='jfpContent-wrapper--style-color-select'>
           <h3>{t(ALL_TEXTS.BUTTON_STYLE)}</h3>
-          <div className='content-wrapper--style-color-select-col'>
+          <div className='jfpContent-wrapper--style-color-select-col'>
             <h4>{t(ALL_TEXTS.BUTTON_COLOR)}</h4>
             <InputColor
               defaultValue={themeCustomizations[THEME_CUSTOMIZATION_KEYS.BUTTON_BG_COLOR]}
               onChange={handleInputChange(THEME_CUSTOMIZATION_KEYS.BUTTON_BG_COLOR)}
             />
           </div>
-          <div className='content-wrapper--style-color-select-col'>
+          <div className='jfpContent-wrapper--style-color-select-col'>
             <h4>{t(ALL_TEXTS.ICON_COLOR)}</h4>
             <InputColor
               defaultValue={themeCustomizations[THEME_CUSTOMIZATION_KEYS.BUTTON_ICON_BG_COLOR]}
@@ -174,7 +174,7 @@ const StyleStep = () => {
           </div>
         </div>
       </div>
-      <div className='content-wrapper--actions'>
+      <div className='jfpContent-wrapper--actions'>
         <BackButton />
         <NextButton />
       </div>

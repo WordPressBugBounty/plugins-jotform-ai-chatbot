@@ -169,7 +169,7 @@
   }
 }
 
-#chatbot-app {
+#jfpChatbot-app {
   height: 540px;
   font-family: 'Inter', sans-serif;
   margin-bottom: 64px;
@@ -196,7 +196,7 @@
   }
 }
 
-.chatbot-container {
+.jfpChatbot-container {
   display: flex;
   background: #fff;
   border: 1px solid #E3E5F5;
@@ -246,7 +246,7 @@
       display: none;
     }
   }
-  .content-wrapper {
+  .jfpContent-wrapper {
     flex: 1;
     z-index: 3;
     position: relative;
@@ -871,7 +871,7 @@
         color: #0075e3;
         text-decoration: underline;
       }
-      &.content-wrapper--terms {
+      &.jfpContent-wrapper--terms {
         margin-top: 32px;
       }
     }
@@ -903,7 +903,7 @@
         display: none;
       }
     }
-    .content-wrapper {
+    .jfpContent-wrapper {
       max-width: 524px;
     }
     .agent-preview {
@@ -967,7 +967,7 @@
   border-width: 0;
 }
 
-.prompt-suggestion {
+.jfPrompt-suggestion {
   position: absolute;
   left: 0;
   background-color: #FFFFFF;
@@ -987,7 +987,7 @@
     padding-left: 16px;
   }
 
-  .prompt-suggestion-item {
+  &-item {
     border: none;
     margin: 0;
     color: var(--jfv-gray-500);

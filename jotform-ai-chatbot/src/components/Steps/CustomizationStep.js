@@ -87,12 +87,12 @@ const CustomizationStep = () => {
 
   return (
     <>
-      <div className='content-wrapper--title'>
+      <div className='jfpContent-wrapper--title'>
         <h2>{t(ALL_TEXTS.SETUP_YOUR_AI_CHATBOT)}</h2>
         <p>{t(ALL_TEXTS.CONFIGURE_OPTIONS_FOR_AI_CHATBOT)}</p>
       </div>
-      <div className='content-wrapper--customization'>
-        <div className='content-wrapper--customization-title'>
+      <div className='jfpContent-wrapper--customization'>
+        <div className='jfpContent-wrapper--customization-title'>
           <div>
             <h3>{t(ALL_TEXTS.GREETING)}</h3>
             <p>{t(ALL_TEXTS.SHOW_A_MESSAGE)}</p>
@@ -107,22 +107,22 @@ const CustomizationStep = () => {
           onChange={e => handleChangeGreetingText(e.target.value)}
           disabled={!greetingBool}
         />
-        <hr className='content-wrapper--line' />
-        <div className='content-wrapper--customization-title'>
+        <hr className='jfpContent-wrapper--line' />
+        <div className='jfpContent-wrapper--customization-title'>
           <div>
             <h3>{t(ALL_TEXTS.PULSING)}</h3>
             <p>{t(ALL_TEXTS.ADD_A_PULSE_EFFECT)}</p>
           </div>
           <Toggle checked={pulseBool} onChange={() => handleChangePulsing(!pulseBool)} />
         </div>
-        <hr className='content-wrapper--line' />
-        <div className='content-wrapper--customization-title'>
+        <hr className='jfpContent-wrapper--line' />
+        <div className='jfpContent-wrapper--customization-title'>
           <div>
             <h3>{t(ALL_TEXTS.POSITION)}</h3>
             <p>{t(ALL_TEXTS.CHOOSE_THE_AI_AGENT)}</p>
           </div>
         </div>
-        <ul className='content-wrapper--customization-position'>
+        <ul className='jfpContent-wrapper--customization-position'>
           <li>
             <Radio
               label={t(ALL_TEXTS.LEFT)}
@@ -146,7 +146,7 @@ const CustomizationStep = () => {
           </li>
         </ul>
       </div>
-      <div className='content-wrapper--actions'>
+      <div className='jfpContent-wrapper--actions'>
         <BackButton />
         <NextButton />
       </div>

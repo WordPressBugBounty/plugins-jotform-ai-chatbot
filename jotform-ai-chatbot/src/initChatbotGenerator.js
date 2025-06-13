@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { ChatbotGenerator } from './components';
 import { getRootElement } from './utils';
 
-export const initChatbotGenerator = ({ selector = '#chatbot-app', ...props } = {}) => {
+export const initChatbotGenerator = ({ selector = '#jfpChatbot-app', ...props } = {}) => {
   const rootEl = getRootElement(selector);
   const root = createRoot(rootEl);
 

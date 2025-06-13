@@ -140,7 +140,7 @@ const Wizard = props => {
     <>
       <div
         data-step={step}
-        className='chatbot-container chatbot-container--platformmode'
+        className='jfpChatbot-container jfpChatbot-container--platformmode'
       >
         {isLoaderVisible
           ? (
@@ -151,7 +151,7 @@ const Wizard = props => {
           )
           : (
             <>
-              <div className='content-wrapper' data-step={step}>
+              <div className='jfpContent-wrapper' data-step={step}>
                 <CurrentStep
                   {...props}
                   savePlatformAgentEmbed={savePlatformAgentEmbed}

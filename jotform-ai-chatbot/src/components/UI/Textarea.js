@@ -20,7 +20,7 @@ const Textarea = forwardRef(({ maxLength, onChange = f => f, ...props }, ref) =>
   }, [ref]);
 
   return (
-    <div className='textarea-container'>
+    <div className='jfTextarea-container'>
       <textarea
         ref={ref}
         {...props}
@@ -28,7 +28,7 @@ const Textarea = forwardRef(({ maxLength, onChange = f => f, ...props }, ref) =>
         onChange={handleChange}
       />
       {maxLength && (
-        <div className='textarea-container--counter'>
+        <div className='jfTextarea-container--counter'>
           {`${count} / ${maxLength}`}
         </div>
       )}

@@ -337,7 +337,14 @@ export const wizardReducer = (state, action) => {
     case SAVE_PROVIDER_API_KEY.REQUEST:
       return state;
     case SAVE_PROVIDER_API_KEY.SUCCESS:
-      return state;
+      const { result: { data: { PROVIDER_URL, PROVIDER_API_URL } = {} } = {} } = action.payload;
+      platformSettingsSingleton.PROVIDER_URL = PROVIDER_URL;
+      platformSettingsSingleton.PROVIDER_API_URL = PROVIDER_API_URL;
+      reinitializeRequestLayer();
+      return {
+        ...state,
+        platformSettings: { ...state.platformSettings, PROVIDER_API_URL, PROVIDER_URL }
+      };
     case SAVE_PROVIDER_API_KEY.ERROR:
       return { ...state, errorMessage: action.payload.result?.message };
     case SET_PAGE_SAVE_DISABLED:

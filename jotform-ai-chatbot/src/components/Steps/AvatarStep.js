@@ -45,7 +45,7 @@ const AvatarStep = () => {
   // refresh agent
   useEffect(() => {
     const refreshAgent = async () => {
-      await awaitFor(1500);
+      await awaitFor(2000);
       initAgent({
         agentId: previewAgentId, customizations, customAvatarUrl: selectedAvatar.avatarIconLink, ...themeCustomizations
       });
@@ -115,12 +115,12 @@ const AvatarStep = () => {
 
   return (
     <>
-      <div className='content-wrapper--title'>
+      <div className='jfpContent-wrapper--title'>
         <h2>{ALL_TEXTS.AVATAR_GALLERY}</h2>
         <p>{ALL_TEXTS.SELECT_AN_AVATAR}</p>
       </div>
       <div
-        className='content-wrapper--avatar-gallery'
+        className='jfpContent-wrapper--avatar-gallery'
         ref={containerRef}
         role='radiogroup'
         aria-label={ALL_TEXTS.AVATAR_GALLERY}
@@ -151,7 +151,7 @@ const AvatarStep = () => {
             </button>
           ))}
       </div>
-      <div className='content-wrapper--actions'>
+      <div className='jfpContent-wrapper--actions'>
         <BackButton />
         <NextButton />
       </div>

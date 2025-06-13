@@ -3,11 +3,11 @@
 /**
 * Plugin Name: AI Chatbot for WordPress - Jotform
 * Plugin URI: http://wordpress.org/plugins/jotform-ai-chatbot/
-* Description: Create a custom AI chatbot to engage visitors, answer FAQs, provide customer support, and generate leads — no coding needed. Powered by Jotform's advanced AI.
+* Description: Create a custom AI chatbot to engage visitors, answer FAQs, provide customer support, and generate leads — no coding needed.
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 2.2.7
+* Version: 2.2.9
 * Author URI: https://www.jotform.com/
 */
 
@@ -126,7 +126,7 @@ function jotform_ai_chatbot_plugin_settings_init() {
         "jotform_ai_chatbot_developers_callback",
         "jotform_ai_chatbot",
         [
-            "before_section" => "<div class=\"chatbot-plugin-section\">",
+            "before_section" => "<div class=\"jfpChatbot-plugin-section\">",
             "after_section" => "</div>"
         ]
     );
@@ -233,7 +233,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "2.2.7";
+        $jaic_assetVersion = "2.2.9";
     } catch (\Exception $e) {
     }
 }
@@ -267,13 +267,13 @@ function jotform_ai_chatbot_developers_callback($args) {
     wp_enqueue_style("plugin-preloader-css", plugin_dir_url(__FILE__) . "lib/css/admin.css", [], $jaic_assetVersion, "all");
 
     // Temporary ui issue fix for the plugin conflicts
-    echo '<link rel="stylesheet" href="' . plugin_dir_url(__FILE__) . $buildDir . "/app/app.css" . '">';
+    echo '<link rel="stylesheet" href="' . plugin_dir_url(__FILE__) . $buildDir . "/app/app.css?ver=" . $jaic_assetVersion . '">';
 
     ?>
     <input type="hidden" id="platform_api_url" name="platform_api_url" value="<?php echo esc_html($jaic_core->getPlatformAPIURL()); ?>" />
-    <div id="chatbot-app">
-        <div class="loader-wrapper">
-            <div class="loader"></div>
+    <div id="jfpChatbot-app">
+        <div class="jfLoader-wrapper">
+            <div class="jfLoader"></div>
             <strong>Jotform AI Chatbot wizard is loading...</strong>
         </div>
     </div>

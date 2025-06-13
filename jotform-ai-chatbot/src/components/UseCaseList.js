@@ -16,7 +16,7 @@ const UseCaseList = ({ selectedTemplateAgentId }) => {
   }, []);
 
   return (
-    <ul className='content-wrapper--list'>
+    <ul className='jfpContent-wrapper--list'>
       {USE_CASES.map(({ templateAgentId: tempAgentId, label }) => (
         <li
           key={tempAgentId}

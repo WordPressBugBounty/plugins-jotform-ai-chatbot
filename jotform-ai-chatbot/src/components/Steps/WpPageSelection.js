@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { interactWithPlatform, saveInstallment } from '../../api';
-import IconCheck from '../../assets/svg/IconCheck.svg';
 import { ALL_TEXTS, DELETE_INST_NAME } from '../../constants';
 import { useEffectIgnoreFirst, useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
@@ -189,14 +188,14 @@ const WpPageSelection = () => {
 
   return (
     <>
-      <div className='content-wrapper--title'>
+      <div className='jfpContent-wrapper--title'>
         <h2>{t(ALL_TEXTS.SHOW_AI_CHATBOT_ON)}</h2>
         <p>{t(ALL_TEXTS.CHOOSE_PAGES_THE_AI_CHATBOT_WILL_BE_SHOWN_ON)}</p>
       </div>
-      <div className='content-wrapper--wp-page'>
-        <ul id='wpPageSelection' className='content-wrapper--wp-page-list'>
+      <div className='jfpContent-wrapper--wp-page'>
+        <ul id='wpPageSelection' className='jfpContent-wrapper--wp-page-list'>
           {filteredPlatformPages.map(item => (
-            <li key={item.value} className='content-wrapper--wp-page-list-item'>
+            <li key={item.value} className='jfpContent-wrapper--wp-page-list-item'>
               <Checkbox
                 size='small'
                 label={item.text}
@@ -216,7 +215,7 @@ const WpPageSelection = () => {
           ))}
         </ul>
       </div>
-      <div className='content-wrapper--actions'>
+      <div className='jfpContent-wrapper--actions'>
         {/* delete wp chatbot */}
         <Button
           variant='ghost'
@@ -234,8 +233,6 @@ const WpPageSelection = () => {
         {/* save wp page selections changes */}
         <Button
           loader={isSaveLoading}
-          startIcon={isSaveLoading && <IconCheck />}
-          colorStyle={isSaveLoading ? 'success' : 'primary'}
           onClick={handleSaveWpPageChanges}
           disabled={isPageSaveDisabled || isSavePlatformAgentPagesLoading || (isCustomUrlSelected && !isInputValid)}
         >

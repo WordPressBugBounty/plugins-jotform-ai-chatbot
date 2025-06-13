@@ -114,14 +114,14 @@ const PromptSuggestion = forwardRef(({
   }, [ref]);
 
   return isPopoverVisible && suggestions.length > 0 ? (
-    <div className='prompt-suggestion'>
+    <div className='jfPrompt-suggestion'>
       {suggestions.map((suggestion, index) => (
         <div
           key={index}
           onClick={() => handleSelect(suggestion)}
           onMouseDown={(e) => e.preventDefault()}
           data-suggestion
-          className='prompt-suggestion-item'
+          className='jfPrompt-suggestion-item'
         >
           {highlightMatches(suggestion, keywords)}
         </div>
