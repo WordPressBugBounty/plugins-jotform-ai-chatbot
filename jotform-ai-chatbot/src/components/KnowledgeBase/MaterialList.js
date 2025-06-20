@@ -21,6 +21,15 @@ const MaterialList = ({
     setEditingMaterialId(materialId);
   };
 
+  //  ISO 8601 format for Safari
+  const parseDate = (dateStr) => new Date(dateStr.replace(' ', 'T'));
+
+  const sortByUpdatedAt = (items, order = 'desc') => [...items].sort((a, b) => {
+    const dateA = parseDate(a.updated_at)?.getTime();
+    const dateB = parseDate(b.updated_at)?.getTime();
+    return order === 'asc' ? dateA - dateB : dateB - dateA;
+  });
+
   return (
     <>
       <Button
@@ -35,7 +44,7 @@ const MaterialList = ({
       >
         Add new knowledge
       </Button>
-      {materials.map((material) => (
+      {sortByUpdatedAt(materials).map((material) => (
         <MaterialListItem
           key={material.uuid}
           material={material}

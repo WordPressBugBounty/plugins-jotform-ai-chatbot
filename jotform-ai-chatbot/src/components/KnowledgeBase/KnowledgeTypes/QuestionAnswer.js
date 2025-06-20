@@ -25,7 +25,7 @@ const QuestionAnswer = ({
       if (inputValidation.length === 0) {
         return handleSave({
           type: 'QA',
-          data: JSON.stringify({ question: questionRef.current, answer: answerRef.current }),
+          data: JSON.stringify({ question: questionRef.current.value, answer: answerRef.current.value }),
           ...(isEditingMode && { status: editingMaterial?.status === 'ACTION_REQUIRED' ? 'PROCESSED' : editingMaterial?.status })
         });
       }

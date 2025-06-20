@@ -4,7 +4,7 @@ Contributors: Jotform
 Tags: AI, chatbot, chatGPT, helpdesk, live chat
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 2.2.9
+Stable tag: 2.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,16 +151,22 @@ Its flexibility ensures it meets diverse business needs effectively.
 Yes! The plugin seamlessly integrates with all modern WordPress themes, ensuring a smooth and consistent user experience. Whether your site has a minimalist or feature-rich design, the chatbot adapts effortlessly. Plus, regular updates keep it compatible with the latest WordPress versions and themes.
 
 == Installation ==
-1. Download repo’s tarball/zip and extract it to your WordPress’s Plugins folder ({wordpress-folder}/wp-content/plugins).
-2. Enter your WordPress Administrator panel (http://my-wordpress.url/wp-admin).
-3. Activate the plugin under the Plugins section.
-4. Go to the **Jotform AI Chatbot** plugin page.
-5. Click on **Let’s start**.
-6. Describe the chatbot you want to create.
-7. Customize and style your chatbot.
-8. Add additional knowledge to your chatbot.
-9. Select the pages you want the chatbot to appear on and click on **Save Changes**.
-10. Voila! Your AI Chatbot is embedded on your website. 🙂
+= Jotform AI Chatbot WordPress Plugin installation from the directory: =
+1. **Log in** to your WordPress admin dashboard. 
+2. Go to “Plugins” using the sidebar on the left.
+3. Click “**Add New**” and search for “**Jotform AI Chatbot**”.
+4. Install the plugin and **activate** it.
+5. The **Jotform icon** will appear on the left sidebar of your WordPress admin panel. 
+
+After activating the plugin, you can create your chatbot on the admin panel, or you can create or edit your chatbot from the **Jotform chatbot builder**. Voila! Your AI Chatbot is embedded on your website. 🙂
+
+= Jotform AI Chatbot WordPress Plugin installation from: =
+1. Go to your **WordPress Administrator panel** (http://my-wordpress.url/wp-admin).
+2. Download the **repo’s zip** and extract it to your WordPress’s Plugins folder ({wordpress-folder}/wp-content/plugins).
+3. **Activate** the plugin under the Plugins section.
+4. The **Jotform icon** will appear on the left sidebar of your WordPress admin panel.
+
+After activating the plugin, you can create your chatbot on the admin panel, or you can create or edit your chatbot from the **Jotform chatbot builder**. Voila! Your AI Chatbot is embedded on your website. 🙂
 
 See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org/support/plugin/jotform-ai-chatbot/) to troubleshoot any issues.
 
@@ -172,6 +178,10 @@ See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org
 5. How It Works
 
 == Changelog ==
+= 2.3.0 (2025-06-20) =
+* Fix: Improvements on chatbot create wizard
+* Update: readme.txt file updated
+
 = 2.2.9 (2025-06-13) =
 * Fix: missing version query in an asset link
 

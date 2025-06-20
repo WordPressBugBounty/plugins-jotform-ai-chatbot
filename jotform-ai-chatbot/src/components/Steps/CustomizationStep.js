@@ -1,11 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback, useEffect, useRef, useState
+} from 'react';
 import debounce from 'lodash/debounce';
 
 import { saveInstallment, updateAgentProperty } from '../../api';
 import {
-  ALL_TEXTS, CUSTOMIZATION_KEYS, POSITION, VERBAL_TOGGLE
+  ALL_TEXTS, CUSTOMIZATION_KEYS, GREETING_TEXT_REQ_DEBOUNCE_TIMEOUT, POSITION, VERBAL_TOGGLE
 } from '../../constants';
-import { useWizard } from '../../hooks';
+import { useInputFocusOut, useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
 import { initAgent, t, toCamelCase } from '../../utils';
 import BackButton from '../BackButton';
@@ -28,6 +30,9 @@ const CustomizationStep = () => {
     }
   } = state;
 
+  const greetingMessageTextareaRef = useRef();
+  const refreshPreviewForGreetingMessage = useInputFocusOut(greetingMessageTextareaRef);
+
   const {
     greeting, greetingMessage, pulse, position
   } = customizations;
@@ -45,7 +50,15 @@ const CustomizationStep = () => {
     initAgent({
       agentId: previewAgentId, customizations, customAvatarUrl: selectedAvatar.avatarIconLink, ...themeCustomizations
     });
-  }, [previewAgentId, customizations, selectedAvatar, themeCustomizations]);
+  }, [
+    previewAgentId,
+    selectedAvatar,
+    themeCustomizations,
+    refreshPreviewForGreetingMessage,
+    customizations[CUSTOMIZATION_KEYS.GREETING],
+    customizations[CUSTOMIZATION_KEYS.PULSE],
+    customizations[CUSTOMIZATION_KEYS.POSITION]
+  ]);
 
   const updateCustomization = async ({ key, value }) => {
     const updatedCustomizations = { ...customizations, [key]: value };
@@ -68,7 +81,7 @@ const CustomizationStep = () => {
     updateCustomization({ key: CUSTOMIZATION_KEYS.GREETING_MESSAGE, value });
   };
 
-  const debouncedUpdateCustomization = useCallback(debounce(updateGreetingText, 1000), []);
+  const debouncedUpdateCustomization = useCallback(debounce(updateGreetingText, GREETING_TEXT_REQ_DEBOUNCE_TIMEOUT), []);
   const handleChangeGreetingText = value => {
     setGreetingMessageState(value);
     debouncedUpdateCustomization(value);
@@ -100,6 +113,7 @@ const CustomizationStep = () => {
           <Toggle checked={greetingBool} onChange={() => handleChangeGreeting(!greetingBool)} />
         </div>
         <Textarea
+          ref={greetingMessageTextareaRef}
           maxLength={80}
           value={greetingMessageState}
           placeholder={t(ALL_TEXTS.HOW_CAN_I_HELP_YOU)}

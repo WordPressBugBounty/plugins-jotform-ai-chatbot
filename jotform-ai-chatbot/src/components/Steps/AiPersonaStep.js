@@ -5,7 +5,7 @@ import '../../styles/chattiness.scss';
 
 import { saveInstallment, updateAgent, updateAgentProperty } from '../../api';
 import {
-  ALL_TEXTS, CHATTINESS_LEVELS, LANGUAGES, TONE_OF_VOICES
+  ALL_TEXTS, CHATTINESS_LEVELS, LANGUAGES, TONE_OF_VOICES, WRITING_DEBOUNCE_TIMEOUT
 } from '../../constants';
 import { useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
@@ -64,7 +64,7 @@ const AiPersonaStep = () => {
     );
   };
 
-  const debouncedUpdateAgentName = useCallback(debounce(updateAgentName, 500), []);
+  const debouncedUpdateAgentName = useCallback(debounce(updateAgentName, WRITING_DEBOUNCE_TIMEOUT), []);
 
   const handleNameChange = value => {
     dispatch(ACTION_CREATORS.setAgentName(value));
@@ -81,7 +81,7 @@ const AiPersonaStep = () => {
     );
   };
 
-  const debouncedUpdateAgentProp = useCallback(debounce(updateAgentProp, 500), []);
+  const debouncedUpdateAgentProp = useCallback(debounce(updateAgentProp, WRITING_DEBOUNCE_TIMEOUT), []);
 
   const handleAgentPropChange = (prop, value) => {
     if (prop === 'role') dispatch(ACTION_CREATORS.setAgentRole(value));

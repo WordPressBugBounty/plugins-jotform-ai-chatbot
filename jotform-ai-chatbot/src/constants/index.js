@@ -226,3 +226,6 @@ export const EU_PROVIDER_URL = 'https://eu.jotform.com';
 export const EU_PROVIDER_API_URL = 'https://eu-api.jotform.com';
 
 export const DELETE_INST_NAME = 'deleteWpChatbotButton';
+
+export const WRITING_DEBOUNCE_TIMEOUT = 1750;
+export const GREETING_TEXT_REQ_DEBOUNCE_TIMEOUT = 500;
