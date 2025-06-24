@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 2.3.0
+* Version: 2.3.1
 * Author URI: https://www.jotform.com/
 */
 
@@ -29,11 +29,28 @@ function jotform_ai_chatbot_plugin_options_page() {
 add_action("admin_menu", "jotform_ai_chatbot_plugin_options_page");
 
 /**
+ * Add plugin to Admin Bar
+ *
+ * Adds a new menu item to the WordPress admin bar for quick access to the plugin settings.
+ */
+function jotform_ai_chatbot_admin_bar_menu($wp_admin_bar) {
+    if (current_user_can("manage_options")) {
+        $icon_svg = '<svg xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: bottom; margin-right: 4px;" fill="currentColor" viewBox="0 0 24 24" width="16" height="32"><path fill-rule="evenodd" d="M3.667 12.311a2.515 2.515 0 0 1 0-3.573L9.7 2.74a2.555 2.555 0 0 1 3.597 0 2.515 2.515 0 0 1 0 3.574L7.263 12.31a2.555 2.555 0 0 1-3.597 0Zm9.47 5.375a2.515 2.515 0 0 0 0 3.574 2.555 2.555 0 0 0 3.598 0l3.584-3.562a2.515 2.515 0 0 0 0-3.573 2.555 2.555 0 0 0-3.597 0l-3.585 3.561ZM7.467 22c.536 0 .803-.627.425-.993L3.935 17.17c-.378-.366-1.025-.108-1.025.412v3.253c0 .642.539 1.164 1.2 1.164h3.357Zm1.131-8.988a2.515 2.515 0 0 0 0 3.574 2.555 2.555 0 0 0 3.597 0l8.152-8.098a2.515 2.515 0 0 0 0-3.574 2.555 2.555 0 0 0-3.597 0l-8.152 8.098Z" clip-rule="evenodd"></path></svg>';
+        $args = [
+            "id"     => "jotform_ai_chatbot",
+            "title"  => $icon_svg . " " . esc_html__("Jotform AI Chatbot", "jotform-ai-chatbot"),
+            "href"   => admin_url("admin.php?page=jotform_ai_chatbot"),
+        ];
+        $wp_admin_bar->add_node($args);
+    }
+}
+add_action("admin_bar_menu", "jotform_ai_chatbot_admin_bar_menu", 100);
+
+/**
  * Initialize Plugin Settings
  *
  * Registers plugin settings and settings sections.
  */
-
 function jotform_ai_chatbot_initialize_plugin($action) {
     // Construct the API endpoint URL to initialize settings on Jotform side
     $url = "https://api.jotform.com/ai-chatbot/installment";
@@ -66,30 +83,60 @@ function jotform_ai_chatbot_initialize_plugin($action) {
     wp_remote_request($url, $args);
 }
 
+/**
+ * Hook into plugin activation to initialize the Jotform AI Chatbot plugin.
+ *
+ * This function checks if the currently activated plugin is this plugin itself.
+ * If so, it triggers the plugin initialization logic with the 'activated' status.
+ *
+ * @param string $plugin The path to the plugin being activated.
+ */
 function jotfotm_ai_plugin_activation($plugin) {
     if ($plugin === plugin_basename(__FILE__)) {
         jotform_ai_chatbot_initialize_plugin('activated');
     }
 }
-
 add_action('activated_plugin', 'jotfotm_ai_plugin_activation');
 
+/**
+ * Hook into plugin deactivation to handle cleanup or state changes for the Jotform AI Chatbot plugin.
+ *
+ * This function checks if the currently deactivated plugin is this plugin itself.
+ * If so, it triggers the plugin deinitialization logic with the 'deactivated' status.
+ *
+ * @param string $plugin The path to the plugin being deactivated.
+ */
 function jotfotm_ai_plugin_deactivation($plugin) {
     if ($plugin === plugin_basename(__FILE__)) {
         jotform_ai_chatbot_initialize_plugin('deactivated');
     }
 }
-
 add_action('deactivated_plugin', 'jotfotm_ai_plugin_deactivation');
 
+/**
+ * Hook into plugin uninstallation to perform final cleanup for the Jotform AI Chatbot plugin.
+ *
+ * This function checks if the plugin being uninstalled is this plugin.
+ * If so, it triggers the plugin cleanup logic with the 'uninstalled' status.
+ *
+ * @param string $plugin The path to the plugin being uninstalled.
+ */
 function jotfotm_ai_plugin_uninstallation($plugin) {
     if ($plugin === plugin_basename(__FILE__)) {
         jotform_ai_chatbot_initialize_plugin('uninstalled');
     }
 }
-
 register_uninstall_hook(__FILE__, 'jotfotm_ai_plugin_uninstallation');
 
+/**
+ * Hook into plugin update to handle update-specific logic for the Jotform AI Chatbot plugin.
+ *
+ * This function listens for plugin update actions and checks if this plugin is among those being updated.
+ * If so, it triggers the plugin initialization logic with the 'updated' status.
+ *
+ * @param WP_Upgrader $upgrader_object The upgrader class handling the update process.
+ * @param array $options Array of update options, including 'action', 'type', and 'plugins'.
+ */
 function jotfotm_ai_plugin_updating($upgrader_object, $options) {
     if ($options['action'] === 'update' && $options['type'] === 'plugin') {
         $plugin_basename = plugin_basename(__FILE__);
@@ -101,11 +148,16 @@ function jotfotm_ai_plugin_updating($upgrader_object, $options) {
         }
     }
 }
-
 add_action('upgrader_process_complete', 'jotfotm_ai_plugin_updating', 10, 2);
 
+/**
+ * Initialize plugin settings for the Jotform AI Chatbot plugin.
+ *
+ * - Adds a permission check on `wp_loaded` to restrict access to administrators.
+ * - Registers the plugin settings with a custom sanitization callback.
+ * - Adds a settings section to the plugin's settings page in the WordPress admin.
+ */
 function jotform_ai_chatbot_plugin_settings_init() {
-    // Ensure only authorized users can access the page.
     add_action("wp_loaded", function () {
         if (!current_user_can("manage_options")) {
             wp_die(esc_html(__("You do not have sufficient permissions to access this page.", "jotform-ai-chatbot")));
@@ -131,8 +183,6 @@ function jotform_ai_chatbot_plugin_settings_init() {
         ]
     );
 }
-
-// Hook to initialize settings during the admin interface setup.
 add_action("admin_init", "jotform_ai_chatbot_plugin_settings_init");
 
 /**
@@ -193,11 +243,6 @@ function jotform_ai_chatbot_show_preview_indicator() {
         echo "</div>";
     }
 }
-
-
-// Hooks the `jotform_ai_chatbot_show_preview_indicator` function into the `wp_head` action.
-// This ensures that the plugin preview indicator styles and notification bar are added to the <head> section of every page.
-// The `wp_head` action is triggered by WordPress just before the closing </head> tag in a theme's template.
 add_action("wp_head", "jotform_ai_chatbot_show_preview_indicator");
 
 /**
@@ -213,10 +258,6 @@ function jotform_ai_chatbot_show_plugin() {
     } catch (\Exception $e) {
     }
 }
-
-// Hooks the `jotform_ai_chatbot_show_plugin` function to the `wp_footer` action.
-// This ensures that the plugin is displayed in the footer section of the website by calling the `jotform_ai_chatbot_show_plugin` function when WordPress renders the footer.
-// The `wp_footer` action is executed just before the closing </body> tag in the HTML, which is a common place for adding JavaScript or other content to the page.
 add_action("wp_footer", "jotform_ai_chatbot_show_plugin");
 
 // Hook the function to register plugin
@@ -233,13 +274,21 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "2.3.0";
+        $jaic_assetVersion = "2.3.1";
     } catch (\Exception $e) {
     }
 }
-
-// Hook the function to the plugins_loaded action.
 add_action("plugins_loaded", "jotform_ai_chatbot_register_plugin");
+
+// Hook the function to add custom links.
+function my_plugin_action_links($links) {
+    $learnMoreLink = '<a href="https://www.jotform.com/ai/chatbot/wordpress//?utm_source=wordpress&utm_medium=plugin_settings&utm_campaign=chatbot_plugin_content&utm_content=landing" target="_blank">Learn More</a>';
+    $helpLink  = '<a href="https://www.jotform.com/help/how-to-use-jotform-ai-chatbot-on-wordpress/?utm_source=wordpress&utm_medium=plugin_settings&utm_campaign=chatbot_plugin_content&utm_content=user_guide" target="_blank">Help</a>';
+    array_unshift($links, $helpLink, $learnMoreLink);
+
+    return $links;
+}
+add_filter('plugin_action_links_jotform-ai-chatbot/jotform-ai-chatbot.php', 'my_plugin_action_links');
 
 /**
  * Callback Function for Developers Section
