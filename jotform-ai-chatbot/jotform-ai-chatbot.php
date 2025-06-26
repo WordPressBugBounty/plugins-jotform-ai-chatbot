@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 2.3.1
+* Version: 2.3.2
 * Author URI: https://www.jotform.com/
 */
 
@@ -274,7 +274,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "2.3.1";
+        $jaic_assetVersion = "2.3.2";
     } catch (\Exception $e) {
     }
 }
@@ -282,9 +282,25 @@ add_action("plugins_loaded", "jotform_ai_chatbot_register_plugin");
 
 // Hook the function to add custom links.
 function my_plugin_action_links($links) {
-    $learnMoreLink = '<a href="https://www.jotform.com/ai/chatbot/wordpress//?utm_source=wordpress&utm_medium=plugin_settings&utm_campaign=chatbot_plugin_content&utm_content=landing" target="_blank">Learn More</a>';
+    $learnMoreLink = '<a href="https://www.jotform.com/ai/chatbot/wordpress/?utm_source=wordpress&utm_medium=plugin_settings&utm_campaign=chatbot_plugin_content&utm_content=landing" target="_blank">Learn More</a>';
     $helpLink  = '<a href="https://www.jotform.com/help/how-to-use-jotform-ai-chatbot-on-wordpress/?utm_source=wordpress&utm_medium=plugin_settings&utm_campaign=chatbot_plugin_content&utm_content=user_guide" target="_blank">Help</a>';
     array_unshift($links, $helpLink, $learnMoreLink);
+
+    // Check if plugin is active
+    if (is_plugin_active('jotform-ai-chatbot/jotform-ai-chatbot.php')) {
+        // Get plugin options
+        $options = get_option('jotform_ai_chatbot_options');
+        $options = !empty($options) ? json_decode($options, true) : [];
+
+        // Determine link text based on the presence of ai chatbot
+        $link_text = (isset($options["embed"]) && !empty($options["embed"])) ? 'My AI Chatbot' : 'Create AI Chatbot';
+
+        // Build the new link with custom color and URL
+        $dashboard_link = '<a href="' . admin_url("admin.php?page=jotform_ai_chatbot") . '" style="color: #FF6100;">' . esc_html($link_text) . '</a>';
+
+        // Add the new link to the beginning of the links array
+        array_unshift($links, $dashboard_link);
+    }
 
     return $links;
 }
