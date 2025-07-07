@@ -7,11 +7,19 @@ import Button from './UI/Button';
 
 const Footer = () => {
   const handleFeedbackClick = () => {
-    window.open('https://form.jotform.com/250084125210946', '_blank');
+    window.open('https://link.jotform.com/V9WBvjTyR2', '_blank');
   };
 
   return (
     <footer className='chatbot-footer'>
+      <a
+        className='how-to-use-link'
+        href='https://link.jotform.com/NTVCqmVoHv'
+        target='_blank'
+        rel='noreferrer'
+      >
+        {(t(ALL_TEXTS.HOW_TO_USE_JOTFORM_AI_CHATBOT))}
+      </a>
       <Button
         startIcon={<IconNotificationText />}
         variant='outline'

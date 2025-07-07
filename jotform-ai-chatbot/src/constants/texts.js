@@ -92,5 +92,6 @@ export const ALL_TEXTS = {
   SELECT_THE_LANGUAGE: 'Select the language in which your agents greet users',
   TONE_OF_VOICE: 'Tone of Voice',
   SELECT_HOW_TO_COMMUNICATE: 'Select how you would like the AI to communicate',
-  CONFIGURE_OPTIONS_FOR_AI_CHATBOT: 'Configure options for AI Chatbot.'
+  CONFIGURE_OPTIONS_FOR_AI_CHATBOT: 'Configure options for AI Chatbot.',
+  HOW_TO_USE_JOTFORM_AI_CHATBOT: 'How to use Jotform AI Chatbot?'
 };
