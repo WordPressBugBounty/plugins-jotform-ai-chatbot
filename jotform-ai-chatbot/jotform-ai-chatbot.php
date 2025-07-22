@@ -3,11 +3,11 @@
 /**
 * Plugin Name: AI Chatbot for WordPress - Jotform
 * Plugin URI: http://wordpress.org/plugins/jotform-ai-chatbot/
-* Description: Create a custom AI chatbot to engage visitors, answer FAQs, provide customer support, and generate leads — no coding needed.
+* Description: AI chatbot to engage visitors, answer FAQs, provide customer support, and generate leads — no coding needed.
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 2.3.3
+* Version: 2.4.0
 * Author URI: https://www.jotform.com/
 */
 
@@ -109,6 +109,7 @@ add_action('activated_plugin', 'jotfotm_ai_plugin_activation');
 function jotfotm_ai_plugin_deactivation($plugin) {
     if ($plugin === plugin_basename(__FILE__)) {
         jotform_ai_chatbot_initialize_plugin('deactivated');
+        wp_clear_scheduled_hook('jotform_ai_chatbot_cron_hook');
     }
 }
 add_action('deactivated_plugin', 'jotfotm_ai_plugin_deactivation');
@@ -124,6 +125,7 @@ add_action('deactivated_plugin', 'jotfotm_ai_plugin_deactivation');
 function jotfotm_ai_plugin_uninstallation($plugin) {
     if ($plugin === plugin_basename(__FILE__)) {
         jotform_ai_chatbot_initialize_plugin('uninstalled');
+        wp_clear_scheduled_hook('jotform_ai_chatbot_cron_hook');
     }
 }
 register_uninstall_hook(__FILE__, 'jotfotm_ai_plugin_uninstallation');
@@ -274,7 +276,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "2.3.3";
+        $jaic_assetVersion = "2.4.0";
     } catch (\Exception $e) {
     }
 }
@@ -305,6 +307,101 @@ function my_plugin_action_links($links) {
     return $links;
 }
 add_filter('plugin_action_links_jotform-ai-chatbot/jotform-ai-chatbot.php', 'my_plugin_action_links');
+
+/**
+ * Handles the update of a WordPress page by adding it to the pending sync queue.
+ *
+ * This function is triggered when a page is saved and checks if the post is published.
+ * If the post is published, it adds the page to the pending sync queue.
+ *
+ * @param int     $post_ID The ID of the page being saved.
+ * @param WP_Post $post    The WP_Post object for the page.
+ * @param bool    $update  Whether this is an existing post being updated.
+ */
+function jotform_ai_chatbot_handle_post_update($post_ID, $post, $update) {
+    // Skip if not published
+    if ($post->post_status !== 'publish') {
+        return;
+    }
+
+    $pending = get_option('jotform_ai_chatbot_pending_sync', []);
+    $pending = (!is_string($pending) || empty($pending)) ? [] : json_decode($pending, true);
+
+    $pending[$post_ID] = [
+        'title'        => get_the_title($post_ID),
+        'url'          => get_permalink($post_ID),
+        'last_updated' => $post->post_modified,
+    ];
+
+    update_option('jotform_ai_chatbot_pending_sync', json_encode($pending));
+}
+add_action('save_post_page', 'jotform_ai_chatbot_handle_post_update', 10, 3);
+add_action('save_post_post', 'jotform_ai_chatbot_handle_post_update', 10, 3);
+
+/**
+ * Syncs pages to the knowledge base using a cron job.
+ *
+ * This function is triggered hourly via a scheduled event.
+ * It checks for pending page updates and syncs them to the knowledge base.
+ *
+ * @global $jaic_core The JAIC_Core object for managing core functionalities.
+ */
+function jotform_ai_chatbot_cron_sync_pages() {
+    $pending = get_option('jotform_ai_chatbot_pending_sync', []);
+    $synced = get_option('jotform_ai_chatbot_synced_pages', []);
+    $pending = (!is_string($pending) || empty($pending)) ? [] : json_decode($pending, true);
+    $synced = (!is_string($synced) || empty($synced)) ? [] : json_decode($synced, true);
+
+    if (empty($pending)) {
+        return;
+    }
+
+    require_once __DIR__ . "/classes/JAIC_Core.php";
+
+    global $jaic_core;
+    $jaic_core = new JAIC\Classes\JAIC_Core([
+        "checkUserRegion" => true
+    ]);
+
+    foreach ($pending as $post_ID => $data) {
+        // Recheck post status
+        $post = get_post($post_ID);
+        if (!$post || $post->post_status !== 'publish') {
+            continue;
+        }
+
+        // Avoid unnecessary calls
+        if (isset($synced[$post_ID]) && $synced[$post_ID]['last_updated'] === $data['last_updated']) {
+            continue;
+        }
+
+        try {
+            $result = $jaic_core->updateKnowledgeBase($data);
+            if ($result) {
+                $synced[$post_ID] = $data;
+                unset($pending[$post_ID]);
+            }
+        } catch (\Exception $e) {
+        }
+    }
+
+    update_option('jotform_ai_chatbot_synced_pages', json_encode($synced));
+    update_option('jotform_ai_chatbot_pending_sync', json_encode($pending));
+}
+
+/**
+ * Schedules the cron job for syncing pages to the knowledge base.
+ *
+ * This function checks if the cron job is already scheduled.
+ * If not, it schedules the cron job to run hourly.
+ */
+function jotform_ai_chatbot_schedule_cron() {
+    if (!wp_next_scheduled('jotform_ai_chatbot_cron_hook')) {
+        wp_schedule_event(time(), 'hourly', 'jotform_ai_chatbot_cron_hook');
+    }
+}
+add_action('wp', 'jotform_ai_chatbot_schedule_cron');
+add_action('jotform_ai_chatbot_cron_hook', 'jotform_ai_chatbot_cron_sync_pages');
 
 /**
  * Callback Function for Developers Section

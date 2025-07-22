@@ -66,7 +66,7 @@ class JAIC_Core {
 
         // Validate request
         $nounce = isset($_POST["_nonce"]) ? sanitize_text_field(wp_unslash($_POST["_nonce"])) : false;
-        if (wp_verify_nonce($nounce, "jotform-ai-chatbot")) {
+        if ($nounce && wp_verify_nonce($nounce, "jotform-ai-chatbot")) {
             // Get action data
             $action = isset($_POST["action"]) ? sanitize_text_field(wp_unslash($_POST["action"])) : null;
             // Include required file for handling requests
@@ -730,5 +730,50 @@ class JAIC_Core {
         });
 
         return $pages;
+    }
+
+    /**
+     * Updates the knowledge base for the given page
+     *
+     * @param array $data The data to update the knowledge base with.
+     *
+     * @return bool True if the knowledge base was updated successfully, false otherwise.
+     */
+    public function updateKnowledgeBase($data) {
+        $apiKey = $this->getAPIKey();
+        if (empty($apiKey)) {
+            return false;
+        }
+
+        $url = $this->getSiteAPIURL() . "/ai-chatbot/update-url-material";
+
+        // Payload
+        $payload = [
+            "platform" => "wordpress",
+            "domain"   => $this->getDomain(),
+            "title"    => $data["title"],
+            "url"      => $data["url"]
+        ];
+
+        // Request params
+        $args = [
+            "method"    => "POST",
+            "body"      => wp_json_encode($payload),
+            "headers"   => [
+                "Content-Type" => "application/json",
+                "APIKEY"       => $apiKey
+            ]
+        ];
+
+        // Make the request
+        $response = wp_remote_request($url, $args);
+        if (!is_wp_error($response)) {
+            $statusCode = wp_remote_retrieve_response_code($response);
+            if ($statusCode == 200) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
