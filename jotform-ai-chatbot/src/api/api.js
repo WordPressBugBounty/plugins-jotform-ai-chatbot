@@ -96,6 +96,11 @@ export const getAvatars = (agentId, params, apiKey = '') => {
   return getRequestLayer().post(url, params);
 };
 
+export const checkFromWordpressLandingRequest = (apiKey = '') => {
+  const url = addApiKeyToUrl('ai-chatbot/from-wordpress-landing', apiKey);
+  return getRequestLayer().get(url);
+};
+
 export function getAIAgentsLimitExceeded(apiKey) {
   const url = addApiKeyToUrl('user-limit/ai-agents-limit-exceeded', apiKey);
   return getRequestLayer().get(url);

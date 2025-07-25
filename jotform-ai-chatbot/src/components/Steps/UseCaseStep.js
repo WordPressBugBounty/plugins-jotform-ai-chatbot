@@ -36,13 +36,20 @@ const UseCaseStep = () => {
       PLATFORM_PAGE_CONTENTS,
       PLATFORM_KNOWLEDGE_BASE,
       PROVIDER_API_KEY
-    }
+    },
+    wordpressLandingAgentId
   } = state;
 
   const [activeButton, setActiveButton] = useState(null);
   const [useCaseText, setUseCaseText] = useState('');
   const [tab, setTab] = useState('create');
-  const [selectedAgent, setSelectedAgent] = useState('');
+  const [selectedAgent, setSelectedAgent] = useState(wordpressLandingAgentId || '');
+
+  useEffect(() => {
+    if (!wordpressLandingAgentId) return;
+    setTab('select');
+    setSelectedAgent(wordpressLandingAgentId);
+  }, [wordpressLandingAgentId]);
 
   useEffect(() => {
     if (!useCaseText) return;
@@ -111,8 +118,16 @@ const UseCaseStep = () => {
 
   useEffect(() => {
     handlePromptChange('');
-    setSelectedAgent('');
+    if (!wordpressLandingAgentId) {
+      setSelectedAgent('');
+    }
   }, [tab]);
+
+  const getCtaText = () => {
+    if (wordpressLandingAgentId) return t(ALL_TEXTS.CONTINUE);
+    if (isMobile()) return t(ALL_TEXTS.CREATE);
+    return t(ALL_TEXTS.CREATE_AI_CHATBOT);
+  };
 
   return (
     <>
@@ -180,6 +195,7 @@ const UseCaseStep = () => {
                 key={agent.id}
                 name='selectedAgent'
                 value={agent.uuid}
+                checked={agent.uuid === selectedAgent}
                 onChange={() => setSelectedAgent(agent.uuid)}
                 avatarImage={agent.avatarIconLink}
                 label={agent.title}
@@ -204,7 +220,7 @@ const UseCaseStep = () => {
           className='forCreateAgent buttonRTL btn-pos-right'
           data-fs-element={`Step: ${step} - ${isMobile() ? ALL_TEXTS.CREATE : ALL_TEXTS.CREATE_AI_CHATBOT} Button`}
         >
-          {isMobile() ? t(ALL_TEXTS.CREATE) : t(ALL_TEXTS.CREATE_AI_CHATBOT)}
+          {getCtaText()}
         </Button>
       </div>
     </>

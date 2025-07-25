@@ -44,6 +44,7 @@ export const SAVE_PLATFORM_AGENT_EMBED = generatePromiseActionType('SAVE_PLATFOR
 export const SAVE_PLATFORM_AGENT_PAGES = generatePromiseActionType('SAVE_PLATFORM_AGENT_PAGES');
 
 export const GET_AVATARS = generatePromiseActionType('GET_AVATARS');
+export const CHECK_FROM_WP_LANDING = generatePromiseActionType('CHECK_FROM_WP_LANDING');
 
 export const SET_AVATARS = 'SET_AVATARS';
 export const SET_LANGUAGE = 'SET_LANGUAGE';

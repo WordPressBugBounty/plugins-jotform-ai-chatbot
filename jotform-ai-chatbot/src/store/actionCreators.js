@@ -1,5 +1,5 @@
 import {
-  ADD_MATERIAL, BULK_DELETE_MATERIAL, CHECK_AI_CHATBOT_LIMITS, DELETE_MATERIAL, DELETE_PLATFORM_AGENT, FETCH_USER,
+  ADD_MATERIAL, BULK_DELETE_MATERIAL, CHECK_AI_CHATBOT_LIMITS, CHECK_FROM_WP_LANDING, DELETE_MATERIAL, DELETE_PLATFORM_AGENT, FETCH_USER,
   GET_ALL_AGENTS,
   GET_AVATARS,
   GET_PLATFORM_AGENT,
@@ -365,5 +365,15 @@ export const ACTION_CREATORS = {
   setIsLimitDialogVisible: isLimitDialogVisible => ({
     type: SET_LIMIT_DIALOG_VISIBLE,
     payload: { isLimitDialogVisible }
+  }),
+  checkFromWpLandingRequest: () => ({
+    type: CHECK_FROM_WP_LANDING.REQUEST
+  }),
+  checkFromWpLandingSuccess: result => ({
+    type: CHECK_FROM_WP_LANDING.SUCCESS,
+    payload: { result }
+  }),
+  checkFromWpLandingError: () => ({
+    type: CHECK_FROM_WP_LANDING.ERROR
   })
 };

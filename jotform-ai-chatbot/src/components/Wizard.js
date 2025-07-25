@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 
 import {
+  checkFromWordpressLandingRequest,
   getAllAgents, getPlatformAgent, interactWithPlatform
 } from '../api';
 import { PLATFORMS, STEPS } from '../constants';
@@ -83,12 +84,27 @@ const Wizard = props => {
     );
   }, [PROVIDER_API_KEY]);
 
+  const checkFromWordpressLanding = useCallback(async () => {
+    if (!PROVIDER_API_KEY) return;
+
+    await asyncDispatch(
+      () => checkFromWordpressLandingRequest(PROVIDER_API_KEY),
+      ACTION_CREATORS.checkFromWpLandingRequest,
+      ACTION_CREATORS.checkFromWpLandingSuccess,
+      ACTION_CREATORS.checkFromWpLandingError
+    );
+  }, [PROVIDER_API_KEY]);
+
   // fetch platform agent & existing agents if user is logged in
   useEffect(() => {
-    const shouldFetchAgent = user && !isGuest(user) && PROVIDER_API_KEY;
-    if (!shouldFetchAgent) return;
-    fetchExistingAgents();
-    fetchAgent();
+    const initFlow = async () => {
+      const shouldFetchAgent = user && !isGuest(user) && PROVIDER_API_KEY;
+      if (!shouldFetchAgent) return;
+      await checkFromWordpressLanding();
+      fetchExistingAgents();
+      fetchAgent();
+    };
+    initFlow();
   }, [user, PROVIDER_API_KEY]);
 
   // try fetch platform agent once to handle 502 use agent error

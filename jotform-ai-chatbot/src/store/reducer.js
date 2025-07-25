@@ -14,7 +14,7 @@ import {
 } from '../utils';
 import {
   ADD_MATERIAL,
-  BULK_DELETE_MATERIAL, CHECK_AI_CHATBOT_LIMITS, DELETE_MATERIAL, DELETE_PLATFORM_AGENT,
+  BULK_DELETE_MATERIAL, CHECK_AI_CHATBOT_LIMITS, CHECK_FROM_WP_LANDING, DELETE_MATERIAL, DELETE_PLATFORM_AGENT,
   FETCH_USER, GET_ALL_AGENTS, GET_AVATARS, GET_PLATFORM_AGENT, GET_PLATFORM_SETTINGS,
   NEXT_STEP, PREVIOUS_STEP, RESET_AVATARS, SAVE_PLATFORM_AGENT_EMBED, SAVE_PLATFORM_AGENT_PAGES,
   SAVE_PROVIDER_API_KEY, SELECT_AGENT, SET_AGENT_CHATTINESS,
@@ -80,7 +80,8 @@ export const initialState = {
   tryGetPlatformAgentOnce: false,
   selectedPlatformPages: ['all'],
   platformSettings: { ...platformSettingsSingleton },
-  refetchUser: false
+  refetchUser: false,
+  wordpressLandingAgentId: null
 };
 
 export const wizardReducer = (state, action) => {
@@ -453,6 +454,11 @@ export const wizardReducer = (state, action) => {
       return {
         ...state,
         isLimitDialogVisible: action.payload.isLimitDialogVisible
+      };
+    case CHECK_FROM_WP_LANDING.SUCCESS:
+      return {
+        ...state,
+        wordpressLandingAgentId: action.payload.result?.content === false ? false : action.payload.result
       };
     default:
       return state;
