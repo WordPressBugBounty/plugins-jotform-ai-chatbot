@@ -124,7 +124,7 @@ const UseCaseStep = () => {
   }, [tab]);
 
   const getCtaText = () => {
-    if (wordpressLandingAgentId) return t(ALL_TEXTS.CONTINUE);
+    if (tab === 'select') return t(ALL_TEXTS.CONTINUE);
     if (isMobile()) return t(ALL_TEXTS.CREATE);
     return t(ALL_TEXTS.CREATE_AI_CHATBOT);
   };

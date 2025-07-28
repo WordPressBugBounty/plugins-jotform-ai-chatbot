@@ -36,6 +36,8 @@ class JAIC_Core {
     private static $pluginNamespace = "jotform_ai_chatbot";
     private static $pluginOptionKey = "jotform_ai_chatbot_options";
     private static $pluginKnowledgeBaseOptionKey = "jotform_ai_chatbot_knowledgebase";
+    private static $pluginPendingSyncKey = "jotform_ai_chatbot_pending_sync";
+    private static $pluginSyncedPagesKey = "jotform_ai_chatbot_synced_pages";
     private static $getPluginPreviewModeKey = "jotform_ai_chatbot_preview";
     private static $serviceURLs = [
         "geu" => [
@@ -190,6 +192,8 @@ class JAIC_Core {
             // Delete the all chatbot options from the database
             delete_option(self::$pluginOptionKey);
             delete_option(self::$pluginKnowledgeBaseOptionKey);
+            delete_option(self::$pluginPendingSyncKey);
+            delete_option(self::$pluginSyncedPagesKey);
 
             if (!empty($apiKey)) {
                 // Construct the API endpoint URL for deleting the api key
@@ -739,7 +743,7 @@ class JAIC_Core {
      *
      * @return bool True if the knowledge base was updated successfully, false otherwise.
      */
-    public function updateKnowledgeBase($data) {
+    private function updateKnowledgeBase($data) {
         $apiKey = $this->getAPIKey();
         if (empty($apiKey)) {
             return false;
@@ -775,5 +779,68 @@ class JAIC_Core {
         }
 
         return false;
+    }
+
+    /**
+     * Handles the post update event by adding the post to the pending sync queue.
+     *
+     * @param int $post_ID The ID of the post being updated.
+     * @param WP_Post $post The post object being updated.
+     * @param bool $update Whether this is an update or a new post.
+     */
+    public function handlePostUpdate($post_ID, $post, $update) {
+        $pending = get_option(self::$pluginPendingSyncKey);
+        $pending = (!is_string($pending) || empty($pending)) ? [] : json_decode($pending, true);
+
+        $pending[$post_ID] = [
+            "title"        => get_the_title($post_ID),
+            "url"          => get_permalink($post_ID),
+            "last_updated" => $post->post_modified,
+        ];
+
+        update_option(self::$pluginPendingSyncKey, wp_json_encode($pending));
+    }
+
+    /**
+     * Handles the cron sync event by updating the knowledge base for all pending posts.
+     *
+     * @return bool True if the cron sync was successful, false otherwise.
+     */
+    public function handleCronSyncPages() {
+        $pending = get_option(self::$pluginPendingSyncKey);
+        $synced = get_option(self::$pluginSyncedPagesKey);
+        $pending = (!is_string($pending) || empty($pending)) ? [] : json_decode($pending, true);
+        $synced = (!is_string($synced) || empty($synced)) ? [] : json_decode($synced, true);
+
+        if (empty($pending)) {
+            return false;
+        }
+
+        foreach ($pending as $post_ID => $data) {
+            // Recheck post status
+            $post = get_post($post_ID);
+            if (!$post || $post->post_status !== 'publish') {
+                continue;
+            }
+
+            // Avoid unnecessary calls
+            if (isset($synced[$post_ID]) && $synced[$post_ID]['last_updated'] === $data['last_updated']) {
+                continue;
+            }
+
+            try {
+                $result = $this->updateKnowledgeBase($data);
+                if ($result) {
+                    $synced[$post_ID] = $data;
+                    unset($pending[$post_ID]);
+                }
+            } catch (\Exception $e) {
+            }
+        }
+
+        update_option(self::$pluginSyncedPagesKey, json_encode($synced));
+        update_option(self::$pluginPendingSyncKey, json_encode($pending));
+
+        return true;
     }
 }

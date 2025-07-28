@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 2.4.1
+* Version: 2.4.2
 * Author URI: https://www.jotform.com/
 */
 
@@ -276,7 +276,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "2.4.1";
+        $jaic_assetVersion = "2.4.2";
     } catch (\Exception $e) {
     }
 }
@@ -324,16 +324,17 @@ function jotform_ai_chatbot_handle_post_update($post_ID, $post, $update) {
         return;
     }
 
-    $pending = get_option('jotform_ai_chatbot_pending_sync', []);
-    $pending = (!is_string($pending) || empty($pending)) ? [] : json_decode($pending, true);
+    require_once __DIR__ . "/classes/JAIC_Core.php";
 
-    $pending[$post_ID] = [
-        'title'        => get_the_title($post_ID),
-        'url'          => get_permalink($post_ID),
-        'last_updated' => $post->post_modified,
-    ];
+    global $jaic_core;
 
-    update_option('jotform_ai_chatbot_pending_sync', json_encode($pending));
+    if (!isset($jaic_core) || !($jaic_core instanceof \JAIC\Classes\JAIC_Core)) {
+        $jaic_core = new \JAIC\Classes\JAIC_Core([
+            'checkUserRegion' => true,
+        ]);
+    }
+
+    $jaic_core->handlePostUpdate($post_ID, $post, $update);
 }
 add_action('save_post_page', 'jotform_ai_chatbot_handle_post_update', 10, 3);
 add_action('save_post_post', 'jotform_ai_chatbot_handle_post_update', 10, 3);
@@ -347,46 +348,17 @@ add_action('save_post_post', 'jotform_ai_chatbot_handle_post_update', 10, 3);
  * @global $jaic_core The JAIC_Core object for managing core functionalities.
  */
 function jotform_ai_chatbot_cron_sync_pages() {
-    $pending = get_option('jotform_ai_chatbot_pending_sync', []);
-    $synced = get_option('jotform_ai_chatbot_synced_pages', []);
-    $pending = (!is_string($pending) || empty($pending)) ? [] : json_decode($pending, true);
-    $synced = (!is_string($synced) || empty($synced)) ? [] : json_decode($synced, true);
-
-    if (empty($pending)) {
-        return;
-    }
-
     require_once __DIR__ . "/classes/JAIC_Core.php";
 
     global $jaic_core;
-    $jaic_core = new JAIC\Classes\JAIC_Core([
-        "checkUserRegion" => true
-    ]);
 
-    foreach ($pending as $post_ID => $data) {
-        // Recheck post status
-        $post = get_post($post_ID);
-        if (!$post || $post->post_status !== 'publish') {
-            continue;
-        }
-
-        // Avoid unnecessary calls
-        if (isset($synced[$post_ID]) && $synced[$post_ID]['last_updated'] === $data['last_updated']) {
-            continue;
-        }
-
-        try {
-            $result = $jaic_core->updateKnowledgeBase($data);
-            if ($result) {
-                $synced[$post_ID] = $data;
-                unset($pending[$post_ID]);
-            }
-        } catch (\Exception $e) {
-        }
+    if (!isset($jaic_core) || !($jaic_core instanceof \JAIC\Classes\JAIC_Core)) {
+        $jaic_core = new \JAIC\Classes\JAIC_Core([
+            'checkUserRegion' => true,
+        ]);
     }
 
-    update_option('jotform_ai_chatbot_synced_pages', json_encode($synced));
-    update_option('jotform_ai_chatbot_pending_sync', json_encode($pending));
+    $jaic_core->handleCronSyncPages();
 }
 
 /**
