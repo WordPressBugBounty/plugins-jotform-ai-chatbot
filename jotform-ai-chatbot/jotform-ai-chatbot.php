@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 2.4.2
+* Version: 2.4.3
 * Author URI: https://www.jotform.com/
 */
 
@@ -45,6 +45,77 @@ function jotform_ai_chatbot_admin_bar_menu($wp_admin_bar) {
     }
 }
 add_action("admin_bar_menu", "jotform_ai_chatbot_admin_bar_menu", 100);
+
+/**
+ * Enqueue scripts for the deactivate modal
+ *
+ * @param string $hook The current admin page hook.
+ */
+function jaic_deactivate_modal_scripts($hook) {
+    if ($hook !== 'plugins.php') return;
+
+    wp_enqueue_style('jaic-deactivate-modal', plugin_dir_url(__FILE__) . 'lib/css/jaic-deactivate-modal.css');
+    wp_enqueue_script('jaic-deactivate-modal', plugin_dir_url(__FILE__) . 'lib/jaic-deactivate-modal.js', [], false, true);
+
+    // Localize script to pass plugin slug
+    wp_localize_script('jaic-deactivate-modal', 'jaicPluginData', [
+        'pluginSlug' => dirname(plugin_basename(__FILE__))
+    ]);
+}
+add_action('admin_enqueue_scripts', 'jaic_deactivate_modal_scripts');
+
+/**
+ * Display the deactivate modal
+ *
+ * @return void
+ */
+function jaic_deactivate_modal() {
+    $formID = "252104898587975";
+    $formURL = "https://submit.jotform.com/submit/{$formID}";
+    ?>
+    <div class="jaic_modal" style="display:none;">
+        <div class="jaic_modal_content">
+            <iframe name="jaic_hidden_iframe" style="display:none;" id="jaic_hidden_iframe"></iframe>
+            <h2 class="jaic_title">😞 We’re sorry to see you go</h2>
+            <p class="jaic_subtext">Help us understand why you’re deactivating. Your feedback makes us better.</p>
+            <form id="jaic_deactivate_form" action="<?php echo $formURL; ?>" method="post" target="jaic_hidden_iframe">
+                <input type="hidden" name="q3_domain" value="<?php echo wp_parse_url(home_url(), PHP_URL_HOST); ?>">
+                <?php
+                $reasons = [
+                    "no_longer_needed" => "I no longer need the plugin",
+                    "not_working" => "I couldn’t get it to work",
+                    "better_alternative" => "I found a better alternative",
+                    "missing_features" => "It doesn’t have the features I need",
+                    "performance" => "It affected my site’s performance",
+                    "other" => "Other"
+                ];
+                foreach ($reasons as $value => $label) {
+                    $escaped_label = htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
+                    echo "<div class='jaic_option'>
+                            <div class='checkmark'>
+                                <input type='radio' name='q4_feedback' value='$escaped_label' id='jaic_$value'>
+                                <div class='checkmark-inner'></div>
+                            </div>
+                            <label for='jaic_$value'>$escaped_label</label>
+                        </div>";
+                }
+                ?>
+                <div id="jaic_other_text_wrapper" style="display:none;">
+                    <input type="text" id="jaic_other_text" class="other-text-input" name="q5_detail" placeholder="Please specify..." />
+                </div>
+                <div class="jaic_buttons">
+                    <button type="button" class="jaic secondary">Continue to use</button>
+                    <button type="submit" class="jaic primary disabled">
+                        <span class="jaic_text">Submit & Deactivate</span>
+                        <div class="jaic_loader"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <?php
+}
+add_action('admin_footer-plugins.php', 'jaic_deactivate_modal');
 
 /**
  * Initialize Plugin Settings
@@ -276,7 +347,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "2.4.2";
+        $jaic_assetVersion = "2.4.3";
     } catch (\Exception $e) {
     }
 }
@@ -298,7 +369,7 @@ function my_plugin_action_links($links) {
         $link_text = (isset($options["embed"]) && !empty($options["embed"])) ? 'My AI Chatbot' : 'Create AI Chatbot';
 
         // Build the new link with custom color and URL
-        $dashboard_link = '<a href="' . admin_url("admin.php?page=jotform_ai_chatbot") . '" style="color: #FF6100;">' . esc_html($link_text) . '</a>';
+        $dashboard_link = '<a href="' . admin_url("admin.php?page=jotform_ai_chatbot") . '" style="color: #FF6100; font-weight: bold;">' . esc_html($link_text) . '</a>';
 
         // Add the new link to the beginning of the links array
         array_unshift($links, $dashboard_link);
