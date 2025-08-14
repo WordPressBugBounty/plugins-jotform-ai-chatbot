@@ -94,5 +94,8 @@ export const ALL_TEXTS = {
   SELECT_HOW_TO_COMMUNICATE: 'Select how you would like the AI to communicate',
   CONFIGURE_OPTIONS_FOR_AI_CHATBOT: 'Configure options for AI Chatbot.',
   HOW_TO_USE_JOTFORM_AI_CHATBOT: 'How to use Jotform AI Chatbot?',
-  CONTINUE: 'Continue'
+  CONTINUE: 'Continue',
+  AUTO_TRAINED_KNOWLEDGE: 'Auto-trained knowledge',
+  // eslint-disable-next-line max-len
+  YOUR_AI_CHATBOT_IS_AUTOMATICALLY_TRAINED: 'Your AI chatbot is automatically trained with your website\'s content, such as pages, posts, and more, to provide a smarter, more relevant experience for your users.'
 };

@@ -13,7 +13,7 @@
   padding: 0 12px !important;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236c73a8' viewBox='0 0 24 24' class='shrink-0 w-5'%3E%3Cpath fill-rule='evenodd' d='M7.293 10.293a1 1 0 0 1 1.414 0L12 13.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 0-1.414Z' clip-rule='evenodd'%3E%3C/path%3E%3C/svg%3E") no-repeat right 4px center !important;
   background-size: 20px 20px !important;
-
+  max-width: unset !important;
   &:hover {
     border-color: var(--jfv-navy-300) !important;
   }

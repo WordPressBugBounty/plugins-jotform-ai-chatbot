@@ -49,7 +49,8 @@ const KnowledgeBase = ({
       return;
     }
     if (!isLoadingMaterials && materials.length === 0) {
-      setStep('list');
+      setMaterialType('TEXT');
+      setStep('editor');
     }
   }, [isLoadingMaterials, materials]);
 

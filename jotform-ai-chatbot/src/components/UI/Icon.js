@@ -1,6 +1,7 @@
 import React from 'react';
 import { elementType } from 'prop-types';
 
+import IconAIColorSVG from '../../assets/svg/IconAIColor.svg';
 import IconAngleLeftSVG from '../../assets/svg/IconAngleLeft.svg';
 import IconAngleRightSVG from '../../assets/svg/IconAngleRight.svg';
 import IconAnnotationInfoFilledSVG from '../../assets/svg/IconAnnotationInfoFilled.svg';
@@ -32,6 +33,7 @@ Icon.propTypes = {
   Component: elementType.isRequired
 };
 
+export const IconAIColor = (props) => <Icon Component={IconAIColorSVG} {...props} />;
 export const IconArrowLeft = (props) => <Icon Component={IconArrowLeftSVG} {...props} />;
 export const IconArrowRight = (props) => <Icon Component={IconArrowRightSVG} {...props} />;
 export const IconArrowUpRight = (props) => <Icon Component={IconArrowUpRightSVG} {...props} />;

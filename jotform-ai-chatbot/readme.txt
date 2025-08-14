@@ -4,7 +4,7 @@ Contributors: Jotform
 Tags: AI, chatbot, chatGPT, helpdesk, live chat
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 2.4.3
+Stable tag: 2.4.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,6 +153,8 @@ Its flexibility ensures it meets diverse business needs effectively.
 Yes! The plugin seamlessly integrates with all modern WordPress themes, ensuring a smooth and consistent user experience. Whether your site has a minimalist or feature-rich design, the chatbot adapts effortlessly. Plus, regular updates keep it compatible with the latest WordPress versions and themes.
 
 == Installation ==
+[youtube https://www.youtube.com/watch?v=z_lNKdsFw4U&ab_channel=JotformAIChatbotPlugin]
+
 = Jotform AI Chatbot WordPress Plugin installation from the directory: =
 1. **Log in** to your WordPress admin dashboard. 
 2. Go to “Plugins” using the sidebar on the left.
@@ -180,6 +182,11 @@ See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org
 5. How It Works
 
 == Changelog ==
+= 2.4.4 (2025-08-14) =
+* Update: Minor UI improvements
+* Update: Knowledgebase experience improvements
+* Update: Installation video added to readme
+
 = 2.4.3 (2025-08-11) =
 * Update: Add deactivation modal with reason submission form
 

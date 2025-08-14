@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   array, bool, func, string
 } from 'prop-types';
 
+import { ALL_TEXTS } from '../../constants';
 import Button from '../UI/Button';
-import { IconPlusSquareFilled } from '../UI/Icon';
+import { IconAIColor, IconPlusSquareFilled } from '../UI/Icon';
 import MaterialListItem from './MaterialListItem';
 
 const MaterialList = ({
@@ -17,6 +18,14 @@ const MaterialList = ({
   onDeleteClick,
   setStep
 }) => {
+  const [showBadge, setShowBadge] = useState(true);
+
+  useEffect(() => {
+    if (materials?.length <= 0 && showBadge) {
+      setShowBadge(false);
+    }
+  }, [materials, showBadge]);
+
   const handleEditClick = (materialId) => {
     setEditingMaterialId(materialId);
   };
@@ -32,6 +41,17 @@ const MaterialList = ({
 
   return (
     <>
+      {showBadge && (
+        <div className='trained-knowledge'>
+          <div className='trained-knowledge-content'>
+            <div className='trained-knowledge-content-icon'>
+              <IconAIColor />
+            </div>
+            <h3 className='trained-knowledge-content-title'>{ALL_TEXTS.AUTO_TRAINED_KNOWLEDGE}</h3>
+          </div>
+          <p className='trained-knowledge-desc'>{ALL_TEXTS.YOUR_AI_CHATBOT_IS_AUTOMATICALLY_TRAINED}</p>
+        </div>
+      )}
       <Button
         startIcon={<IconPlusSquareFilled />}
         onClick={() => {
