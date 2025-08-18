@@ -1,8 +1,10 @@
 /* eslint-disable complexity */
 import { reinitializeRequestLayer, saveInstallment } from '../api';
 import {
+  AUTO_OPEN_CHAT_VALUES,
   CUSTOMIZATION_KEYS, EU_PROVIDER_API_URL, EU_PROVIDER_URL, GREETING_MESSAGE, POSITION, STEPS, THEME_CUSTOMIZATION_KEYS,
-  VERBAL_TOGGLE
+  VERBAL_TOGGLE,
+  VISIBILITY_LAYOUT
 } from '../constants';
 import {
   getAvatarIdFromUrl,
@@ -10,7 +12,7 @@ import {
   isValidJotformUrl,
   normalizeAvatarProps,
   platformSettings as platformSettingsSingleton,
-  removeObjectKey, resetPlatformPages
+  resetPlatformPages
 } from '../utils';
 import {
   ADD_MATERIAL,
@@ -58,7 +60,9 @@ export const initialState = {
     [CUSTOMIZATION_KEYS.GREETING]: VERBAL_TOGGLE.YES,
     [CUSTOMIZATION_KEYS.GREETING_MESSAGE]: GREETING_MESSAGE.en,
     [CUSTOMIZATION_KEYS.PULSE]: VERBAL_TOGGLE.YES,
-    [CUSTOMIZATION_KEYS.POSITION]: POSITION.RIGHT
+    [CUSTOMIZATION_KEYS.POSITION]: POSITION.RIGHT,
+    [CUSTOMIZATION_KEYS.AUTO_OPEN_CHAT]: AUTO_OPEN_CHAT_VALUES.NEVER,
+    [CUSTOMIZATION_KEYS.LAYOUT]: VISIBILITY_LAYOUT.MINIMAL
   },
   themeCustomizations: {
     [THEME_CUSTOMIZATION_KEYS.AGENT_BG_START_COLOR]: '',
@@ -186,7 +190,15 @@ export const wizardReducer = (state, action) => {
         agentLanguage: agentProperties.language,
         selectedAvatar: { ...currentAvatar },
         agentToneOfVoice: agentProperties.tone,
-        themeCustomizations: removeObjectKey(agentProperties, 'popover'),
+        themeCustomizations: {
+          [THEME_CUSTOMIZATION_KEYS.AGENT_BG_START_COLOR]: agentProperties[THEME_CUSTOMIZATION_KEYS.AGENT_BG_START_COLOR],
+          [THEME_CUSTOMIZATION_KEYS.AGENT_BG_END_COLOR]: agentProperties[THEME_CUSTOMIZATION_KEYS.AGENT_BG_END_COLOR],
+          [THEME_CUSTOMIZATION_KEYS.CHAT_BG_COLOR]: agentProperties[THEME_CUSTOMIZATION_KEYS.CHAT_BG_COLOR],
+          [THEME_CUSTOMIZATION_KEYS.FONT_FAMILY]: agentProperties[THEME_CUSTOMIZATION_KEYS.FONT_FAMILY],
+          [THEME_CUSTOMIZATION_KEYS.FONT_COLOR]: agentProperties[THEME_CUSTOMIZATION_KEYS.FONT_COLOR],
+          [THEME_CUSTOMIZATION_KEYS.BUTTON_BG_COLOR]: agentProperties[THEME_CUSTOMIZATION_KEYS.BUTTON_BG_COLOR],
+          [THEME_CUSTOMIZATION_KEYS.BUTTON_ICON_BG_COLOR]: agentProperties[THEME_CUSTOMIZATION_KEYS.BUTTON_ICON_BG_COLOR]
+        },
         isLimitDialogVisible: false,
         customizations: {
           ...state.customizations,

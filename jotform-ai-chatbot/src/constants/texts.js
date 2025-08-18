@@ -97,5 +97,12 @@ export const ALL_TEXTS = {
   CONTINUE: 'Continue',
   AUTO_TRAINED_KNOWLEDGE: 'Auto-trained knowledge',
   // eslint-disable-next-line max-len
-  YOUR_AI_CHATBOT_IS_AUTOMATICALLY_TRAINED: 'Your AI chatbot is automatically trained with your website\'s content, such as pages, posts, and more, to provide a smarter, more relevant experience for your users.'
+  YOUR_AI_CHATBOT_IS_AUTOMATICALLY_TRAINED: 'Your AI chatbot is automatically trained with your website\'s content, such as pages, posts, and more, to provide a smarter, more relevant experience for your users.',
+  LAYOUT: 'Layout',
+  DO_NOT_OPEN_AUTOMATICALLY: 'Do not open automatically',
+  ALWAYS_OPEN: 'Always open',
+  OPEN_AFTER_FIVE_SECONDS: 'Open after 5 seconds',
+  OPEN_AFTER_TEN_SECONDS: 'Open after 10 seconds',
+  OPEN_BY_DEFAULT: 'Open by default',
+  CHOOSE_WHEN_CHATBOT_WILL_APPEAR: 'Choose when chatbot will appear'
 };

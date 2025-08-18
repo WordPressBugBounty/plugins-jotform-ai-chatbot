@@ -51,7 +51,9 @@ export const CUSTOMIZATION_KEYS = {
   GREETING: 'greeting',
   GREETING_MESSAGE: 'greetingMessage',
   PULSE: 'pulse',
-  POSITION: 'position'
+  POSITION: 'position',
+  AUTO_OPEN_CHAT: 'autoOpenChatIn',
+  LAYOUT: 'layout'
 };
 
 export const THEME_CUSTOMIZATION_KEYS = {
@@ -229,3 +231,34 @@ export const DELETE_INST_NAME = 'deleteWpChatbotButton';
 
 export const WRITING_DEBOUNCE_TIMEOUT = 1750;
 export const GREETING_TEXT_REQ_DEBOUNCE_TIMEOUT = 500;
+
+export const VISIBILITY_LAYOUT = {
+  EXTENDED: 'extended',
+  MINIMAL: 'minimal'
+};
+
+export const AUTO_OPEN_CHAT_VALUES = {
+  ALWAYS_OPEN: '1',
+  FIVE_SECONDS: '5000',
+  TEN_SECONDS: '10000',
+  NEVER: '0'
+};
+
+export const OPEN_BY_DEFAULT_OPTIONS = [
+  {
+    text: ALL_TEXTS.ALWAYS_OPEN,
+    value: AUTO_OPEN_CHAT_VALUES.ALWAYS_OPEN
+  },
+  {
+    text: ALL_TEXTS.OPEN_AFTER_FIVE_SECONDS,
+    value: AUTO_OPEN_CHAT_VALUES.FIVE_SECONDS
+  },
+  {
+    text: ALL_TEXTS.OPEN_AFTER_TEN_SECONDS,
+    value: AUTO_OPEN_CHAT_VALUES.TEN_SECONDS
+  },
+  {
+    text: ALL_TEXTS.DO_NOT_OPEN_AUTOMATICALLY,
+    value: AUTO_OPEN_CHAT_VALUES.NEVER
+  }
+];

@@ -8,6 +8,7 @@ import IconAnnotationInfoFilledSVG from '../../assets/svg/IconAnnotationInfoFill
 import IconArrowLeftSVG from '../../assets/svg/IconArrowLeft.svg';
 import IconArrowRightSVG from '../../assets/svg/IconArrowRight.svg';
 import IconArrowsFromCenterSVG from '../../assets/svg/IconArrowsFromCenter.svg';
+import IconArrowUpSVG from '../../assets/svg/IconArrowUp.svg';
 import IconArrowUpRightSVG from '../../assets/svg/IconArrowUpRight.svg';
 import IconCheckSVG from '../../assets/svg/IconCheck.svg';
 import IconChevronLeftSVG from '../../assets/svg/IconChevronLeft.svg';
@@ -36,6 +37,7 @@ Icon.propTypes = {
 export const IconAIColor = (props) => <Icon Component={IconAIColorSVG} {...props} />;
 export const IconArrowLeft = (props) => <Icon Component={IconArrowLeftSVG} {...props} />;
 export const IconArrowRight = (props) => <Icon Component={IconArrowRightSVG} {...props} />;
+export const IconArrowUp = (props) => <Icon Component={IconArrowUpSVG} {...props} />;
 export const IconArrowUpRight = (props) => <Icon Component={IconArrowUpRightSVG} {...props} />;
 export const IconCheck = (props) => <Icon Component={IconCheckSVG} {...props} />;
 export const IconCopy = (props) => <Icon Component={IconCopySVG} {...props} />;

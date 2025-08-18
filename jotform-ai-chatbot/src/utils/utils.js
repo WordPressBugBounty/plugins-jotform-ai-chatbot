@@ -50,6 +50,8 @@ export const createEmbed = ({
   greetingMessage,
   pulse,
   position,
+  autoOpenChatIn,
+  layout,
   chatbotDomain,
   agentBackgroundStart,
   agentBackgroundEnd,
@@ -75,7 +77,10 @@ export const createEmbed = ({
           greeting: "${unicodeEncode(greeting)}",
           greetingMessage: "${unicodeEncode(greetingMessage)}",
           pulse: "${unicodeEncode(pulse)}",
-          position: "${unicodeEncode(position)}"
+          position: "${unicodeEncode(position)}",
+          autoOpenChatIn: "${unicodeEncode(autoOpenChatIn)}",
+          layout: "${unicodeEncode(layout)}",
+          openByDefault: "No"
         }
       });
     });

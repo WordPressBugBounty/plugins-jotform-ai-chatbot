@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 2.4.4
+* Version: 2.5.0
 * Author URI: https://www.jotform.com/
 */
 
@@ -72,6 +72,9 @@ add_action('admin_enqueue_scripts', 'jaic_deactivate_modal_scripts');
 function jaic_deactivate_modal() {
     $formID = "252104898587975";
     $formURL = "https://submit.jotform.com/submit/{$formID}";
+    $plugin_file = WP_PLUGIN_DIR . '/jotform-ai-chatbot/jotform-ai-chatbot.php';
+    $plugin_data = get_file_data($plugin_file, array('Version' => 'Version'));
+    $current_version = $plugin_data['Version'] ?? '-';
     ?>
     <div class="jaic_modal" style="display:none;">
         <div class="jaic_modal_content">
@@ -80,6 +83,7 @@ function jaic_deactivate_modal() {
             <p class="jaic_subtext">Help us understand why you’re deactivating. Your feedback makes us better.</p>
             <form id="jaic_deactivate_form" action="<?php echo $formURL; ?>" method="post" target="jaic_hidden_iframe">
                 <input type="hidden" name="q3_domain" value="<?php echo wp_parse_url(home_url(), PHP_URL_HOST); ?>">
+                <input type="hidden" name="q7_version" value="<?php echo $current_version; ?>">
                 <?php
                 $reasons = [
                     "no_longer_needed" => "I no longer need the plugin",
@@ -347,7 +351,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "2.4.4";
+        $jaic_assetVersion = "2.5.0";
     } catch (\Exception $e) {
     }
 }
