@@ -51,6 +51,7 @@ export const initAgent = async ({
           // greetingMessage: 'Hi! How can I assist you?',
           // pulse: 'Yes',
           // position: 'right',
+          // layout: 'extended'
         }
       });
     }

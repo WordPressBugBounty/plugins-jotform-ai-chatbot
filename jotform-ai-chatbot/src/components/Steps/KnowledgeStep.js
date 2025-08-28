@@ -1,32 +1,38 @@
 import React, { useEffect } from 'react';
-import { func } from 'prop-types';
 
 import {
-  addMaterial, bulkDeleteMaterial, deleteMaterial, saveInstallment, updateMaterial
+  addMaterial, bulkDeleteMaterial, deleteMaterial, fetchMaterials, saveInstallment, updateMaterial
 } from '../../api';
-import { ALL_TEXTS, STEPS } from '../../constants';
 import { useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
-import { t, toCamelCase } from '../../utils';
-import BackButton from '../BackButton';
+import { toCamelCase } from '../../utils';
 import { KnowledgeBase } from '../KnowledgeBase';
-import NextButton from '../NextButton';
-import Button from '../UI/Button';
-import { IconArrowRight } from '../UI/Icon';
 
-const KnowledgeStep = ({ savePlatformAgentEmbed = f => f }) => {
+const KnowledgeStep = () => {
   const {
-    state, dispatch, asyncDispatch
+    state, asyncDispatch
   } = useWizard();
 
   const {
     step,
     materials,
     previewAgentId,
-    isWpPageSelectionSeen,
-    isSavePlatformAgentEmbedLoading,
+    materialsLoading,
     platformSettings: { PROVIDER_API_URL, PROVIDER_API_KEY }
   } = state;
+
+  useEffect(() => {
+    if (materials.length > 0) return;
+    const getMaterials = async () => {
+      await asyncDispatch(
+        () => fetchMaterials(previewAgentId, PROVIDER_API_KEY),
+        ACTION_CREATORS.fetchMaterialsRequest,
+        ACTION_CREATORS.fetchMaterialsSuccess,
+        ACTION_CREATORS.fetchMaterialsError
+      );
+    };
+    getMaterials();
+  }, []);
 
   useEffect(() => {
     saveInstallment(`${toCamelCase(step)}Step`);
@@ -70,17 +76,12 @@ const KnowledgeStep = ({ savePlatformAgentEmbed = f => f }) => {
     );
   };
 
-  const handleAddToMyWebsite = async () => {
-    saveInstallment(`addToMyWebsiteButton_${toCamelCase(step)}Step`);
-    await savePlatformAgentEmbed();
-    dispatch(ACTION_CREATORS.setStep(STEPS.WP_PAGE_SELECTION));
-  };
-
   return (
     <>
       <div className='jfpContent-wrapper--knowledge' data-js='knowledge-scroll-container'>
         <KnowledgeBase
           materials={materials}
+          isLoadingMaterials={materialsLoading}
           requestBaseURL={PROVIDER_API_URL}
           handleAdd={handleAdd}
           handleEdit={handleEdit}
@@ -88,24 +89,8 @@ const KnowledgeStep = ({ savePlatformAgentEmbed = f => f }) => {
           handleBulkDelete={handleBulkDelete}
         />
       </div>
-      <div className='jfpContent-wrapper--actions'>
-        <BackButton />
-        <NextButton />
-        {/* add to my website button */}
-        <Button
-          endIcon={isWpPageSelectionSeen && <IconArrowRight />}
-          loader={isSavePlatformAgentEmbedLoading}
-          onClick={handleAddToMyWebsite}
-        >
-          {!isWpPageSelectionSeen ? t(ALL_TEXTS.ADD_TO_MY_WEBSITE) : t(ALL_TEXTS.NEXT)}
-        </Button>
-      </div>
     </>
   );
 };
 
 export default KnowledgeStep;
-
-KnowledgeStep.propTypes = {
-  savePlatformAgentEmbed: func
-};

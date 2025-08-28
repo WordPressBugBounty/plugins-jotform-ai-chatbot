@@ -1,13 +1,25 @@
 import React from 'react';
+import { string } from 'prop-types';
 
+import { saveInstallment } from '../api';
 import IconNotificationText from '../assets/svg/IconNotificationText.svg';
 import { ALL_TEXTS } from '../constants';
 import { t } from '../utils';
 import Button from './UI/Button';
 
-const Footer = () => {
+const Footer = ({ platformDomain, platformPluginVersion }) => {
+  const domainQuery = `?domainField=${platformDomain}&versionField=${platformPluginVersion}`;
+
+  const handleHowToUseClick = e => {
+    e.preventDefault();
+    saveInstallment('howToUseJotformAiChatbotButton');
+    window.open(e.target.href, '_blank');
+  };
+
   const handleFeedbackClick = () => {
-    window.open('https://link.jotform.com/V9WBvjTyR2', '_blank');
+    saveInstallment('giveFeedbackButton');
+    const feedbackUrl = `https://link.jotform.com/V9WBvjTyR2${domainQuery}`;
+    window.open(feedbackUrl, '_blank');
   };
 
   return (
@@ -17,6 +29,7 @@ const Footer = () => {
         href='https://link.jotform.com/NTVCqmVoHv'
         target='_blank'
         rel='noreferrer'
+        onClick={handleHowToUseClick}
       >
         {(t(ALL_TEXTS.HOW_TO_USE_JOTFORM_AI_CHATBOT))}
       </a>
@@ -30,6 +43,11 @@ const Footer = () => {
       </Button>
     </footer>
   );
+};
+
+Footer.propTypes = {
+  platformDomain: string.isRequired,
+  platformPluginVersion: string.isRequired
 };
 
 export default Footer;

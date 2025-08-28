@@ -17,6 +17,7 @@ const PromptSuggestion = forwardRef(({
   const debounceTimeout = useRef(null);
   const latestRequestRef = useRef(0);
   const [hasSelected, setHasSelected] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(
     () => () => {
@@ -46,7 +47,7 @@ const PromptSuggestion = forwardRef(({
     debounceTimeout.current = setTimeout(async () => {
       const currentRequestId = Date.now();
       latestRequestRef.current = currentRequestId;
-
+      setIsLoading(true);
       try {
         const response = await getSentenceRecommendations(inputValue);
         if (latestRequestRef.current === currentRequestId) {
@@ -59,6 +60,11 @@ const PromptSuggestion = forwardRef(({
         if (latestRequestRef.current === currentRequestId) {
           setSuggestions([]);
           setIsPopoverVisible(false);
+          setIsLoading(false);
+        }
+      } finally {
+        if (latestRequestRef.current === currentRequestId) {
+          setIsLoading(false);
         }
       }
     }, 300);
@@ -113,19 +119,61 @@ const PromptSuggestion = forwardRef(({
     };
   }, [ref]);
 
-  return isPopoverVisible && suggestions.length > 0 ? (
+  const rectangleWidths = [32, 64, 96, 120, 144, 180, 216, 240];
+  const shuffleArray = (array) => [...array].sort(() => Math.random() - 0.5);
+  const [rectangleSets] = useState(() => [...Array(5)].map(() => {
+    const shuffledWidths = shuffleArray(rectangleWidths);
+    const lines = [[], []];
+    let currentLine = 0;
+    let currentWidth = 0;
+
+    shuffledWidths.forEach((width) => {
+      if (currentWidth + width <= 640) {
+        lines[currentLine].push(width);
+        currentWidth += width;
+      } else if (currentLine === 0) {
+        currentLine = 1;
+        currentWidth = width;
+        lines[currentLine].push(width);
+      }
+    });
+
+    return lines;
+  }));
+
+  return (isLoading || (isPopoverVisible && suggestions.length > 0)) ? (
     <div className='jfPrompt-suggestion'>
-      {suggestions.map((suggestion, index) => (
-        <div
-          key={index}
-          onClick={() => handleSelect(suggestion)}
-          onMouseDown={(e) => e.preventDefault()}
-          data-suggestion
-          className='jfPrompt-suggestion-item'
-        >
-          {highlightMatches(suggestion, keywords)}
+      {isLoading && (
+        <div className='jfPrompt-suggestion-skeleton'>
+          {rectangleSets.map((lines, index) => (
+            <div key={index} className='jfPrompt-skeleton-item'>
+              {lines.map((line, i) => (
+                <div key={i} className='rectangle-container'>
+                  {line.map((width, j) => (
+                    <div key={j} className='rectangle' style={{ width: `${width}px` }} />
+                  ))}
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
-      ))}
+      )}
+
+      {!isLoading && isPopoverVisible && suggestions.length > 0 && (
+        <>
+          {suggestions.map((suggestion, index) => (
+            <div
+              key={index}
+              onClick={() => handleSelect(suggestion)}
+              onMouseDown={(e) => e.preventDefault()}
+              data-suggestion
+              className='jfPrompt-suggestion-item'
+            >
+              {highlightMatches(suggestion, keywords)}
+            </div>
+          ))}
+        </>
+      )}
     </div>
   ) : null;
 });

@@ -1,21 +1,27 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 
 import {
-  checkFromWordpressLandingRequest,
-  getAllAgents, getPlatformAgent, interactWithPlatform
+  getAllAgents, getPlatformAgent, interactWithPlatform,
+  saveAgentId
 } from '../api';
 import { PLATFORMS, STEPS } from '../constants';
 import { useWizard } from '../hooks';
 import { ACTION_CREATORS } from '../store';
 import {
-  awaitFor, createEmbed, getRootElement, isGuest, openLimitDialog, resetAgentPreviewRoot
+  awaitFor, createEmbed, getRootElement, isConversationsPage, isGuest, resetAgentPreviewRoot,
+  toggleConversationItems
 } from '../utils';
 import Footer from './Footer';
+import Header from './Header';
+import { openLimitDialog } from './openLimitDialog';
 import Preview from './Preview';
 import {
-  AiPersonaStep, AvatarStep, CustomizationStep, InitialStep,
-  KnowledgeStep, LoadingStep, StyleStep, UseCaseStep, WpPageSelection
+  AiPersonaStep, ConversationsStep, InitialStep,
+  KnowledgeStep, LoadingStep, StyleStep, UseCaseStep,
+  VisibilityStep
 } from './Steps';
+import WhatsNewModal from './WhatsNewModal';
+import WizardTabs from './WizardTabs';
 
 const Wizard = props => {
   const { state, dispatch, asyncDispatch } = useWizard();
@@ -30,6 +36,7 @@ const Wizard = props => {
     isUseAgentLoading,
     tryGetPlatformAgentOnce,
     isInitialPlatformSettingsReady,
+    isPlatformSettingsLoading,
     isLimitDialogVisible,
     allAgents: {
       loading: allAgentsLoading
@@ -37,16 +44,37 @@ const Wizard = props => {
     platformSettings: {
       PLATFORM_DOMAIN,
       PROVIDER_URL,
-      PROVIDER_API_KEY
+      PROVIDER_API_KEY,
+      PLATFORM_PLUGIN_VERSION
     }
   } = state;
 
-  // reset agent preview root
+  // read current step from URL
+  useEffect(() => {
+    if (!previewAgentId) return;
+    const searchParams = new URLSearchParams(window.location.href);
+    const urlStep = searchParams.get('current_tab')?.toUpperCase();
+    if (Object.values(STEPS).includes(urlStep)) {
+      dispatch(ACTION_CREATORS.setStep(urlStep));
+    }
+  }, [previewAgentId]);
+
+  // reset agent preview root & set step as query param
   useEffect(() => {
     if (step === STEPS.INITIAL) {
       resetAgentPreviewRoot();
     }
   }, [step]);
+
+  // save agent id to platform
+  useEffect(() => {
+    if (previewAgentId) {
+      saveAgentId(previewAgentId);
+      toggleConversationItems({ action: 'show' });
+    } else {
+      toggleConversationItems({ action: 'hide' });
+    }
+  }, [previewAgentId]);
 
   useEffect(() => {
     if (!isLimitDialogVisible) return;
@@ -54,6 +82,7 @@ const Wizard = props => {
       openLimitDialog({
         utmContent: 'wordpress-plugin',
         container: getRootElement('#modal-root'),
+        providerUrl: PROVIDER_URL,
         onClose: () => dispatch(ACTION_CREATORS.setIsLimitDialogVisible(false))
       });
     } catch (e) {
@@ -62,17 +91,22 @@ const Wizard = props => {
   }, [isLimitDialogVisible]);
 
   // fetch agent
-  const fetchAgent = useCallback(async (fromTyrOnce = false) => {
+  const fetchAgent = useCallback(async () => {
+    let nextStep = STEPS.AI_PERSONA;
+    if (isConversationsPage()) {
+      nextStep = STEPS.CONVERSATIONS;
+    }
     const data = { domain: PLATFORM_DOMAIN, platform: PLATFORMS.WORDPRESS };
     await asyncDispatch(
       () => getPlatformAgent(data, PROVIDER_API_KEY),
       ACTION_CREATORS.getPlatformAgentRequest,
       ACTION_CREATORS.getPlatformAgentSuccess,
       ACTION_CREATORS.getPlatformAgentError,
-      fromTyrOnce ? STEPS.CUSTOMIZATION : STEPS.WP_PAGE_SELECTION
+      nextStep
     );
   }, [PROVIDER_API_KEY, PLATFORM_DOMAIN]);
 
+  // fetch existing agents
   const fetchExistingAgents = useCallback(async () => {
     if (!PROVIDER_API_KEY) return;
 
@@ -84,23 +118,11 @@ const Wizard = props => {
     );
   }, [PROVIDER_API_KEY]);
 
-  const checkFromWordpressLanding = useCallback(async () => {
-    if (!PROVIDER_API_KEY) return;
-
-    await asyncDispatch(
-      () => checkFromWordpressLandingRequest(PROVIDER_API_KEY),
-      ACTION_CREATORS.checkFromWpLandingRequest,
-      ACTION_CREATORS.checkFromWpLandingSuccess,
-      ACTION_CREATORS.checkFromWpLandingError
-    );
-  }, [PROVIDER_API_KEY]);
-
   // fetch platform agent & existing agents if user is logged in
   useEffect(() => {
     const initFlow = async () => {
       const shouldFetchAgent = user && !isGuest(user) && PROVIDER_API_KEY;
       if (!shouldFetchAgent) return;
-      await checkFromWordpressLanding();
       fetchExistingAgents();
       fetchAgent();
     };
@@ -112,72 +134,96 @@ const Wizard = props => {
     if (!tryGetPlatformAgentOnce) return;
     const awaitAndFetchAgent = async () => {
       await awaitFor(8000);
-      await fetchAgent(true);
+      await fetchAgent();
       dispatch(ACTION_CREATORS.setTryGetPlatformAgentOnce(false));
     };
     awaitAndFetchAgent();
   }, [tryGetPlatformAgentOnce]);
 
-  // is loader visible
-  const isLoaderVisible = useMemo(() => (
-    PROVIDER_API_KEY
-    && ((isInitialLoading) || !isInitialPlatformSettingsReady || isUseAgentLoading || tryGetPlatformAgentOnce || allAgentsLoading))
-    || isUseAgentLoading, [PROVIDER_API_KEY, isInitialLoading, isInitialPlatformSettingsReady, isUseAgentLoading, tryGetPlatformAgentOnce, allAgentsLoading]);
+  // is spinner loader visible
+  const isSpinnerLoaderVisible = useMemo(() => (
+    (isPlatformSettingsLoading && !PROVIDER_API_KEY) || (PROVIDER_API_KEY
+      && (isInitialLoading
+        || !isInitialPlatformSettingsReady
+        || allAgentsLoading))), [
+    PROVIDER_API_KEY,
+    isInitialLoading,
+    allAgentsLoading,
+    isPlatformSettingsLoading,
+    isInitialPlatformSettingsReady
+  ]);
+
+  // is agent loader visible
+  const isAgentLoaderVisible = useMemo(() => (
+    isUseAgentLoading || tryGetPlatformAgentOnce), [
+    isUseAgentLoading,
+    tryGetPlatformAgentOnce
+  ]);
+
+  const isLoaderVisible = isSpinnerLoaderVisible || isAgentLoaderVisible;
 
   // save platform agent embed
-  const savePlatformAgentEmbed = async (key = 'embed') => {
+  const getPublishAgentRequest = ({ key = 'embed' }) => {
     const embedCode = createEmbed({
       agentId: previewAgentId, chatbotDomain: PROVIDER_URL, ...customizations, ...themeCustomizations
     });
-    const dataEmbed = { action: 'update', key, value: global.btoa(global.encodeURIComponent(embedCode)) };
+    const dataEmbed = {
+      action: 'update',
+      key,
+      ...(['embed', 'preview'].includes(key) && { value: global.btoa(global.encodeURIComponent(embedCode)) })
+    };
+    return () => interactWithPlatform(dataEmbed);
+  };
+
+  const publishAgent = async ({ key = 'embed' }) => {
     await asyncDispatch(
-      () => interactWithPlatform(dataEmbed),
-      ACTION_CREATORS.savePlatformAgentEmbedRequest,
-      ACTION_CREATORS.savePlatformAgentEmbedSuccess,
-      ACTION_CREATORS.savePlatformAgentEmbedError
+      () => getPublishAgentRequest({ key })(),
+      ACTION_CREATORS.publishAgentRequest,
+      ACTION_CREATORS.publishAgentSuccess,
+      ACTION_CREATORS.publishAgentError,
+      key
     );
+  };
+
+  const unpublishAgent = async () => {
+    await publishAgent({ key: 'unpublish' });
+    dispatch(ACTION_CREATORS.setIsPublished(false));
   };
 
   // all steps appear in this order
   const stepMap = {
     [STEPS.INITIAL]: InitialStep,
     [STEPS.USECASE_SELECTION]: UseCaseStep,
-    [STEPS.CUSTOMIZATION]: CustomizationStep,
+    [STEPS.VISIBILITY]: VisibilityStep,
     [STEPS.AI_PERSONA]: AiPersonaStep,
-    [STEPS.AVATAR]: AvatarStep,
     [STEPS.STYLE]: StyleStep,
     [STEPS.KNOWLEDGE]: KnowledgeStep,
-    [STEPS.WP_PAGE_SELECTION]: WpPageSelection
+    [STEPS.CONVERSATIONS]: ConversationsStep
   };
 
   const CurrentStep = stepMap[step];
 
   return (
     <>
+      {[STEPS.AI_PERSONA, STEPS.STYLE, STEPS.VISIBILITY, STEPS.KNOWLEDGE].includes(step)
+        && <Header publishAgent={publishAgent} />}
       <div
         data-step={step}
-        className='jfpChatbot-container jfpChatbot-container--platformmode'
+        className={`jfpChatbot-container jfpChatbot-container--platformmode${isLoaderVisible ? ' wizard-loading' : ''}`}
       >
-        {isLoaderVisible
-          ? (
-            <LoadingStep
-              key='loading-step'
-              type={isInitialLoading ? 'default' : 'text'}
-            />
-          )
-          : (
-            <>
-              <div className='jfpContent-wrapper' data-step={step}>
-                <CurrentStep
-                  {...props}
-                  savePlatformAgentEmbed={savePlatformAgentEmbed}
-                />
-              </div>
-              <Preview savePlatformAgentEmbed={savePlatformAgentEmbed} />
-            </>
-          )}
+        {isLoaderVisible && <LoadingStep key='loading-step' type={isAgentLoaderVisible ? 'text' : 'default'} />}
+        {!isLoaderVisible && (
+          <>
+            <div className='jfpContent-wrapper' data-step={step}>
+              {![STEPS.INITIAL, STEPS.USECASE_SELECTION, STEPS.CONVERSATIONS].includes(step) && <WizardTabs />}
+              <CurrentStep {...props} unpublishAgent={unpublishAgent} />
+            </div>
+            {step !== STEPS.CONVERSATIONS && <Preview />}
+          </>
+        )}
       </div>
-      <Footer />
+      <Footer platformDomain={PLATFORM_DOMAIN} platformPluginVersion={PLATFORM_PLUGIN_VERSION} />
+      <WhatsNewModal isOpen onCloseClick={f => f} onOkClick={f => f} />
     </>
   );
 };

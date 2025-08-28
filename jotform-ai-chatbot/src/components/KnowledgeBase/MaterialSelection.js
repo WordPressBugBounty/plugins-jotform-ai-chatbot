@@ -4,6 +4,7 @@ import React from 'react';
 import { func, string } from 'prop-types';
 
 import { TRAIN_TYPES } from '../../constants';
+import { IconAngleRightCircleFilled } from '../UI/Icon';
 
 const MaterialSelection = ({
   materialType,
@@ -16,25 +17,28 @@ const MaterialSelection = ({
   };
 
   return (
-    <ul>
+    <ul className='knowledge-container'>
       {/* knowledge */}
       {Object.entries(TRAIN_TYPES).map(([key, item]) => (
         <li
           key={key}
           data-is-selected={materialType === key}
-          data-background={`${item.color}`}
+          data-item={`${item.iconClassName}`}
           onClick={() => handleClick(key)}
+          className='knowledge-item'
         >
           {/* for icon */}
-          <span>{item.icon}</span>
-          <span>{item.color}</span>
+          <span className='knowledge-before' />
+          <span className='knowledge-icon'>{item.icon}</span>
           {/* text */}
-          <div>
-            <h3>{item.name.toUpperCase()}</h3>
-            <p>{item.desc}</p>
+          <div className='knowledge-content'>
+            <h3 className='knowledge-title'>{item.name.toUpperCase()}</h3>
+            <p className='knowledge-desc'>{item.desc}</p>
           </div>
           {/* icon right */}
-          <span>icon right</span>
+          <span className='knowledge-right'>
+            <IconAngleRightCircleFilled />
+          </span>
         </li>
       ))}
     </ul>

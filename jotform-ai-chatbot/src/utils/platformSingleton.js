@@ -8,11 +8,15 @@ class PlatformSingleton {
     this.PLATFORM_API_URL = '';
     this.PLATFORM_DOMAIN = '';
     this.PLATFORM_PAGES = [];
+    this.PLATFORM_CHATBOT_PAGES = [];
     this.PLATFORM_PAGE_CONTENTS = [];
     this.PLATFORM_PREVIEW_URL = '';
     this.PLATFORM_NONCE = '';
     this.PLATFORM_REFERER = '';
     this.PLATFORM_KNOWLEDGE_BASE = { urls: [] };
+    this.PLATFORM_DEVICE = '';
+    this.PLATFORM_CHATBOT_PUBLISHED = false;
+    this.PLATFORM_PLUGIN_VERSION = '';
   }
 }
 

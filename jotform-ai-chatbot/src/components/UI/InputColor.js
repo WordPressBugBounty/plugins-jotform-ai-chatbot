@@ -52,12 +52,13 @@ const InputColor = ({ defaultValue = '', onChange }) => {
         </PopoverButton>
         <PopoverPanel
           transition
-          anchor='bottom'
+          anchor='top'
           className='jfInputColor--popover'
         >
           <SketchPicker
             color={value}
             onChange={handleColorPickerChange}
+            disableAlpha
           />
         </PopoverPanel>
       </Popover>

@@ -119,42 +119,154 @@ class JAIC_Core {
         // Get the current page ID
         $pageID = get_the_ID();
 
+        // Get device type
+        $device = $this->getDevice();
+
         // Retrieve chatbot options from the WordPress settings
         $options = get_option(self::$pluginOptionKey);
         $options = !empty($options) ? json_decode($options, true) : [];
 
         // Check and format pages value
-        $options["pages"] = !isset($options["pages"]) ? [] : ((!empty($options["pages"]) && is_string($options["pages"])) ? [$options["pages"]] : $options["pages"]);
+        $pluginPageList = $this->getPluginPageList();
 
-        // Check if the chatbot should be displayed
-        $isCustomURL = false;
+        $pluginDisabledForVisitedURL = $pluginEnabledForVisitedURL = false;
         $requestedURI = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : false;
-        $optionPageValue = (isset($options["pages"]) && is_array($options["pages"]) && !empty($options["pages"][0])) ? $options["pages"][0] : false;
-        if (
-            !empty($requestedURI) &&
-            is_string($optionPageValue) &&
-            (filter_var($optionPageValue, FILTER_VALIDATE_URL) !== false)
-        ) {
-            $parsedURL = parse_url($optionPageValue);
-            $requestedURI = strstr($requestedURI, "?") ? strstr($requestedURI, "?", true) : $requestedURI;
-            if (!empty($parsedURL["path"]) && strstr($requestedURI, $parsedURL["path"])) {
-                $isCustomURL = true;
+        if (!empty($pluginPageList["showOn"]) && is_array($pluginPageList["showOn"])) {
+            $pluginActivatedPageList = array_map(function ($pluginPageOption) {
+                if (!empty($pluginPageOption["type"]) && ($pluginPageOption["type"] === "page")) {
+                    return $pluginPageOption["value"];
+                }
+            }, $pluginPageList["showOn"]);
+
+            $pluginActivatedURLList = array_map(function ($pluginPageOption) {
+                if (
+                    (!empty($pluginPageOption["type"]) && ($pluginPageOption["type"] === "url")) &&
+                    (!empty($pluginPageOption["match"]) && ($pluginPageOption["match"] === "is"))
+                ) {
+                    $url = $pluginPageOption["value"];
+                    if ($this->isAValidDomainURL($url) && strpos($url, "http") !== 0) {
+                        $url = "https://" . $url;
+                    }
+
+                    $parsedURL = parse_url($url);
+                    if (!empty($parsedURL['path'])) {
+                        return $parsedURL['path'];
+                    }
+                }
+            }, $pluginPageList["showOn"]);
+
+            foreach ($pluginPageList["showOn"] as $pluginPageOption) {
+                if (
+                    (!empty($pluginPageOption["type"]) && ($pluginPageOption["type"] === "url")) &&
+                    (!empty($pluginPageOption["match"]) && ($pluginPageOption["match"] === "startsWith"))
+                ) {
+                    $url = $pluginPageOption["value"];
+                    if ($this->isAValidDomainURL($url) && strpos($url, "http") !== 0) {
+                        $url = "https://" . $url;
+                    }
+
+                    $parsedURL = parse_url($url);
+                    $path = trim($parsedURL['path'], "/");
+                    if (!empty($parsedURL['path']) && strpos($requestedURI, ("/" . $path)) === 0) {
+                        $pluginEnabledForVisitedURL = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!empty($pluginPageList["hideOn"]) && is_array($pluginPageList["hideOn"])) {
+            $pluginDisabledPageList = array_map(function ($pluginPageOption) {
+                if (!empty($pluginPageOption["type"]) && ($pluginPageOption["type"] === "page")) {
+                    return $pluginPageOption["value"];
+                }
+            }, $pluginPageList["hideOn"]);
+
+            $pluginDisabledURLList = array_map(function ($pluginPageOption) {
+                if (
+                    (!empty($pluginPageOption["type"]) && ($pluginPageOption["type"] === "url")) &&
+                    (!empty($pluginPageOption["match"]) && ($pluginPageOption["match"] === "is"))
+                ) {
+                    $url = $pluginPageOption["value"];
+                    if ($this->isAValidDomainURL($url) && strpos($url, "http") !== 0) {
+                        $url = "https://" . $url;
+                    }
+
+                    $parsedURL = parse_url($url);
+                    if (!empty($parsedURL['path'])) {
+                        return $parsedURL['path'];
+                    }
+                }
+            }, $pluginPageList["hideOn"]);
+
+            foreach ($pluginPageList["hideOn"] as $pluginPageOption) {
+                if (
+                    (!empty($pluginPageOption["type"]) && ($pluginPageOption["type"] === "url")) &&
+                    (!empty($pluginPageOption["match"]) && ($pluginPageOption["match"] === "startsWith"))
+                ) {
+                    $url = $pluginPageOption["value"];
+                    if ($this->isAValidDomainURL($url) && strpos($url, "http") !== 0) {
+                        $url = "https://" . $url;
+                    }
+
+                    $parsedURL = parse_url($url);
+                    $path = trim($parsedURL['path'], "/");
+                    if (!empty($parsedURL['path']) && strpos($requestedURI, ("/" . $path)) === 0) {
+                        $pluginDisabledForVisitedURL = true;
+                        break;
+                    }
+                }
             }
         }
 
         if (
-            $this->isPreviewMode() || $isCustomURL || (
-                (isset($options["pages"]) && is_array($options["pages"])) &&
+            $this->isPreviewMode() ||
+            (
+                isset($pluginPageList["showOn"]) &&
+                empty($pluginPageList["showOn"]) &&
+                isset($pluginPageList["active"]) &&
+                ($pluginPageList["active"] === "showOn")
+            ) ||
+            (
                 (
-                    (in_array($pageID, $options["pages"]) || in_array("all", $options["pages"])) ||
-                    (is_single() && in_array("all-posts", $options["pages"])) ||
-                    (is_category() && in_array("all-categories", $options["pages"]))
+                    ($pluginPageList["active"] === "showOn") && (
+                        $pluginEnabledForVisitedURL || (
+                            !empty($pluginActivatedPageList) &&
+                            (
+                                (in_array($pageID, $pluginActivatedPageList) || in_array("all", $pluginActivatedPageList)) ||
+                                is_array($pluginActivatedPageList) && (is_single() && in_array("all-posts", $pluginActivatedPageList)) ||
+                                is_array($pluginActivatedPageList) && (is_category() && in_array("all-categories", $pluginActivatedPageList))
+                            )
+                        ) ||
+                        (!empty($pluginActivatedURLList) && is_array($pluginActivatedURLList) && in_array($requestedURI, $pluginActivatedURLList))
+                    )
+                ) ||
+                (
+                    ($pluginPageList["active"] === "hideOn") && (
+                        !$pluginDisabledForVisitedURL && (
+                            empty($pluginDisabledPageList) ||
+                            (
+                                (!in_array($pageID, $pluginDisabledPageList) && !in_array("all", $pluginDisabledPageList)) ||
+                                (is_single() && !in_array("all-posts", $pluginDisabledPageList)) ||
+                                (is_category() && !in_array("all-categories", $pluginDisabledPageList))
+                            )
+                        ) &&
+                        (empty($pluginDisabledURLList) || !is_array($pluginDisabledURLList) || !in_array($requestedURI, $pluginDisabledURLList))
+                    )
                 )
             )
         ) {
-            // Render the chatbot embed code if available
-            if (isset($options["embed"]) && !empty($options["embed"])) {
-                echo "<div id=\"ai-chatbot\">" . strip_tags(rawurldecode(base64_decode($options["embed"])), '<script>') . "</div>";
+            // Render the chatbot if embed code and device type is available
+            $chatbotEmbedCode = ($this->isPreviewMode() && !empty($options["preview"])) ? $options["preview"] : (!empty($options["embed"]) ? $options["embed"] : false);
+            if (!empty($chatbotEmbedCode)) {
+                if (
+                    $this->isPreviewMode() ||
+                    ($device === "all") ||
+                    ($device === "mobile" && $this->isMobileDevice()) ||
+                    ($device === "desktop" && !$this->isMobileDevice())
+                ) {
+                    echo "<div id=\"ai-chatbot\">" . strip_tags(rawurldecode(base64_decode($chatbotEmbedCode)), '<script>') . "</div>";
+                }
             }
         }
     }
@@ -216,7 +328,8 @@ class JAIC_Core {
         } else {
             // Delete partial chatbot options from the database
             update_option(self::$pluginOptionKey, wp_json_encode([
-                "apiKey" => (!empty($apiKey) ? $apiKey : "")
+                "apiKey" => (!empty($apiKey) ? $apiKey : ""),
+                "agentId" => ""
             ]));
 
             // Send a JSON response indicating successful deletion accordingly
@@ -301,7 +414,10 @@ class JAIC_Core {
             "pages",
             "embed",
             "preview",
-            "apiKey"
+            "apiKey",
+            "device",
+            "unpublish",
+            "agentId"
         ];
 
         if (empty($optionKey)) {
@@ -315,6 +431,9 @@ class JAIC_Core {
             );
         }
 
+        // Temp ONUR
+        $optionKey = ($optionKey === "pagesV2") ? "pages" : $optionKey;
+
         // Get the chatbot options from the database
         $options = get_option(self::$pluginOptionKey);
 
@@ -322,30 +441,10 @@ class JAIC_Core {
         $options = (!is_string($options) || empty($options)) ?
         [] : json_decode($options, true);
 
-        // Validate key and its values
-        if ($optionKey == "pages") {
-            $optionValues = strstr($optionValue, ",") ? explode(",", $optionValue) : [$optionValue];
-            $optionValue = array_map(
-                function ($singleValue) {
-                    $singleValue = is_string($singleValue)
-                        ? trim($singleValue)
-                        : $singleValue;
-
-                    if (in_array($singleValue, ["all", "all-posts", "all-categories"]) || is_numeric($singleValue) || (filter_var($singleValue, FILTER_VALIDATE_URL) !== false)) {
-                        return is_numeric($singleValue)
-                            ? intval($singleValue)
-                            : $singleValue;
-                    }
-                },
-                $optionValues
-            );
-
-            $optionValue = array_filter($optionValue);
-        } elseif ($optionKey == "embed") {
-            $options["pages"] = ["all"];
-        } elseif ($optionKey == "preview") {
-            $optionKey = "embed";
-            $options["pages"] = [];
+        if ($optionKey == "embed") {
+            $options["preview"] = [];
+        } elseif ($optionKey == "unpublish") {
+            $options["embed"] = $options["preview"] = [];
         }
 
         // Add new option
@@ -386,62 +485,49 @@ class JAIC_Core {
         $pages = $this->getPages();
         $customPages = [
             ["text" => "All Category Pages", "value" => "all-categories"],
-            ["text" => "All Blog Posts", "value" => "all-posts"],
-            ["text" => "Custom URL", "value" => "", "selected" => "0"]
+            ["text" => "All Blog Posts", "value" => "all-posts"]
         ];
+        $pluginPageList = $this->getPluginPageList();
 
-        $pluginActivePages = $this->getPluginActivePages();
-        $isAllPagesSelected = (array_key_exists("none", $pluginActivePages)) ? "0" : ((empty($pluginActivePages) || (in_array("all", $pluginActivePages)) || ((count($pages) + count($customPages)) == count($pluginActivePages))) ? "1" : "0");
-        $platformPages = [
-            ["text" => "Entire Website", "value" => "all", "selected" => $isAllPagesSelected]
-        ];
+        $platformPages = [];
 
         foreach ($pages as $page) {
             if (empty($page->ID) || empty($page->post_title)) {
                 continue;
             }
 
-            $isPageSelected = (($isAllPagesSelected === "1") || in_array($page->ID, $pluginActivePages)) ? "1" : "0";
             array_push($platformPages, [
                 "text" =>  esc_html($page->post_title),
-                "value" => esc_html($page->ID),
-                "selected" => esc_html($isPageSelected)
+                "value" => esc_html($page->ID)
             ]);
         }
 
         foreach ($customPages as $customPage) {
-            $isPageSelected = (($isAllPagesSelected === "1") || in_array($customPage["value"], $pluginActivePages)) ? "1" : "0";
-            if (($customPage["text"] === "Custom URL") && count($pluginActivePages) === 1) {
-                $value = array_pop($pluginActivePages);
-                if (filter_var($value, FILTER_VALIDATE_URL) !== false) {
-                    array_push($platformPages, [
-                        "text" =>  esc_html($customPage["text"]),
-                        "value" => $value,
-                        "selected" => "1"
-                    ]);
-
-                    continue;
-                }
-            }
-
             array_push($platformPages, [
                 "text" =>  esc_html($customPage["text"]),
-                "value" => esc_html($customPage["value"]),
-                "selected" => isset($customPage["selected"]) ? $customPage["selected"] : esc_html($isPageSelected)
+                "value" => esc_html($customPage["value"])
             ]);
         }
 
+        $options = get_option(self::$pluginOptionKey);
+        $options = !empty($options) ? json_decode($options, true) : [];
+        $isAgentPublished = !empty($options["embed"]);
+
         $settings = [
-            "PLATFORM"                => "wordpress",
-            "PLATFORM_PAGES"          => $platformPages,
-            "PLATFORM_KNOWLEDGE_BASE" => $this->getKnowledgeBase(),
-            "PLATFORM_API_URL"        => $this->getPlatformAPIURL(),
-            "PLATFORM_DOMAIN"         => $this->getDomain(),
-            "PLATFORM_PAGE_CONTENTS"  => $this->getPageContents(),
-            "PLATFORM_PREVIEW_URL"    => $this->getPreviewURL(),
-            "PROVIDER_API_KEY"        => $this->getAPIKey(),
-            "PROVIDER_URL"            => $this->getSiteURL(),
-            "PROVIDER_API_URL"        => $this->getSiteAPIURL()
+            "PLATFORM"                     => "wordpress",
+            "PLATFORM_PAGES"               => $platformPages,
+            "PLATFORM_CHATBOT_PAGES"       => $pluginPageList,
+            "PLATFORM_CHATBOT_PUBLISHED"   => $isAgentPublished,
+            "PLATFORM_DEVICE"              => $this->getDevice(),
+            "PLATFORM_KNOWLEDGE_BASE"      => $this->getKnowledgeBase(),
+            "PLATFORM_API_URL"             => $this->getPlatformAPIURL(),
+            "PLATFORM_DOMAIN"              => $this->getDomain(),
+            "PLATFORM_PAGE_CONTENTS"       => $this->getPageContents(),
+            "PLATFORM_PREVIEW_URL"         => $this->getPreviewURL(),
+            "PLATFORM_PLUGIN_VERSION"      => $this->getPluginVersion(),
+            "PROVIDER_API_KEY"             => $this->getAPIKey(),
+            "PROVIDER_URL"                 => $this->getSiteURL(),
+            "PROVIDER_API_URL"             => $this->getSiteAPIURL()
         ];
 
         JAIC_Request::responseJSON(
@@ -661,22 +747,71 @@ class JAIC_Core {
      *
      * @return array The page list if available, or an empty array if not.
      */
-    private function getPluginActivePages(): array {
+    private function getPluginPageList(): array {
+        // Default page option data
+        $pageList = ["showOn" => [], "hideOn" => [], "active" => "showOn"];
+
         // Retrieve chatbot options from the WordPress settings
         $options = get_option(self::$pluginOptionKey);
         $options = !empty($options) ? json_decode($options, true) : [];
 
         // Return the empty forced list
         if (isset($options["pages"]) && empty($options["pages"])) {
-            return ["none" => "forced"];
+            return $pageList;
         }
 
         // Return the page list
-        if (isset($options["pages"]) && !empty($options["pages"])) {
-            return $options["pages"];
+        if (isset($options["pages"]) && !empty($options["pages"]) && is_string($options["pages"])) {
+            return json_decode($options["pages"], true);
         }
 
-        return [];
+        // Handle chatbot plugin v1 page data
+        if (isset($options["pages"]) && !empty($options["pages"]) && is_array($options["pages"])) {
+            if ($options["pages"] === ["all"]) {
+                return $pageList;
+            }
+
+            foreach (["all-posts", "all-categories"] as $pageType) {
+                if (in_array($pageType, $options["pages"])) {
+                    array_push($pageList["showOn"], [
+                        "id" => (string) crc32($pageType),
+                        "type" => "page",
+                        "match" => "is",
+                        "value" => $pageType
+                    ]);
+
+                    return $pageList;
+                }
+            }
+
+            if (
+                (isset($options["pages"][0]) && is_string($options["pages"][0])) &&
+                (filter_var($options["pages"][0], FILTER_VALIDATE_URL) !== false)
+            ) {
+                $path = parse_url($options["pages"][0], PHP_URL_PATH);
+                if (!empty($path) && is_string($path)) {
+                    array_push($pageList["showOn"], [
+                        "id" => (string) crc32(trim($path, "/")),
+                        "type" => "url",
+                        "match" => "startsWith",
+                        "value" => trim($path, "/")
+                    ]);
+
+                    return $pageList;
+                }
+            }
+
+            foreach ($options["pages"] as $page) {
+                array_push($pageList["showOn"], [
+                    "id" => (string) crc32($page),
+                    "type" => "page",
+                    "match" => "is",
+                    "value" => (string) $page
+                ]);
+            }
+        }
+
+        return $pageList;
     }
 
     /**
@@ -687,7 +822,7 @@ class JAIC_Core {
      * @global $wpdb WordPress database abstraction object.
      * @return array An array where the keys are page IDs, and the values are arrays containing 'title' and 'content'.
      */
-    private function getPageContents() {
+    private function getPageContents(): array {
         $knowledge_base = [];
 
         try {
@@ -717,12 +852,12 @@ class JAIC_Core {
     /**
      * Retrieves and sorts all pages by their IDs.
      *
-     * This function fetches all pages using the `get_pages()` function
+     * This function fetches all pages using the `getPages()` function
      * and sorts them in ascending order based on their ID.
      *
      * @return array An array of page objects sorted by ID.
      */
-    private function getPages() {
+    private function getPages(): array {
         $pages = get_pages();
         if (empty($pages) || !is_array($pages)) {
             return [];
@@ -734,6 +869,52 @@ class JAIC_Core {
         });
 
         return $pages;
+    }
+
+    /**
+     * Retrieves the selected platform device
+     *
+     * This function fetches fetch device using the `getDevice()` function
+     *
+     * @return string An string of device type
+     */
+    private function getDevice(): string {
+        $options = get_option(self::$pluginOptionKey);
+        $options = !empty($options) ? json_decode($options, true) : [];
+
+        // Check and format device value
+        $device = !isset($options["device"]) ? "all" : ((!empty($options["device"]) && is_string($options["device"])) ? $options["device"] : "all");
+        if (empty($device) || !is_string($device)) {
+            return "all";
+        }
+
+        return $device;
+    }
+
+    /**
+     * Detects whether the current user is on a mobile device (including tablets).
+     *
+     * This function checks the User-Agent string from the HTTP request
+     * for keywords commonly associated with mobile or tablet devices.
+     *
+     * @return bool Returns true if the device is mobile or tablet, false if it's a desktop.
+     */
+    private function isMobileDevice(): bool {
+        $userAgent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
+
+        $mobileKeywords = [
+            'iphone', 'ipod', 'android', 'blackberry', 'opera mini', 'windows phone',
+            'windows mobile', 'iemobile', 'mobile', 'tablet', 'kindle', 'silk', 'fennec',
+            'nokia', 'webos', 'palm', 'symbian', 'htc'
+        ];
+
+        foreach ($mobileKeywords as $keyword) {
+            if (strpos($userAgent, $keyword) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -842,5 +1023,21 @@ class JAIC_Core {
         update_option(self::$pluginPendingSyncKey, json_encode($pending));
 
         return true;
+    }
+
+    /**
+     * Checks if the given string is a valid domain-based URL without requiring a protocol.
+     *
+     * @param string $url The URL string to validate.
+     * @return bool True if the string is a valid domain-based URL, false otherwise.
+     */
+    private function isAValidDomainURL(string $url): bool {
+        return preg_match('/^([a-z0-9-]+\.)+[a-z]{2,}(:\d+)?(\/[^\s]*)?$/i', $url);
+    }
+
+    private function getPluginVersion() {
+        $plugin_file = WP_PLUGIN_DIR . '/jotform-ai-chatbot/jotform-ai-chatbot.php';
+        $plugin_data = get_file_data($plugin_file, array('Version' => 'Version'));
+        return $plugin_data['Version'] ?? '-';
     }
 }

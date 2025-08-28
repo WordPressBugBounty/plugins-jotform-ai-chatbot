@@ -1,23 +1,25 @@
-import React, { useCallback, useEffect } from 'react';
+import React, {
+  useCallback, useEffect, useState
+} from 'react';
 import debounce from 'lodash/debounce';
 
 import '../../styles/chattiness.scss';
 
 import { saveInstallment, updateAgent, updateAgentProperty } from '../../api';
 import {
-  ALL_TEXTS, CHATTINESS_LEVELS, LANGUAGES, TONE_OF_VOICES, WRITING_DEBOUNCE_TIMEOUT
+  ALL_TEXTS, CHATTINESS_LEVELS, CUSTOMIZATION_KEYS, GREETING_TEXT_REQ_DEBOUNCE_TIMEOUT,
+  LANGUAGES, TONE_OF_VOICES, VERBAL_TOGGLE, WRITING_DEBOUNCE_TIMEOUT
 } from '../../constants';
 import { useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
-import {
-  awaitFor, initAgent, t, toCamelCase
-} from '../../utils';
-import BackButton from '../BackButton';
-import NextButton from '../NextButton';
+import { t, toCamelCase } from '../../utils';
+import Avatar from '../Avatar';
+import { ChatGuidelines } from '../ChatGuidelines';
 import Button from '../UI/Button';
 import Dropdown from '../UI/Dropdown';
+import Input from '../UI/Input';
+import Toggle from '../UI/Toggle';
 
-// TODO: UI
 const AiPersonaStep = () => {
   const {
     asyncDispatch, state, dispatch
@@ -34,25 +36,25 @@ const AiPersonaStep = () => {
     customizations,
     agentChattiness,
     previewAgentId,
-    selectedAvatar,
-    pageMode,
-    themeCustomizations,
     platformSettings: { PROVIDER_API_KEY }
   } = state;
+
+  const { greeting, greetingMessage } = customizations;
+
+  const greetingBool = greeting === VERBAL_TOGGLE.YES;
+
+  const [agentNameState, setAgentNameState] = useState(agentName);
+  const [agentRoleState, setAgentRoleState] = useState(agentRole);
+  const [greetingMessageState, setGreetingMessageState] = useState(greetingMessage);
+  const [chattinessState, setChattinessState] = useState(agentChattiness);
+
+  useEffect(() => {
+    setAgentNameState(agentName);
+  }, [agentName]);
 
   useEffect(() => {
     saveInstallment(`${toCamelCase(step)}Step`);
   }, []);
-
-  useEffect(() => {
-    const refreshAgent = async () => {
-      await awaitFor(1000);
-      initAgent({
-        agentId: previewAgentId, customizations, customAvatarUrl: selectedAvatar.avatarIconLink, ...themeCustomizations
-      });
-    };
-    refreshAgent();
-  }, [previewAgentId, customizations, agentName, agentRole, agentChattiness, agentLanguage, selectedAvatar, agentToneOfVoice, pageMode]);
 
   // agent name
   const updateAgentName = async value => {
@@ -62,13 +64,42 @@ const AiPersonaStep = () => {
       ACTION_CREATORS.updateAgentSuccess,
       ACTION_CREATORS.updateAgentError
     );
+    dispatch(ACTION_CREATORS.setAgentName(value));
   };
 
   const debouncedUpdateAgentName = useCallback(debounce(updateAgentName, WRITING_DEBOUNCE_TIMEOUT), []);
 
   const handleNameChange = value => {
-    dispatch(ACTION_CREATORS.setAgentName(value));
+    setAgentNameState(value);
     debouncedUpdateAgentName(value);
+  };
+
+  // greeting message
+  const updateCustomization = async ({ key, value }) => {
+    const updatedCustomizations = { ...customizations, [key]: value };
+    await asyncDispatch(
+      () => updateAgentProperty(previewAgentId, { prop: 'popover', type: 'embed', value: JSON.stringify(updatedCustomizations) }, PROVIDER_API_KEY),
+      ACTION_CREATORS.updateAgentPropertyRequest,
+      ACTION_CREATORS.updateAgentPropertySuccess,
+      ACTION_CREATORS.updateAgentPropertyError
+    );
+  };
+
+  const updateGreetingText = value => {
+    dispatch(ACTION_CREATORS.updateCustomization(CUSTOMIZATION_KEYS.GREETING_MESSAGE, value));
+    updateCustomization({ key: CUSTOMIZATION_KEYS.GREETING_MESSAGE, value });
+  };
+
+  const debouncedUpdateCustomization = useCallback(debounce(updateGreetingText, GREETING_TEXT_REQ_DEBOUNCE_TIMEOUT), []);
+  const handleChangeGreetingText = value => {
+    setGreetingMessageState(value);
+    debouncedUpdateCustomization(value);
+  };
+
+  const handleChangeGreeting = value => {
+    const verbalVal = value ? VERBAL_TOGGLE.YES : VERBAL_TOGGLE.NO;
+    dispatch(ACTION_CREATORS.updateCustomization(CUSTOMIZATION_KEYS.GREETING, verbalVal));
+    updateCustomization({ key: CUSTOMIZATION_KEYS.GREETING, value: verbalVal });
   };
 
   // agent role & chattiness
@@ -79,15 +110,17 @@ const AiPersonaStep = () => {
       ACTION_CREATORS.updateAgentPropertySuccess,
       ACTION_CREATORS.updateAgentPropertyError
     );
-  };
-
-  const debouncedUpdateAgentProp = useCallback(debounce(updateAgentProp, WRITING_DEBOUNCE_TIMEOUT), []);
-
-  const handleAgentPropChange = (prop, value) => {
     if (prop === 'role') dispatch(ACTION_CREATORS.setAgentRole(value));
     if (prop === 'chattiness') dispatch(ACTION_CREATORS.setAgentChattiness(value));
     if (prop === 'language') dispatch(ACTION_CREATORS.setAgentLanguage(value));
     if (prop === 'tone') dispatch(ACTION_CREATORS.setAgentToneOfVoice(value));
+  };
+
+  const debouncedUpdateAgentProp = useCallback(debounce((prop, value) => updateAgentProp(prop, value), WRITING_DEBOUNCE_TIMEOUT), []);
+
+  const handleAgentPropChange = (prop, value) => {
+    if (prop === 'role') setAgentRoleState(value);
+    if (prop === 'chattiness') setChattinessState(value);
     debouncedUpdateAgentProp(prop, value);
   };
 
@@ -95,21 +128,18 @@ const AiPersonaStep = () => {
 
   return (
     <>
-      <div className='jfpContent-wrapper--title'>
-        <h2>{t(ALL_TEXTS.AI_PERSONA)}</h2>
-        <p>{t(ALL_TEXTS.WRITE_AND_CUSTOMIZE_HOW_AI_TALKS)}</p>
-      </div>
       <div className='jfpContent-wrapper--ai-persona'>
+        <Avatar />
+        <hr className='jfpContent-wrapper--line line-2x' />
         {/* agent name */}
         <div className='jfpContent-wrapper--ai-persona-title'>
           <div>
             <h3>{t(ALL_TEXTS.AGENT_NAME)}</h3>
             <p>{t(ALL_TEXTS.GIVE_A_NAME_TO_YOUR_AGENT_THAT_WILL_BE_DISPLAYED_IN_THE_CONVERSATION)}</p>
           </div>
-          <input
+          <Input
             type='text'
-            value={agentName}
-            className='jfpContent-wrapper--ai-persona-input'
+            value={agentNameState}
             onChange={e => handleNameChange(e.target.value)}
           />
         </div>
@@ -120,10 +150,9 @@ const AiPersonaStep = () => {
             <h3>{t(ALL_TEXTS.AGENT_ROLE)}</h3>
             <p>{t(ALL_TEXTS.DESCRIPTION_YOUR_AGENTS_JOB_TITLE)}</p>
           </div>
-          <input
+          <Input
             type='text'
-            value={agentRole}
-            className='jfpContent-wrapper--ai-persona-input'
+            value={agentRoleState}
             onChange={e => handleAgentPropChange('role', e.target.value)}
           />
           <div className='role-options'>
@@ -137,35 +166,9 @@ const AiPersonaStep = () => {
                 onClick={() => {
                   handleAgentPropChange('role', option);
                 }}
-                className='color-navy-800 bg-blue-100 hover:outline-blue-200 hover:outline text-overflow-all'
               >
                 {option}
               </Button>
-            ))}
-          </div>
-        </div>
-        <hr className='jfpContent-wrapper--line line-2x' />
-        {/* agent chattiness */}
-        <div className='jfpContent-wrapper--ai-persona-title'>
-          <div>
-            <h3>{t(ALL_TEXTS.CHATTINESS)}</h3>
-            <p>{t(ALL_TEXTS.SPECIFY_THE_DESIRED_LEVEL_OF_DETAIL_IN_THE_AGENTS_RESPONSES)}</p>
-          </div>
-          <input
-            className='chattiness-slider'
-            type='range'
-            min='1'
-            max={CHATTINESS_LEVELS.length}
-            value={agentChattiness}
-            onChange={e => handleAgentPropChange('chattiness', e.target.value)}
-            style={{ '--value': `${indexToPercentage(agentChattiness) || '0%'}` }}
-          />
-          <div className='chattiness-slider--labels'>
-            {CHATTINESS_LEVELS.map(level => (
-              <div key={level.title}>
-                <span>{level.title}</span>
-                <span>{level.desc}</span>
-              </div>
             ))}
           </div>
         </div>
@@ -177,7 +180,6 @@ const AiPersonaStep = () => {
             <p>{t(ALL_TEXTS.SELECT_THE_LANGUAGE)}</p>
           </div>
           <Dropdown
-            className='max-w-xs'
             colorStyle='default'
             size='small'
             theme='light'
@@ -194,7 +196,6 @@ const AiPersonaStep = () => {
             ))}
           </Dropdown>
         </div>
-        <hr className='jfpContent-wrapper--line line-2x' />
         {/* tone of voice */}
         <div className='jfpContent-wrapper--ai-persona-title'>
           <div>
@@ -202,7 +203,6 @@ const AiPersonaStep = () => {
             <p>{t(ALL_TEXTS.SELECT_HOW_TO_COMMUNICATE)}</p>
           </div>
           <Dropdown
-            className='max-w-xs'
             colorStyle='default'
             size='small'
             theme='light'
@@ -219,10 +219,49 @@ const AiPersonaStep = () => {
             ))}
           </Dropdown>
         </div>
-      </div>
-      <div className='jfpContent-wrapper--actions'>
-        <BackButton />
-        <NextButton />
+        <hr className='jfpContent-wrapper--line line-2x' />
+        {/* greeting message */}
+        <div className='jfpContent-wrapper--ai-persona-title'>
+          <div className='jfpContent-wrapper--ai-persona-greeting'>
+            <div>
+              <h3>{t(ALL_TEXTS.GREETING_MESSAGE)}</h3>
+              <p>{t(ALL_TEXTS.SHOW_A_MESSAGE_TO_GREET_USERS)}</p>
+            </div>
+            <Toggle checked={greetingBool} onChange={() => handleChangeGreeting(!greetingBool)} />
+          </div>
+          <Input
+            maxLength={80}
+            value={greetingMessageState}
+            placeholder={t(ALL_TEXTS.HOW_CAN_I_HELP_YOU)}
+            onChange={e => handleChangeGreetingText(e.target.value)}
+            disabled={!greetingBool}
+          />
+        </div>
+        <hr className='jfpContent-wrapper--line' />
+        {/* agent chattiness */}
+        <div className='jfpContent-wrapper--ai-persona-title'>
+          <div>
+            <h3>{t(ALL_TEXTS.CHATTINESS)}</h3>
+            <p>{t(ALL_TEXTS.SPECIFY_THE_DESIRED_LEVEL_OF_DETAIL_IN_THE_AGENTS_RESPONSES)}</p>
+          </div>
+          <input
+            className='chattiness-slider'
+            type='range'
+            min='1'
+            max={CHATTINESS_LEVELS.length}
+            value={chattinessState}
+            onChange={e => handleAgentPropChange('chattiness', e.target.value)}
+            style={{ '--value': `${indexToPercentage(chattinessState) || '0%'}` }}
+          />
+          <div className='chattiness-slider--labels'>
+            {CHATTINESS_LEVELS.map(level => (
+              <div key={level.title}>
+                <span>{level.title}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <ChatGuidelines />
       </div>
     </>
   );

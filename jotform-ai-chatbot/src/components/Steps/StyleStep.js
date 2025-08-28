@@ -13,11 +13,9 @@ import { useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
 import {
   getThemeColor,
-  initAgent, isValidHex, isValidRgba, t,
+  isValidHex, isValidRgba, t,
   toCamelCase
 } from '../../utils';
-import BackButton from '../BackButton';
-import NextButton from '../NextButton';
 import Dropdown from '../UI/Dropdown';
 import InputColor from '../UI/InputColor';
 
@@ -28,21 +26,13 @@ const StyleStep = () => {
     step,
     themeName,
     previewAgentId,
-    customizations,
     themeCustomizations,
-    selectedAvatar,
     platformSettings: { PROVIDER_API_KEY }
   } = state;
 
   useEffect(() => {
     saveInstallment(`${toCamelCase(step)}Step`);
   }, []);
-
-  useEffect(() => {
-    initAgent({
-      agentId: previewAgentId, customizations, customAvatarUrl: selectedAvatar.avatarIconLink, ...themeCustomizations
-    });
-  }, [previewAgentId, themeName, themeCustomizations, selectedAvatar]);
 
   const handleChangeTheme = async themeNm => {
     await asyncDispatch(
@@ -82,10 +72,6 @@ const StyleStep = () => {
 
   return (
     <>
-      <div className='jfpContent-wrapper--title'>
-        <h2>{t(ALL_TEXTS.SETUP_YOUR_AI_CHATBOT)}</h2>
-        <p>{t(ALL_TEXTS.CONFIGURE_OPTIONS_FOR_AI_CHATBOT)}</p>
-      </div>
       <div className='jfpContent-wrapper--style'>
         <ul className='jfpContent-wrapper--style-colors'>
           <h3>{t(ALL_TEXTS.COLOR_SCHEME)}</h3>
@@ -148,7 +134,7 @@ const StyleStep = () => {
             </Dropdown>
           </div>
           <div className='jfpContent-wrapper--style-color-select-col'>
-            <h4>{t(ALL_TEXTS.FONT_COLOR)}</h4>
+            <h4>{t(ALL_TEXTS.CHAT_THEME_COLOR)}</h4>
             <InputColor
               defaultValue={themeCustomizations[THEME_CUSTOMIZATION_KEYS.FONT_COLOR]}
               onChange={handleInputChange(THEME_CUSTOMIZATION_KEYS.FONT_COLOR)}
@@ -173,10 +159,6 @@ const StyleStep = () => {
             />
           </div>
         </div>
-      </div>
-      <div className='jfpContent-wrapper--actions'>
-        <BackButton />
-        <NextButton />
       </div>
     </>
   );

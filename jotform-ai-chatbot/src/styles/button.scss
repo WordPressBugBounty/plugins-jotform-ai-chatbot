@@ -11,6 +11,7 @@
   border: 0;
   cursor: pointer;
   text-decoration: none;
+  position: relative;
   &:hover,
   &:focus {
     color: var(--jfv-white);
@@ -31,6 +32,9 @@
   }
   &--icon {
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   &--loading {
     pointer-events: none;
@@ -70,7 +74,7 @@
   // Sizes
   &--small {
     height: 32px;
-    padding: 0 8px;
+    padding: 0 12px;
     .jfButton--text {
       font-size: 14px;
       line-height: 18px;
@@ -79,10 +83,18 @@
     .jfButton--icon {
       width: 16px;
       height: 16px;
+      svg {
+        width: 16px;
+        height: 16px;
+      }
     }
     .jfButton--spin {
       width: 16px;
       height: 16px;
+      svg {
+        width: 16px;
+        height: 16px;
+      }
     }
   }
   &--medium {
@@ -96,10 +108,18 @@
     .jfButton--icon {
       width: 20px;
       height: 20px;
+      svg {
+        width: 20px;
+        height: 20px;
+      }
     }
     .jfButton--spin {
       width: 20px;
       height: 20px;
+      svg {
+        width: 20px;
+        height: 20px;
+      }
     }
   }
   &--large {
@@ -113,10 +133,18 @@
     .jfButton--icon {
       width: 24px;
       height: 24px;
+      svg {
+        width: 24px;
+        height: 24px;
+      }
     }
     .jfButton--spin {
       width: 24px;
       height: 24px;
+      svg {
+        width: 24px;
+        height: 24px;
+      }
     }
   }
   // Colors
@@ -375,10 +403,39 @@
       }
     }
   }
+  &.isPulseAnimation {
+    &:after,
+    &:before {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      animation: animPulse 2s infinite;
+      pointer-events: none;
+      border-radius: inherit;
+      opacity: 0;
+      outline: 0 solid #0075e3;
+    }
+    &:after {
+      animation-delay: 0.54s;
+    }
+  }
 }
 
 @keyframes spin-loader {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes animPulse {
+  25% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+    outline-width: 10px;
   }
 }

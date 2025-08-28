@@ -1,22 +1,30 @@
 .jfMaterialList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
   &--item {
     background: var(--jfv-white);
     border-radius: 4px;
     overflow: hidden;
     width: 100%;
-    box-shadow: 0 2px 4px #252d5b0a, 0 8px 16px #545f6f29;
+    box-shadow:
+      0 2px 4px #252d5b0a,
+      0 8px 16px #545f6f29;
     &.isActionRequired {
       border: 1px solid var(--jfv-blue-500);
-      outline: 2px solid var(--jfv-blue-100); 
+      outline: 2px solid var(--jfv-blue-100);
     }
     &-content {
       padding: 16px 20px 20px;
       border-bottom: 1px solid var(--jfv-navy-100);
       color: var(--jfv-navy-500);
+      width: 100%;
       display: flex;
       flex-direction: column;
       gap: 16px;
       &-title {
+        width: 100%;
         display: flex;
         align-items: center;
         gap: 12px;
@@ -30,9 +38,17 @@
             background-color: rgba(100, 178, 0, 0.2);
             color: var(--jfv-green-500);
           }
-          &.isLink {
-            background-color: rgba(255,182,41, 0.2);
+          &.isDocument {
+            background-color: rgb(0, 153, 255, 0.2);
+            color: var(--jfv-blue-400);
+          }
+          &.isURL {
+            background-color: rgba(255, 182, 41, 0.2);
             color: var(--jfv-yellow-400);
+          }
+          &.isQA {
+            background-color: rgb(62, 98, 200, 0.2);
+            color: var(--jfv-pdf-default);
           }
         }
         &-text {
@@ -42,25 +58,57 @@
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          color: #343c6a;
+          font-size: 12px;
+          line-height: 16px;
+          @media screen and (max-width: 1440px) {
+            width: 100%;
+            max-width: 360px;
+          }
+          @media screen and (max-width: 1200px) {
+            max-width: 280px;
+          }
+          @media screen and (max-width: 1100px) {
+            max-width: 260px;
+          }
+          @media screen and (max-width: 1024px) {
+            max-width: unset;
+          }
           strong {
-            font-size: 16px;
-            line-height: 20px;
+            font-size: 14px;
+            line-height: 18px;
             font-weight: 500;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
           }
           span {
-            font-size: 14px;
-            line-height: 18px;
+            font-size: 12px;
+            line-height: 16px;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
           }
+          &-link {
+            font-size: 12px;
+            color: var(--jfv-blue-500);
+            text-decoration: underline;
+            transition: 0.15s all;
+            &:hover {
+              color: var(--jfv-blue-600);
+            }
+          }
         }
         .jfButton {
+          width: 22px;
+          height: 22px;
+          padding: 0;
           opacity: 0;
+          margin-left: auto;
           transition: opacity 0.2s;
+          svg {
+            transition: 0.1s all;
+          }
         }
         &:hover {
           .jfButton {
@@ -109,6 +157,37 @@
       }
     }
   }
+  &--no-result {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
+    flex-grow: 1;
+    @media screen and (min-width: 1280px) {
+      margin-top: 48px;
+    }
+    &-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      text-align: center;
+      &-title {
+        color: var(--jfv-navy-700);
+        font-size: 14px;
+        font-weight: 700;
+      }
+      &-desc {
+        color: var(--jfv-navy-300);
+        font-size: 12px;
+        font-weight: 500;
+      }
+    }
+  }
 }
 
 .jfMaterialItemContextMenu {
@@ -134,7 +213,7 @@
     }
   }
   &--panel {
-    z-index: 2;
+    z-index: 3;
     background: var(--jfv-navy-600);
     padding: 8px 0;
     border-radius: 4px;

@@ -11,6 +11,11 @@
   align-items: center;
   text-align: center;
   z-index: 101;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow:
+    0 16px 24px #545f6f29,
+    0 2px 8px #252d5b0a;
   @media screen and (max-width: 540px) {
     gap: 16px;
   }
@@ -29,10 +34,32 @@
       border-color: transparent #343c6a transparent transparent;
       animation: spin-loader 0.7s linear infinite;
     }
+    &.small {
+      width: 32px;
+      height: 32px;
+      border-width: 3px;
+      &:before {
+        border-width: 3px;
+      }
+    }
+    &.xsmall {
+      width: 24px;
+      height: 24px;
+      border-width: 2.5px;
+      &:before {
+        inset: -2px;
+        border-width: 2.5px;
+      }
+    }
+    &.dark-navy {
+      &:before {
+        border-color: transparent #0a1551 transparent transparent;
+      }
+    }
   }
   &--icon {
     border-radius: 16px;
-    background: linear-gradient(180deg, #9C4DD3 0%, #47106D 100%);
+    background: linear-gradient(180deg, #9c4dd3 0%, #47106d 100%);
     width: 120px;
     height: 120px;
     display: flex;
@@ -61,7 +88,7 @@
       justify-content: center;
       width: 100%;
       display: flex;
-      color: #0A1551;
+      color: #0a1551;
       font-size: 20px;
       font-weight: 500;
       line-height: 28px;

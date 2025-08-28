@@ -2,16 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
 
 import {
-  apiUsePlatformAgent,
-  getAIAgentsLimitExceeded,
-  saveInstallment
+  apiUsePlatformAgent, getAIAgentsLimitExceeded, saveInstallment
 } from '../../api';
 import IconArrowRight from '../../assets/svg/IconArrowRight.svg';
 import { ALL_TEXTS, PROMPTS } from '../../constants';
 import { useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
 import { isMobile, t, toCamelCase } from '../../utils';
-import BackButton from '../BackButton';
 import PromptSuggestion from '../PromptSuggestion';
 import AgentRadio from '../UI/AgentRadio';
 import Button from '../UI/Button';
@@ -36,20 +33,13 @@ const UseCaseStep = () => {
       PLATFORM_PAGE_CONTENTS,
       PLATFORM_KNOWLEDGE_BASE,
       PROVIDER_API_KEY
-    },
-    wordpressLandingAgentId
+    }
   } = state;
 
   const [activeButton, setActiveButton] = useState(null);
   const [useCaseText, setUseCaseText] = useState('');
   const [tab, setTab] = useState('create');
-  const [selectedAgent, setSelectedAgent] = useState(wordpressLandingAgentId || '');
-
-  useEffect(() => {
-    if (!wordpressLandingAgentId) return;
-    setTab('select');
-    setSelectedAgent(wordpressLandingAgentId);
-  }, [wordpressLandingAgentId]);
+  const [selectedAgent, setSelectedAgent] = useState('');
 
   useEffect(() => {
     if (!useCaseText) return;
@@ -92,14 +82,15 @@ const UseCaseStep = () => {
 
     if (tab === 'create') {
       Object.assign(data, { prompt });
+      saveInstallment('createAiChatbotButton');
     }
 
     if (tab === 'select') {
       Object.assign(data, { existingAgentID: selectedAgent });
+      saveInstallment('continueButton');
     }
 
     try {
-      saveInstallment(`createAiChatbotButton_${toCamelCase(step)}Step`);
       await asyncDispatch(
         () => apiUsePlatformAgent(data, PROVIDER_API_KEY),
         ACTION_CREATORS.usePlatformAgentRequest,
@@ -118,9 +109,6 @@ const UseCaseStep = () => {
 
   useEffect(() => {
     handlePromptChange('');
-    if (!wordpressLandingAgentId) {
-      setSelectedAgent('');
-    }
   }, [tab]);
 
   const getCtaText = () => {
@@ -137,15 +125,29 @@ const UseCaseStep = () => {
       </div>
       {!isEmpty(existingAgents) && (
         <div className='jfpContent-wrapper--tabs'>
+          <div
+            className='jfpContent-wrapper--tabs-toggle-active'
+            style={{
+              transform: tab === 'create'
+                ? 'translateX(0%) translateY(-50%)'
+                : 'translateX(100%) translateY(-50%)'
+            }}
+          />
           <Tab
             label={ALL_TEXTS.DESCRIBE}
             isActive={tab === 'create'}
-            onClick={() => setTab('create')}
+            onClick={() => {
+              setTab('create');
+              saveInstallment('useCaseStep_describeTab');
+            }}
           />
           <Tab
             label={ALL_TEXTS.SELECT_FROM_AGENTS}
             isActive={tab === 'select'}
-            onClick={() => setTab('select')}
+            onClick={() => {
+              setTab('select');
+              saveInstallment('useCaseStep_selectFromAgentsTab');
+            }}
           />
         </div>
       )}
@@ -179,8 +181,8 @@ const UseCaseStep = () => {
                   onClick={() => {
                     setActiveButton(data.buttonText);
                     setUseCaseText(data.text);
+                    saveInstallment('promptSuggestionButton');
                   }}
-                  data-fs-element={`Step: ${step} - ${data.buttonText} Button`}
                 >
                   {t(data.buttonText)}
                 </Button>
@@ -199,7 +201,7 @@ const UseCaseStep = () => {
                 onChange={() => setSelectedAgent(agent.uuid)}
                 avatarImage={agent.avatarIconLink}
                 label={agent.title}
-                description={`${agent.total_conversation_count} conversations. Last conversation on ${new Date(agent.updated_at).toLocaleDateString('en-US', {
+                description={`${agent.totalConversationCount} conversations. Last conversation on ${new Date(agent.updated_at).toLocaleDateString('en-US', {
                   month: 'short',
                   day: '2-digit',
                   year: 'numeric'
@@ -211,14 +213,12 @@ const UseCaseStep = () => {
       </div>
       <div className='jfpContent-wrapper--actions'>
         {/* use chatbot button */}
-        <BackButton />
         <Button
           loader={isUseAgentLoading}
           endIcon={<IconArrowRight />}
           onClick={handlePlatformUseAgent}
           disabled={isCreateButtonDisabled}
           className='forCreateAgent buttonRTL btn-pos-right'
-          data-fs-element={`Step: ${step} - ${isMobile() ? ALL_TEXTS.CREATE : ALL_TEXTS.CREATE_AI_CHATBOT} Button`}
         >
           {getCtaText()}
         </Button>

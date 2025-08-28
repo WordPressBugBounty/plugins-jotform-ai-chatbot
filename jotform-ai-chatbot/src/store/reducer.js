@@ -1,10 +1,8 @@
 /* eslint-disable complexity */
-import { reinitializeRequestLayer, saveInstallment } from '../api';
+import { reinitializeRequestLayer } from '../api';
 import {
-  AUTO_OPEN_CHAT_VALUES,
-  CUSTOMIZATION_KEYS, EU_PROVIDER_API_URL, EU_PROVIDER_URL, GREETING_MESSAGE, POSITION, STEPS, THEME_CUSTOMIZATION_KEYS,
-  VERBAL_TOGGLE,
-  VISIBILITY_LAYOUT
+  AUTO_OPEN_CHAT_VALUES, CUSTOMIZATION_KEYS, DEVICES, EU_PROVIDER_API_URL, EU_PROVIDER_URL,
+  GREETING_MESSAGE, POSITION, STEPS, THEME_CUSTOMIZATION_KEYS, VERBAL_TOGGLE, VISIBILITY_LAYOUT, VISIBILITY_TOGGLE
 } from '../constants';
 import {
   getAvatarIdFromUrl,
@@ -12,29 +10,32 @@ import {
   isValidJotformUrl,
   normalizeAvatarProps,
   platformSettings as platformSettingsSingleton,
-  resetPlatformPages
+  removeStepFromQueryParams
 } from '../utils';
 import {
   ADD_MATERIAL,
-  BULK_DELETE_MATERIAL, CHECK_AI_CHATBOT_LIMITS, CHECK_FROM_WP_LANDING, DELETE_MATERIAL, DELETE_PLATFORM_AGENT,
-  FETCH_USER, GET_ALL_AGENTS, GET_AVATARS, GET_PLATFORM_AGENT, GET_PLATFORM_SETTINGS,
-  NEXT_STEP, PREVIOUS_STEP, RESET_AVATARS, SAVE_PLATFORM_AGENT_EMBED, SAVE_PLATFORM_AGENT_PAGES,
-  SAVE_PROVIDER_API_KEY, SELECT_AGENT, SET_AGENT_CHATTINESS,
-  SET_AGENT_NAME, SET_AGENT_ROLE, SET_AVATARS, SET_GET_PLATFORM_AGENT_ONCE, SET_LANGUAGE, SET_LIMIT_DIALOG_VISIBLE, SET_PAGE_SAVE_DISABLED,
-  SET_PLATFORM_SETTINGS, SET_PROMPT, SET_PROVIDER_API_KEY, SET_SELECTED_PLATFORM_PAGES,
-  SET_STEP, SET_TONE_OF_VOICE, SET_USER, SET_WP_PAGE_SELECTION_SEEN, TERMS_ACCEPTED, UPDATE_CUSTOMIZATION,
-  UPDATE_MATERIAL, UPDATE_THEME, UPDATE_THEME_PROPERTY, USE_AGENT, USE_PLATFORM_AGENT
+  BULK_DELETE_MATERIAL, CHECK_AI_CHATBOT_LIMITS,
+  DELETE_MATERIAL, DELETE_PLATFORM_AGENT,
+  FETCH_CHATS, FETCH_CONVERSATIONS, FETCH_MATERIALS, FETCH_USER, GET_ALL_AGENTS, GET_AVATARS, GET_PLATFORM_AGENT,
+  GET_PLATFORM_SETTINGS, PUBLISH_AGENT, RESET_AVATARS,
+  SAVE_PLATFORM_AGENT_PAGES, SAVE_PROVIDER_API_KEY, SET_AGENT_CHATTINESS,
+  SET_AGENT_NAME, SET_AGENT_ROLE, SET_AVATARS, SET_FETCH_CONVERSATIONS_LOADING, SET_GET_PLATFORM_AGENT_ONCE, SET_IS_PUBLISHED, SET_LANGUAGE,
+  SET_LIMIT_DIALOG_VISIBLE, SET_PERSONA, SET_PLATFORM_SETTINGS, SET_PROMPT,
+  SET_PROVIDER_API_KEY, SET_SELECTED_PAGES, SET_STEP, SET_TONE_OF_VOICE, SET_USER,
+  SET_VISIBLE_DEVICE, TERMS_ACCEPTED, UPDATE_CUSTOMIZATION,
+  UPDATE_MATERIAL, UPDATE_THEME, UPDATE_THEME_PROPERTY, USE_PLATFORM_AGENT
 } from './actions';
 
 const defaultSelectedAvatar = {
   id: 0, avatarName: '', avatarIconLink: '', avatarLink: '', avatarType: '', propmt: ''
 };
 
+const defaultSelectedPages = { showOn: [], hideOn: [], active: VISIBILITY_TOGGLE.SHOW_ON.value };
+
 export const initialState = {
   user: null,
   termsChecked: false,
   step: STEPS.INITIAL,
-  selectedTemplateAgentId: null,
   agentName: '',
   agentRole: '',
   agentChattiness: '1',
@@ -42,12 +43,11 @@ export const initialState = {
   agentToneOfVoice: '',
   selectedAvatar: defaultSelectedAvatar,
   previewAgentId: null,
+  activeViewId: null,
   themeName: null,
   materials: [],
+  materialsLoading: false,
   errorMessage: '',
-  isUseAgentLoading: false,
-  isInitialLoading: true,
-  isWpPageSelectionSeen: false,
   allAgents: {
     loading: false,
     items: []
@@ -73,51 +73,41 @@ export const initialState = {
     [THEME_CUSTOMIZATION_KEYS.BUTTON_BG_COLOR]: '',
     [THEME_CUSTOMIZATION_KEYS.BUTTON_ICON_BG_COLOR]: ''
   },
-  // platform agent
   prompt: '',
-  isSavePlatformAgentEmbedLoading: false,
+  // loading states
+  isUseAgentLoading: false,
+  isInitialLoading: true,
+  isPlatformSettingsLoading: true,
+  isInitialPlatformSettingsReady: false,
+  isPublishLoading: false,
   isDeletePlatformAgentLoading: false,
   isSavePlatformAgentPagesLoading: false,
-  isPlatformSettingsLoading: false,
-  isInitialPlatformSettingsReady: false,
-  isPageSaveDisabled: true,
   tryGetPlatformAgentOnce: false,
-  selectedPlatformPages: ['all'],
+  selectedPages: defaultSelectedPages,
   platformSettings: { ...platformSettingsSingleton },
   refetchUser: false,
-  wordpressLandingAgentId: null
+  persona: '',
+  visibleDevice: DEVICES[0].value,
+  conversations: {
+    loading: false,
+    items: [],
+    lastUUID: '',
+    allConversationsFetched: false
+  },
+  chats: {
+    loading: false,
+    items: {}
+  },
+  isPublished: false
 };
 
 export const wizardReducer = (state, action) => {
   switch (action.type) {
-    // next step
-    case NEXT_STEP:
-      if (state.step === STEPS.INITIAL) return { ...state, step: STEPS.USECASE_SELECTION };
-      if (state.step === STEPS.USECASE_SELECTION) return { ...state, step: STEPS.CUSTOMIZATION };
-      if (state.step === STEPS.CUSTOMIZATION) return { ...state, step: STEPS.AVATAR };
-      if (state.step === STEPS.AVATAR) return { ...state, step: STEPS.AI_PERSONA };
-      if (state.step === STEPS.AI_PERSONA) return { ...state, step: STEPS.STYLE };
-      if (state.step === STEPS.STYLE) return { ...state, step: STEPS.KNOWLEDGE };
-      if (state.step === STEPS.KNOWLEDGE) return { ...state, step: STEPS.WP_PAGE_SELECTION };
-      return state;
-    // previous step
-    case PREVIOUS_STEP:
-      if (state.step === STEPS.WP_PAGE_SELECTION) return { ...state, step: STEPS.KNOWLEDGE };
-      if (state.step === STEPS.KNOWLEDGE) return { ...state, step: STEPS.STYLE };
-      if (state.step === STEPS.STYLE) return { ...state, step: STEPS.AI_PERSONA };
-      if (state.step === STEPS.AI_PERSONA) return { ...state, step: STEPS.AVATAR };
-      if (state.step === STEPS.AVATAR) return { ...state, step: STEPS.CUSTOMIZATION };
-      if (state.step === STEPS.CUSTOMIZATION) return { ...state, step: STEPS.USECASE_SELECTION };
-      if (state.step === STEPS.USECASE_SELECTION) return { ...state, step: STEPS.INITIAL, selectedTemplateAgentId: null };
-      return state;
     case SET_STEP:
       return { ...state, step: action.payload.step };
     // fetch user
     case FETCH_USER.REQUEST:
-      return {
-        ...state,
-        isInitialLoading: true
-      };
+      return state;
     case FETCH_USER.SUCCESS:
       const user = action.payload.result;
       return {
@@ -146,20 +136,14 @@ export const wizardReducer = (state, action) => {
         isInitialLoading: false,
         ...errorState
       };
-    // select agent
-    case SELECT_AGENT:
-      return { ...state, selectedTemplateAgentId: action.payload.selectedTemplateAgentId };
     // use agent
-    case USE_AGENT.REQUEST:
     case USE_PLATFORM_AGENT.REQUEST:
-    case GET_PLATFORM_AGENT.REQUEST:
       return { ...state, isUseAgentLoading: true };
-    case USE_AGENT.SUCCESS:
     case USE_PLATFORM_AGENT.SUCCESS:
     case GET_PLATFORM_AGENT.SUCCESS:
       const {
         result: {
-          content = undefined, agentID = '', agentProperties = {}, agentMaterials = [], agentName, chatbotEmbedSrc
+          content = undefined, agentID = '', agentProperties = {}, agentMaterials = [], agentName, chatbotEmbedSrc, activeViewId = ''
         },
         step
       } = action.payload;
@@ -182,8 +166,9 @@ export const wizardReducer = (state, action) => {
       };
       return {
         ...state,
-        step: step || STEPS.CUSTOMIZATION,
+        step: step || STEPS.AI_PERSONA,
         previewAgentId: agentID,
+        activeViewId,
         agentName,
         agentRole: agentProperties.role,
         agentChattiness: agentProperties.chattiness,
@@ -207,10 +192,11 @@ export const wizardReducer = (state, action) => {
         },
         avatars: [{ ...currentAvatar }, ...state.avatars.filter(avt => avt.id !== state.selectedAvatar.id)],
         materials: agentMaterials,
+        persona: agentProperties.persona,
+        themeName: agentProperties.activeTheme,
         isUseAgentLoading: false,
         isInitialLoading: false
       };
-    case USE_AGENT.ERROR:
     case USE_PLATFORM_AGENT.ERROR:
     case GET_PLATFORM_AGENT.ERROR:
       const { tryOnce = false } = action.payload;
@@ -237,6 +223,13 @@ export const wizardReducer = (state, action) => {
       };
     case UPDATE_THEME_PROPERTY.SUCCESS:
       return { ...state, themeCustomizations: { ...state.themeCustomizations, [action.payload.result.props?.prop]: action.payload.result.props?.value } };
+    case FETCH_MATERIALS.REQUEST:
+      return { ...state, materialsLoading: true };
+    case FETCH_MATERIALS.SUCCESS:
+      if (action.payload.result?.length === 0) return { ...state, materialsLoading: false };
+      return { ...state, materials: action.payload.result, materialsLoading: false };
+    case FETCH_MATERIALS.ERROR:
+      return { ...state, materialsLoading: false };
     case ADD_MATERIAL.SUCCESS:
       return { ...state, materials: [...state.materials, { ...action.payload.result, status: 'PROCESSED' }] }; // socket connection is required to get the real status
     case UPDATE_MATERIAL.SUCCESS:
@@ -256,13 +249,12 @@ export const wizardReducer = (state, action) => {
       return { ...state, materials: withoutBulkDeletedMaterials };
     // check ai chatbot limits
     case CHECK_AI_CHATBOT_LIMITS.REQUEST: {
-      return { ...state, isUseAgentLoading: true };
+      return { ...state };
     }
     case CHECK_AI_CHATBOT_LIMITS.SUCCESS: {
       if (typeof action.payload.result === 'boolean' && action.payload.result === true) {
         return {
           ...state,
-          isUseAgentLoading: false,
           isLimitDialogVisible: true
         };
       }
@@ -270,7 +262,7 @@ export const wizardReducer = (state, action) => {
     }
     case CHECK_AI_CHATBOT_LIMITS.ERROR: {
       console.error('chatbot limits fetch error', action.payload);
-      return { ...state, isUseAgentLoading: false };
+      return state;
     }
     case SET_PROMPT: {
       return { ...state, prompt: action.payload.prompt };
@@ -290,15 +282,21 @@ export const wizardReducer = (state, action) => {
       platformSettingsSingleton.PLATFORM = data.PLATFORM;
       platformSettingsSingleton.PLATFORM_DOMAIN = data.PLATFORM_DOMAIN;
       platformSettingsSingleton.PLATFORM_PAGES = data.PLATFORM_PAGES;
+      platformSettingsSingleton.PLATFORM_CHATBOT_PAGES = data.PLATFORM_CHATBOT_PAGES;
       platformSettingsSingleton.PLATFORM_PAGE_CONTENTS = data.PLATFORM_PAGE_CONTENTS;
       platformSettingsSingleton.PLATFORM_PREVIEW_URL = data.PLATFORM_PREVIEW_URL;
       platformSettingsSingleton.PLATFORM_KNOWLEDGE_BASE = data.PLATFORM_KNOWLEDGE_BASE;
+      platformSettingsSingleton.PLATFORM_DEVICE = data.PLATFORM_DEVICE;
+      platformSettingsSingleton.PLATFORM_CHATBOT_PUBLISHED = data.PLATFORM_CHATBOT_PUBLISHED;
+      platformSettingsSingleton.PLATFORM_PLUGIN_VERSION = data.PLATFORM_PLUGIN_VERSION;
       reinitializeRequestLayer();
-      saveInstallment();
       return {
         ...state,
         platformSettings: { ...state.platformSettings, ...data },
-        isPlatformSettingsLoading: false
+        isPlatformSettingsLoading: false,
+        visibleDevice: data.PLATFORM_DEVICE,
+        selectedPages: data.PLATFORM_CHATBOT_PAGES,
+        isPublished: data.PLATFORM_CHATBOT_PUBLISHED
       };
     }
     case GET_PLATFORM_SETTINGS.ERROR: {
@@ -307,13 +305,20 @@ export const wizardReducer = (state, action) => {
     case SET_PLATFORM_SETTINGS: {
       return { ...state, platformSettings: action.payload.platformSettings, isInitialPlatformSettingsReady: true };
     }
-    // save platform agent embed
-    case SAVE_PLATFORM_AGENT_EMBED.REQUEST:
-      return { ...state, isSavePlatformAgentEmbedLoading: true };
-    case SAVE_PLATFORM_AGENT_EMBED.SUCCESS:
-      return { ...state, isSavePlatformAgentEmbedLoading: false };
-    case SAVE_PLATFORM_AGENT_EMBED.ERROR:
-      return { ...state, isSavePlatformAgentEmbedLoading: false, errorMessage: action.payload.result?.message };
+    // publish, unpublish, preview
+    case PUBLISH_AGENT.REQUEST:
+      return {
+        ...state,
+        ...(['embed', 'unpublish'].includes(action.payload.key) && { isPublishLoading: true })
+      };
+    case PUBLISH_AGENT.SUCCESS:
+      return {
+        ...state,
+        isPublishLoading: false,
+        ...(['embed', 'unpublish'].includes(action.payload.key) && { isPublished: action.payload.key === 'embed' })
+      };
+    case PUBLISH_AGENT.ERROR:
+      return { ...state, isPublishLoading: false, errorMessage: action.payload.result?.message };
     // save platform agent pages
     case SAVE_PLATFORM_AGENT_PAGES.REQUEST:
       return { ...state, isSavePlatformAgentPagesLoading: true };
@@ -328,8 +333,9 @@ export const wizardReducer = (state, action) => {
         isDeletePlatformAgentLoading: true
       };
     case DELETE_PLATFORM_AGENT.SUCCESS:
-      const resetedPages = resetPlatformPages(state.platformSettings.PLATFORM_PAGES);
-      platformSettingsSingleton.PLATFORM_PAGES = resetedPages;
+      removeStepFromQueryParams();
+      platformSettingsSingleton.PLATFORM_CHATBOT_PAGES = defaultSelectedPages;
+      platformSettingsSingleton.PLATFORM_CHATBOT_PUBLISHED = false;
       return {
         ...state,
         step: STEPS.USECASE_SELECTION,
@@ -341,8 +347,11 @@ export const wizardReducer = (state, action) => {
         prompt: '',
         platformSettings: {
           ...state.platformSettings,
-          PLATFORM_PAGES: resetedPages
-        }
+          PLATFORM_CHATBOT_PAGES: defaultSelectedPages,
+          PLATFORM_CHATBOT_PUBLISHED: false
+        },
+        selectedPages: defaultSelectedPages,
+        isPublished: false
       };
     case DELETE_PLATFORM_AGENT.ERROR:
       return { ...state, isDeletePlatformAgentLoading: false };
@@ -360,15 +369,10 @@ export const wizardReducer = (state, action) => {
       };
     case SAVE_PROVIDER_API_KEY.ERROR:
       return { ...state, errorMessage: action.payload.result?.message };
-    case SET_PAGE_SAVE_DISABLED:
+    case SET_SELECTED_PAGES:
       return {
         ...state,
-        isPageSaveDisabled: action.payload.isDisabled
-      };
-    case SET_SELECTED_PLATFORM_PAGES:
-      return {
-        ...state,
-        selectedPlatformPages: action.payload.selectedPages
+        selectedPages: action.payload.selectedPages
       };
     case SET_PROVIDER_API_KEY:
       return {
@@ -433,11 +437,6 @@ export const wizardReducer = (state, action) => {
         ...state,
         agentToneOfVoice: action.payload.toneOfVoice
       };
-    case SET_WP_PAGE_SELECTION_SEEN:
-      return {
-        ...state,
-        isWpPageSelectionSeen: true
-      };
     case GET_ALL_AGENTS.REQUEST:
       return {
         ...state,
@@ -467,10 +466,70 @@ export const wizardReducer = (state, action) => {
         ...state,
         isLimitDialogVisible: action.payload.isLimitDialogVisible
       };
-    case CHECK_FROM_WP_LANDING.SUCCESS:
+    case SET_PERSONA:
       return {
         ...state,
-        wordpressLandingAgentId: action.payload.result?.content === false ? false : action.payload.result
+        persona: action.payload.persona
+      };
+    case SET_VISIBLE_DEVICE:
+      return {
+        ...state,
+        visibleDevice: action.payload.visibleDevice
+      };
+    // fetch conversations
+    case FETCH_CONVERSATIONS.REQUEST:
+      return {
+        ...state,
+        conversations: { ...state.conversations, loading: true }
+      };
+    case FETCH_CONVERSATIONS.SUCCESS:
+      const conv = action.payload.result;
+      const lastUUID = conv[conv.length - 1]?.id || '';
+      return {
+        ...state,
+        conversations: {
+          items: [...state.conversations.items, ...conv],
+          lastUUID,
+          loading: true,
+          allConversationsFetched: conv?.length === 0
+        }
+      };
+    case FETCH_CONVERSATIONS.ERROR:
+      return {
+        ...state,
+        conversations: { ...state.conversations, loading: false }
+      };
+    case SET_FETCH_CONVERSATIONS_LOADING:
+      return {
+        ...state,
+        conversations: {
+          ...state.conversations,
+          loading: action.payload.loading
+        }
+      };
+    // fetch chats
+    case FETCH_CHATS.REQUEST:
+      return {
+        ...state,
+        chats: { ...state.chats, loading: true }
+      };
+    case FETCH_CHATS.SUCCESS:
+      return {
+        ...state,
+        chats: {
+          items: { ...state.chats.items, ...action.payload.result },
+          loading: false
+        }
+      };
+    case FETCH_CHATS.ERROR:
+      return {
+        ...state,
+        chats: { ...state.chats, loading: false }
+      };
+    case SET_IS_PUBLISHED:
+      return {
+        ...state,
+        isPublished: action.payload.isPublished
       };
     default:
       return state;

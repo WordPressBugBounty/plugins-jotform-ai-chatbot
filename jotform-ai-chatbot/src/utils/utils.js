@@ -1,9 +1,13 @@
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import jsBeautify from 'js-beautify';
 import { createRoot } from 'react-dom/client';
 
 import ChatbotPlaceholder from '../assets/svg/chatbot-no-avatar.svg';
 import {
-  CUSTOMIZATION_KEYS, GREETING_MESSAGE, KEY_KEYCODE_LIST, PLATFORMS, URL_REGEX
+  CUSTOMIZATION_KEYS, GREETING_MESSAGE, KEY_KEYCODE_LIST, PLATFORMS, STEPS, URL_REGEX
 } from '../constants';
 import { platformSettings } from './platformSingleton';
 
@@ -26,13 +30,6 @@ export const isMobile = () => global.innerWidth <= 1024;
 
 export const beautifedMarkup = code => jsBeautify.html_beautify(code, { indent_size: 2, wrap_line_length: 100, inline: ['*'] });
 
-export const removeObjectKey = (obj, keyToRemove) => {
-  const { [keyToRemove]: _, ...newObj } = obj;
-  return newObj;
-};
-
-export const resetPlatformPages = pages => pages.map(page => ({ ...page, selected: '1' }));
-
 export const unicodeEncode = input => String(input)
   .replace(/\\/g, '\\\\') // Escape backslashes
   .replace(/"/g, '\\"') // Escape double quotes
@@ -44,48 +41,7 @@ export const unicodeEncode = input => String(input)
 
 export const getEmbedSource = () => platformSettings.PROVIDER_CHATBOT_EMBED_SRC;
 
-export const createEmbed = ({
-  agentId,
-  greeting,
-  greetingMessage,
-  pulse,
-  position,
-  autoOpenChatIn,
-  layout,
-  chatbotDomain,
-  agentBackgroundStart,
-  agentBackgroundEnd,
-  sendButtonBackground,
-  sendButtonIconColor
-}) => {
-  const cbDomain = `${chatbotDomain}`;
-  return `<script src="${getEmbedSource()}"></script>
-  <script>
-    window.addEventListener("DOMContentLoaded", function() {
-      window.AgentInitializer.init({
-        rootId: "JotformAgent-${unicodeEncode(agentId)}",
-        formID: "${unicodeEncode(agentId)}",
-        queryParams: ["skipWelcome=1", "maximizable=1"],
-        domain: "${unicodeEncode(chatbotDomain ? cbDomain : global.location.origin)}",
-        isInitialOpen: false,
-        isDraggable: false,
-        background: "linear-gradient(180deg, ${agentBackgroundStart} 0%, ${agentBackgroundEnd} 100%)",
-        buttonBackgroundColor: "${sendButtonBackground}",
-        buttonIconColor: "${sendButtonIconColor}",
-        variant: false,
-        customizations: {
-          greeting: "${unicodeEncode(greeting)}",
-          greetingMessage: "${unicodeEncode(greetingMessage)}",
-          pulse: "${unicodeEncode(pulse)}",
-          position: "${unicodeEncode(position)}",
-          autoOpenChatIn: "${unicodeEncode(autoOpenChatIn)}",
-          layout: "${unicodeEncode(layout)}",
-          openByDefault: "No"
-        }
-      });
-    });
-  </script>`;
-};
+export const createEmbed = ({ agentId }) => `<script src='https://cdn.jotfor.ms/agent/embedjs/${unicodeEncode(agentId)}/embed.js?skipWelcome=1&maximizable=1'></script>`;
 
 export const resetAgentPreviewRoot = () => {
   const rootEl = document.querySelector('#agent-preview-root');
@@ -169,6 +125,18 @@ export const getNonValidInputs = (input, type = 'text') => {
   }
   nonValidInputs.push(...getEmptyInputs(input, type));
   return nonValidInputs;
+};
+
+export const addHttpsPrefix = (url) => {
+  if (typeof url !== 'string') return '';
+
+  const trimmed = url.trim();
+
+  if (/^https?:\/\//i.test(trimmed)) {
+    return trimmed;
+  }
+
+  return `https://${trimmed}`;
 };
 
 export const convertServerDateToUserTimezone = (date, timeZone, dateFormat) => window.moment.tz(date, 'America/New_York').tz(timeZone).format(dateFormat);
@@ -285,4 +253,108 @@ export const isValidJotformUrl = url => /^https?:\/\/(cdn\.jotfor\.ms|(?:[a-z0-9
 export const getThemeColor = (theme, property) => {
   const colorProp = theme.properties.find(({ prop }) => prop === property);
   return colorProp?.value || '';
+};
+
+export const generateTempId = () => Math.random().toString(36).slice(2, 11);
+
+export const isConversationsPage = () => {
+  const params = new URLSearchParams(window.location.search);
+  const page = params.get('page');
+  return page === 'jotform_ai_chatbot_conversations';
+};
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(customParseFormat);
+
+export const getElapsedTime = (timestamp) => {
+  const zone = 'America/New_York';
+  const formats = [
+    'M/D/YYYY, h:mm:ss A', // e.g. 7/16/2025, 6:52:14 AM
+    'M/D/YYYY h:mm:ss A', // fallback if no comma
+    'YYYY-MM-DD HH:mm:ss' // ISO-style fallback
+  ];
+
+  let parsed = null;
+
+  formats.forEach(format => {
+    if (parsed) return;
+
+    try {
+      const candidate = dayjs.tz(timestamp, format, zone);
+      if (candidate.isValid() && Number.isFinite(candidate.valueOf())) {
+        parsed = candidate;
+      }
+    } catch {
+      // Silently ignore format mismatch
+    }
+  });
+
+  if (!parsed) return 'Invalid date';
+
+  const now = dayjs();
+  const diffInSeconds = now.diff(parsed, 'second');
+
+  if (diffInSeconds < 60) return `${diffInSeconds}s`;
+
+  const diffInMinutes = now.diff(parsed, 'minute');
+  if (diffInMinutes < 60) return `${diffInMinutes}m`;
+
+  const diffInHours = now.diff(parsed, 'hour');
+  if (diffInHours < 24) return `${diffInHours}h`;
+
+  const diffInDays = now.diff(parsed, 'day');
+  if (diffInDays < 365) return `${diffInDays}d`;
+
+  return `${now.diff(parsed, 'year')}y`;
+};
+
+export const scrollToBottom = (element) => {
+  if (!element) return;
+  const el = element;
+  el.scrollTop = element.scrollHeight + 128;
+};
+
+const showElement = (element) => {
+  if (!element) return;
+  // eslint-disable-next-line no-param-reassign
+  element.style.display = 'block';
+};
+
+const hideElement = (element) => {
+  if (!element) return;
+  // eslint-disable-next-line no-param-reassign
+  element.style.display = 'none';
+};
+
+export const toggleConversationItems = ({ action }) => {
+  const sidebarMenu = document.querySelector('#toplevel_page_jotform_ai_chatbot > ul');
+  const adminBarMenu = document.querySelector('#wp-admin-bar-jotform_ai_chatbot .ab-submenu');
+  if (action === 'show') {
+    showElement(sidebarMenu);
+    showElement(adminBarMenu);
+  }
+  if (action === 'hide') {
+    hideElement(sidebarMenu);
+    hideElement(adminBarMenu);
+  }
+};
+
+export const isNumericString = (value) => typeof value === 'string' && value.trim() !== '' && !!Number(value);
+
+export const setStepAsQueryParam = (step) => {
+  const {
+    AI_PERSONA, STYLE, VISIBILITY, KNOWLEDGE
+  } = STEPS;
+  const url = new URL(window.location.href);
+  if ([AI_PERSONA, STYLE, VISIBILITY, KNOWLEDGE].includes(step)) {
+    url.searchParams.set('current_tab', step.toLowerCase());
+  }
+  window.history.replaceState({}, '', url.toString());
+};
+
+export const removeStepFromQueryParams = () => {
+  const url = new URL(window.location.href);
+  url.searchParams.delete('current_tab');
+  window.history.replaceState({}, '', url.toString());
 };

@@ -4,7 +4,7 @@ Contributors: Jotform
 Tags: AI, chatbot, chatGPT, helpdesk, live chat
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 2.5.0
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,10 +44,10 @@ If you have any questions or concerns regarding your online forms, chatbots, or 
 Discover all the features and capabilities of the Jotform AI Chatbot Plugin in our detailed [user guide](https://www.jotform.com/help/how-to-use-jotform-ai-chatbot-on-wordpress/?utm_source=wordpress&utm_medium=plugin_directory&utm_campaign=chatbot_plugin_content&utm_content=user_guide).
 
 = Why choose Jotform AI Chatbot? =
-⏱️**Time-saving**: Build and deploy chatbots in minutes.
-💰**Cost-effective**: Affordable pricing plans that grow with your business.
-💡**Enhanced user experience**: Offer 24-7 assistance to your website visitors.
-🔒**Secure and reliable**: Our AI Chatbots are powered by Jotform’s robust platform, ensuring the safety of your data.
+⏱️ **Time-saving**: Build and deploy chatbots in minutes.
+💰 **Cost-effective**: Affordable pricing plans that grow with your business.
+💡 **Enhanced user experience**: Offer 24-7 assistance to your website visitors.
+🔒 **Secure and reliable**: Our AI Chatbots are powered by Jotform’s robust platform, ensuring the safety of your data.
 
 = Who can benefit from Jotform AI Chatbot? =
 Jotform AI Chatbot is designed to meet the needs of various users and industries:
@@ -56,6 +56,13 @@ Jotform AI Chatbot is designed to meet the needs of various users and industries
 📚 **Educators and institutions**: Assist students with course schedules, answer FAQs, and collect feedback effortlessly.
 🎉 **Event organizers**: Simplify event registration, answer attendee questions, and provide real-time updates.
 💬 **Customer support teams**: Deliver 24-7 assistance to resolve user issues, answer common questions, and escalate complex queries when necessary.
+
+= 🔥 What's New in Version 3.0.0 =
+✨ **Conversations in Plugin** – view and manage user chats directly from your WordPress dashboard
+✨ **Improved UI** – a cleaner look for easier navigation
+✨ **Advanced Visibility** – control when and where your chatbot appears
+✨ **More Control** – fine-tune limits, tone, and escalation rules
+✨ **UX Improvements** – better flow, clearer errors, smoother interactions
 
 == External Services ==
 This plugin connects to external services to provide functionality and improve user experience. Below are the details of the external services used:
@@ -182,6 +189,13 @@ See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org
 5. How It Works
 
 == Changelog ==
+= 3.0.0 (2025-08-28) =
+* Feat: Added new conversations page to view and manage user chatbots
+* Feat: Added Advanced Visibility section, control when and where your chatbot appears
+* Update: Major UI imporvements, a cleaner look for easier navigation
+* Update: Major UX imporvements, better flow, cleaner errors, smoother interactions
+* Update: More control on the chatbot, fine-tune limits, tone, and escalation rules
+
 = 2.5.0 (2025-08-18) =
 * Update: New layout option for chatbot in customization section
 

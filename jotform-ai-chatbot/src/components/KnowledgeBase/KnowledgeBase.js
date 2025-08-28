@@ -5,7 +5,8 @@ import { array, bool, func } from 'prop-types';
 import '../../styles/knowledge-base.scss';
 
 import { TRAIN_TYPES } from '../../constants';
-import { IconMessagePlusFilled, IconPencilLineFilled } from '../UI/Icon';
+import { IconMessagePlusFilled } from '../UI/Icon';
+import AutoTrainInfoBox from './AutoTrainInfoBox';
 import InfoBox from './InfoBox';
 import MaterialEditor from './MaterialEditor';
 import MaterialList from './MaterialList';
@@ -49,19 +50,17 @@ const KnowledgeBase = ({
       return;
     }
     if (!isLoadingMaterials && materials.length === 0) {
-      setMaterialType('TEXT');
-      setStep('editor');
+      setStep('select');
     }
   }, [isLoadingMaterials, materials]);
 
   const handleBack = () => {
     const orderedSteps = ['list', 'select', 'editor'];
     const currStepIndex = orderedSteps.indexOf(step);
-    // const stepCount = isEditMode ? 2 : 1;
+    const stepCount = isEditMode ? 2 : 1;
     if (currStepIndex > 0) {
       setMaterialType('');
-      // setStep(orderedSteps[currStepIndex - stepCount]);
-      setStep(orderedSteps[0]);
+      setStep(orderedSteps[currStepIndex - stepCount]);
       setEditingMaterialId('');
     }
   };
@@ -99,16 +98,26 @@ const KnowledgeBase = ({
     />
   };
 
+  const isDetailsVisible = (step !== 'list');
+
   return (
     <div className='jfKnowledgeBase'>
+      {step === 'list' && !isLoadingMaterials && <AutoTrainInfoBox />}
+      {(step !== 'list') && (
       <InfoBox
         {...get(TRAIN_TYPES, materialType, {
-          name: isEditMode ? 'EDIT KNOWLEDGE' : 'KNOWLEDGE BASE',
-          desc: isEditMode ? 'Change your knowledge data.' : 'Add an information source to train the agent.',
-          icon: isEditMode ? <IconPencilLineFilled /> : <IconMessagePlusFilled />
+          name: 'Knowledge Base',
+          desc: 'Train your chatbot for context-aware responses to ensure accurate replies',
+          icon: <IconMessagePlusFilled />
         })}
         {...(shouldRenderBackButton(step, totalMaterials) && { isBackVisible: true, handleBack })}
+        {...(isDetailsVisible && {
+          isNameVisible: true,
+          isDescVisible: true,
+          isIconVisible: true
+        })}
       />
+      )}
       {stepComponents[step]}
     </div>
   );

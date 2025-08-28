@@ -27,7 +27,15 @@ const getBaseURL = () => {
 
 export const fetcUser = apiKey => getRequestLayer().get(`user?getUserFromWordpressChatbotPlugin=true&apikey=${apiKey}`);
 
-export const addApiKeyToUrl = (url, apiKey = '') => (apiKey ? `${url}?apikey=${apiKey}` : url);
+export const addApiKeyToUrl = (url, apiKey = '') => {
+  if (!apiKey) return url;
+
+  const [base, query = ''] = url.split('?');
+  const params = new URLSearchParams(query);
+  params.set('apikey', apiKey);
+
+  return `${base}?${params.toString()}`;
+};
 
 export const acceptBeta = async (apiKey = '') => {
   const formData = new FormData();
@@ -54,6 +62,8 @@ export const interactWithPlatform = params => {
   return platformLayer.post('', formData);
 };
 
+export const saveAgentId = agentId => interactWithPlatform({ key: 'agentId', value: agentId, action: 'update' });
+
 export const updateAgent = (agentId, params, apiKey = '') => {
   const url = addApiKeyToUrl(`ai-agent-builder/agents/${agentId}`, apiKey);
   return getRequestLayer().put(url, params);
@@ -66,6 +76,11 @@ export const updateAgentProperty = (agentId, params, apiKey = '') => {
 
 export const getMaterialById = (agentId, materialId, apiKey = '') => {
   const url = addApiKeyToUrl(`ai-agent-builder/agents/${agentId}/materials/${materialId}`, apiKey);
+  return getRequestLayer().get(url);
+};
+
+export const fetchMaterials = (agentId, apiKey) => {
+  const url = addApiKeyToUrl(`ai-agent-builder/agents/${agentId}/materials`, apiKey);
   return getRequestLayer().get(url);
 };
 
@@ -96,11 +111,6 @@ export const getAvatars = (agentId, params, apiKey = '') => {
   return getRequestLayer().post(url, params);
 };
 
-export const checkFromWordpressLandingRequest = (apiKey = '') => {
-  const url = addApiKeyToUrl('ai-chatbot/from-wordpress-landing', apiKey);
-  return getRequestLayer().get(url);
-};
-
 export function getAIAgentsLimitExceeded(apiKey) {
   const url = addApiKeyToUrl('user-limit/ai-agents-limit-exceeded', apiKey);
   return getRequestLayer().get(url);
@@ -113,4 +123,32 @@ export const getAllAgents = apiKey => getRequestLayer().get(`mixed-listing/asset
 export const setInstallment = (params, apiKey = '') => {
   const url = addApiKeyToUrl('ai-chatbot/installment', apiKey);
   return getRequestLayer()?.post(url, params);
+};
+
+export const fetchConversations = (agentId, activeViewId, params, apiKey = '') => {
+  const queryParams = new URLSearchParams({
+    ...params,
+    orderby: 'created_at,desc',
+    conversationsV2: '1',
+    isWPAIChatbotPlugin: 'true',
+    pagination: 'true'
+  });
+  const url = addApiKeyToUrl(`sheets/${activeViewId}/ai-agent/agent/${agentId}/conversations?${queryParams.toString()}`, apiKey);
+  return getRequestLayer().get(url);
+};
+
+export const fetchChats = (agentId, activeViewId, conversations = [], apiKey = '') => {
+  const params = new URLSearchParams();
+
+  const filter = {
+    'chat_id:in': conversations
+  };
+
+  params.append('filter', JSON.stringify(filter));
+  params.append('allowMultipleActions', '1');
+  params.append('no-leaddata', '1');
+
+  const url = addApiKeyToUrl(`sheets/${activeViewId}/ai-agent/${agentId}/chats?${params.toString()}`, apiKey);
+
+  return getRequestLayer().get(url);
 };

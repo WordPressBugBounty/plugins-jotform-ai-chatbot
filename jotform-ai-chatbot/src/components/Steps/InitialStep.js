@@ -7,7 +7,7 @@ import {
 } from '../../api';
 import IconArrowRight from '../../assets/svg/IconArrowRight.svg';
 import LogoJotformColor from '../../assets/svg/LogoJotformColor.svg';
-import { ALL_TEXTS } from '../../constants';
+import { ALL_TEXTS, STEPS } from '../../constants';
 import { useOAuth, useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
 import {
@@ -64,9 +64,9 @@ const InitialStep = ({
   }, []);
 
   const handleStartClick = async () => {
-    saveInstallment(`letsStartButton_${toCamelCase(step)}Step`);
+    saveInstallment('letsStartButton');
     if (shouldOAuth) return;
-    dispatch(ACTION_CREATORS.nextStep());
+    dispatch(ACTION_CREATORS.setStep(STEPS.USECASE_SELECTION));
   };
 
   return (
@@ -83,7 +83,6 @@ const InitialStep = ({
         buttonRef={shouldOAuth ? buttonRef : { current: null }}
         className='lets-start buttonRTL'
         disabled={!PROVIDER_URL}
-        data-fs-element={`Step: ${step} - ${ALL_TEXTS.LETS_START} Button`}
       >
         {t(ALL_TEXTS.LETS_START)}
       </Button>

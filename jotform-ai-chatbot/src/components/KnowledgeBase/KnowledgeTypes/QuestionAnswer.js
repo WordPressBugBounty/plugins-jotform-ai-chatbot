@@ -39,37 +39,37 @@ const QuestionAnswer = ({
   };
 
   return (
-    <div className='flex flex-col gap-3'>
-      <div className='flex flex-col gap-6 bg-white p-6 radius-md border border-navy-100'>
+    <div className='jfMaterialEditor--container'>
+      <div className='jfMaterialEditor--inner'>
         <LabelWrapperItem
           heading='Question'
           desc='Train the AI based on your questions & answers'
-          customClass='p-0'
         >
-          <div className='flex flex-col gap-2'>
+          <div className='question-wrapper'>
             <Input
               className='w-full'
               size='medium'
-              placeholder={t('How early will a hotel let you check-in?')}
+              placeholder={t('Enter a brief, clear question that you\'d like the Agent to answer.')}
               colorStyle={inputValidation.includes('question') ? 'error' : 'default'}
               onKeyDown={handleKeyDown}
               defaultValue={editingQA?.question}
               ref={questionRef}
             />
-            <span className='text-md font-medium color-navy-700 mt-3'>{t('Answer')}</span>
-            <Textarea
-              className='w-full h-52 border border-navy-100 radius'
-              size='medium'
-              defaultValue={editingQA?.answer}
-              resize='vertical'
-              placeholder={t('Around two hours early.')}
-              colorStyle={inputValidation.includes('answer') ? 'error' : 'default'}
-              ref={answerRef}
-            />
+            <div className='answer-wrapper'>
+              <span className='answer-title'>{t('Answer')}</span>
+              <Textarea
+                className='w-full h-52 border border-navy-100 radius'
+                size='medium'
+                defaultValue={editingQA?.answer}
+                placeholder={t('Provide a detailed and informative answer that will help the Agent respond accurately to the question.')}
+                colorStyle={inputValidation.includes('answer') ? 'error' : 'default'}
+                ref={answerRef}
+              />
+            </div>
           </div>
         </LabelWrapperItem>
       </div>
-      <div className='flex justify-end'>
+      <div className='jfMaterialEditor--footer'>
         <Button
           className='w-24'
           size='medium'

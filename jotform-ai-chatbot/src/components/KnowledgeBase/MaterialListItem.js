@@ -46,7 +46,7 @@ const getMaterialURL = props => {
   return url
     ? (
       <a
-        className='color-blue-500 underline'
+        className='jfMaterialList--item-content-title-text-link'
         href={url}
         target='_blank'
         rel='noreferrer'
@@ -79,7 +79,7 @@ const MaterialListItem = ({
   } = material;
 
   const {
-    color, fillColor, icon, name, iconClassName
+    icon, name, iconClassName
   } = get(TRAIN_TYPES, type, {
     color: '', icon: '', fillColor: '', name: '', iconClassName: ''
   });
@@ -102,7 +102,7 @@ const MaterialListItem = ({
   };
 
   const handleEditMaterialClick = () => {
-    onEditClick?.(uuid);
+    onEditClick?.(uuid, type);
   };
 
   const openMaterialSummary = () => {
@@ -132,8 +132,7 @@ const MaterialListItem = ({
         {...{
           material,
           icon,
-          color,
-          fillColor,
+          iconClassName,
           materialURL,
           materialTitle,
           materialContent: showSummary ? materialContent : '',
@@ -176,7 +175,7 @@ const MaterialListItem = ({
               ? (
                 <div className='jfMaterialList--item-error'>
                   <IconExclamationCircleFilled />
-                  <span className='color-red-400 font-weight-400 line-height-2xl align-middle'>{t('Answer needed.')}</span>
+                  <span>{t('Answer needed.')}</span>
                 </div>
               )
               : materialContent}

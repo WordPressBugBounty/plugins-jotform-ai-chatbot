@@ -106,7 +106,7 @@ const MaterialEditor = ({
     <div className='jfMaterialEditor'>
       {component}
       {!!errorMsg && (
-        <p className='color-white text-sm w-max bg-red-400 radius-md px-2 py-1'>{t(errorMsg)}</p>
+        <p className='jfMaterialEditor--error-message'>{t(errorMsg)}</p>
       )}
     </div>
   );

@@ -29,7 +29,8 @@ const Modal = forwardRef(({
     {
       'fit-on-mobile': fitOnMobile,
       'no-fade': noFade
-    }
+    },
+    className
   );
 
   const modalClassName = classnames(

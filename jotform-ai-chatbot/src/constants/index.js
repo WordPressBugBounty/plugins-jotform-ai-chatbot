@@ -8,25 +8,51 @@ import avatar2 from '../assets/images/avatars/avatar_icon_817.png';
 import avatar3 from '../assets/images/avatars/avatar_icon_819.png';
 import avatar6 from '../assets/images/avatars/avatar_icon_1065.png';
 import avatar4 from '../assets/images/avatars/avatar_icon_1584.png';
-import { IconAnnotationInfoFilled, IconLinkDiagonal } from '../components/UI/Icon';
+import {
+  IconAnnotationInfoFilled, IconAnnotationQuestionFilled, IconArrowUpFromBracket, IconLinkDiagonal
+} from '../components/UI/Icon';
 import { ALL_TEXTS } from './texts.js';
 
 export * from './themes';
 export * from './texts';
 export * from './languages';
+export * from './pageSelection';
 
 export const STEPS = {
   INITIAL: 'INITIAL',
   USECASE_SELECTION: 'USECASE_SELECTION',
-  CUSTOMIZATION: 'CUSTOMIZATION',
-  DESCRIBE: 'DESCRIBE',
+  AI_PERSONA: 'AI_PERSONA',
   STYLE: 'STYLE',
-  SHARE: 'SHARE',
+  VISIBILITY: 'VISIBILITY',
   KNOWLEDGE: 'KNOWLEDGE',
-  WP_PAGE_SELECTION: 'WP_PAGE_SELECTION',
-  AVATAR: 'AVATAR',
-  AI_PERSONA: 'AI_PERSONA'
+  CONVERSATIONS: 'CONVERSATIONS'
 };
+
+export const STEP_TO_BUILDER_PATH = {
+  [STEPS.AI_PERSONA]: '/train/persona',
+  [STEPS.STYLE]: '',
+  [STEPS.VISIBILITY]: '/publish/chatbot',
+  [STEPS.KNOWLEDGE]: '/train'
+};
+
+export const TAB_STEPS = [
+  {
+    label: ALL_TEXTS.AI_PERSONA,
+    name: STEPS.AI_PERSONA
+  },
+  {
+    label: ALL_TEXTS.AGENT_STYLE,
+    name: STEPS.STYLE
+  },
+  {
+    label: ALL_TEXTS.VISIBILITY,
+    name: STEPS.VISIBILITY
+  },
+  {
+    label: ALL_TEXTS.KNOWLEDGE_BASE,
+    name: STEPS.KNOWLEDGE
+  }
+];
 
 export const USE_CASES = [
   { templateId: '0192fce444977bbe9678bb4dca721a5fad06', templateAgentId: '0192FCE3FB657D9DA679016CD685B22DAFF6', label: ALL_TEXTS.DELETE_EXISTING_AGENT },
@@ -55,6 +81,32 @@ export const CUSTOMIZATION_KEYS = {
   AUTO_OPEN_CHAT: 'autoOpenChatIn',
   LAYOUT: 'layout'
 };
+
+export const AUTO_OPEN_CHAT_VALUES = {
+  ALWAYS_OPEN: '1',
+  FIVE_SECONDS: '5000',
+  TEN_SECONDS: '10000',
+  NEVER: '0'
+};
+
+export const OPEN_BY_DEFAULT_OPTIONS = [
+  {
+    text: ALL_TEXTS.ALWAYS_OPEN,
+    value: AUTO_OPEN_CHAT_VALUES.ALWAYS_OPEN
+  },
+  {
+    text: ALL_TEXTS.OPEN_AFTER_FIVE_SECONDS,
+    value: AUTO_OPEN_CHAT_VALUES.FIVE_SECONDS
+  },
+  {
+    text: ALL_TEXTS.OPEN_AFTER_TEN_SECONDS,
+    value: AUTO_OPEN_CHAT_VALUES.TEN_SECONDS
+  },
+  {
+    text: ALL_TEXTS.DO_NOT_OPEN_AUTOMATICALLY,
+    value: AUTO_OPEN_CHAT_VALUES.NEVER
+  }
+];
 
 export const THEME_CUSTOMIZATION_KEYS = {
   AGENT_BG_START_COLOR: 'agentBackgroundStart',
@@ -94,16 +146,16 @@ export const PLATFORMS = { WORDPRESS: 'wordpress' };
 
 export const CHATTINESS_LEVELS = [
   {
-    title: 'Minimalist',
-    desc: '1 sentence'
+    title: 'Minimal'
   },
   {
-    title: 'Standard',
-    desc: '2-3 sentences'
+    title: 'Short'
   },
   {
-    title: 'Chatty',
-    desc: '7+ sentences'
+    title: 'Long'
+  },
+  {
+    title: 'Chatty'
   }
 ];
 
@@ -125,6 +177,21 @@ export const TONE_OF_VOICES = [
   }
 ];
 
+export const DEVICES = [
+  {
+    value: 'all',
+    text: 'All devices'
+  },
+  {
+    value: 'mobile',
+    text: 'Mobile'
+  },
+  {
+    value: 'desktop',
+    text: 'Desktop'
+  }
+];
+
 export const AVATAR_URLS = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7, avatar8, avatar9];
 
 export const KEY_KEYCODE_LIST = {
@@ -138,17 +205,32 @@ export const KEY_KEYCODE_LIST = {
 
 export const TRAIN_TYPES = {
   TEXT: {
-    name: 'Knowledge',
-    desc: 'Add information to train your AI.',
+    name: 'Add Knowledge',
+    desc: 'Add text-based information to train your chatbot.',
     icon: <IconAnnotationInfoFilled />,
+    isPublic: true,
     iconClassName: 'isKnowledge'
   },
+  DOCUMENT: {
+    name: 'Upload Documents',
+    desc: 'Upload files to train your chatbot.',
+    icon: <IconArrowUpFromBracket />,
+    isPublic: true,
+    iconClassName: 'isDocument'
+  },
   URL: {
-    name: 'Link',
-    desc: 'Add website URLs train your Agent with dynamic information.',
+    name: 'Crawl URL',
+    desc: 'Add website URLs train your chatbot with dynamic information.',
     icon: <IconLinkDiagonal />,
     isPublic: true,
-    iconClassName: 'isLink'
+    iconClassName: 'isURL'
+  },
+  QA: {
+    name: 'Questions & Answers',
+    desc: 'Provide a question-and-answer pairing your chatbot can use in conversations.',
+    icon: <IconAnnotationQuestionFilled />,
+    isPublic: true,
+    iconClassName: 'isQA'
   }
 };
 
@@ -230,35 +312,18 @@ export const EU_PROVIDER_API_URL = 'https://eu-api.jotform.com';
 export const DELETE_INST_NAME = 'deleteWpChatbotButton';
 
 export const WRITING_DEBOUNCE_TIMEOUT = 1750;
+export const DELETE_INSTRUCTION_DEBOUNCE_TIMEOUT = 500;
 export const GREETING_TEXT_REQ_DEBOUNCE_TIMEOUT = 500;
 
 export const VISIBILITY_LAYOUT = {
-  EXTENDED: 'extended',
-  MINIMAL: 'minimal'
-};
-
-export const AUTO_OPEN_CHAT_VALUES = {
-  ALWAYS_OPEN: '1',
-  FIVE_SECONDS: '5000',
-  TEN_SECONDS: '10000',
-  NEVER: '0'
-};
-
-export const OPEN_BY_DEFAULT_OPTIONS = [
-  {
-    text: ALL_TEXTS.ALWAYS_OPEN,
-    value: AUTO_OPEN_CHAT_VALUES.ALWAYS_OPEN
+  EXTENDED: {
+    text: 'Extended',
+    value: 'extended'
   },
-  {
-    text: ALL_TEXTS.OPEN_AFTER_FIVE_SECONDS,
-    value: AUTO_OPEN_CHAT_VALUES.FIVE_SECONDS
-  },
-  {
-    text: ALL_TEXTS.OPEN_AFTER_TEN_SECONDS,
-    value: AUTO_OPEN_CHAT_VALUES.TEN_SECONDS
-  },
-  {
-    text: ALL_TEXTS.DO_NOT_OPEN_AUTOMATICALLY,
-    value: AUTO_OPEN_CHAT_VALUES.NEVER
+  MINIMAL: {
+    text: 'Minimal',
+    value: 'minimal'
   }
-];
+};
+
+export const WHATS_NEW_MODAL_LCST_FLAG = 'jaic_wnm_v3_0_0';

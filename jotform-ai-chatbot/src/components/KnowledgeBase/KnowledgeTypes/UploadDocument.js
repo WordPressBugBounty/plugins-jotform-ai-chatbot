@@ -5,6 +5,9 @@ import { bool, func, object } from 'prop-types';
 import { TRAIN_TYPES } from '../../../constants';
 import { t } from '../../../utils';
 import Button from '../../UI/Button.js';
+import {
+  IconCloudArrowUp, IconDocumentDocFilled, IconDocumentPdfFilled, IconXmark
+} from '../../UI/Icon';
 import Input from '../../UI/Input.js';
 import LabelWrapperItem from '../LabelWrapperItem.js';
 
@@ -20,29 +23,31 @@ const getIconName = file => (file?.type.indexOf('pdf') > -1 ? 'document_pdf' : '
 const ListFile = ({
   // eslint-disable-next-line react/prop-types
   selectedFile, setMockFile, setActualFile
-}) => (
-  <div
-    className='flex items-center bg-file-upload px-4 py-2 radius border-dashed border border-navy-100'
-  >
-    {/* <Icon
-      name={selectedFile ? getIconName(selectedFile) : 'document_pdf'}
-      className='w-6 h-6 mr-2'
-      fill='#343c6a'
-    /> */}
-    {/* eslint-disable-next-line react/prop-types */}
-    <p className='text-sm color-navy-700 grow-1 text-overflow-ellipsis overflow-hidden whitespace-nowrap'>{selectedFile?.name}</p>
-    <Button
-      variant='ghost'
-      className='hover-bg-color-transparent pt-1 w-8 h-8'
-      onClick={() => {
-        setMockFile();
-        setActualFile();
-      }}
+}) => {
+  const iconName = getIconName(selectedFile);
+  return (
+    <div
+      className='upload-document-preview'
     >
-      {/* <Icon name='xmarksm' fill='#C8CEED' /> */}
-    </Button>
-  </div>
-);
+      {iconName === 'document_doc' ? (
+        <IconDocumentDocFilled className='upload-document-preview-icon' />
+      ) : (
+        <IconDocumentPdfFilled className='upload-document-preview-icon' />
+      )}
+      {/* eslint-disable-next-line react/prop-types */}
+      <p className='upload-document-preview-text'>{selectedFile?.name}</p>
+      <Button
+        variant='ghost'
+        className='upload-document-preview-text-close'
+        endIcon={<IconXmark />}
+        onClick={() => {
+          setMockFile();
+          setActualFile();
+        }}
+      />
+    </div>
+  );
+};
 
 const UploadDocument = ({
   isLoading,
@@ -100,15 +105,15 @@ const UploadDocument = ({
     <div
       onDragOver={e => e.preventDefault()}
       onDrop={handleDrop}
-      className='flex flex-col items-center px-8 py-10 radius bg-file-upload border-dashed border border-navy-100 gap-1'
+      className='upload-area-container'
     >
-      {/* <Icon name='cloud_arrow_up' fill='#C8CEED' className='w-12 h-12' /> */}
-      <span className='text-sm font-medium color-navy-700'>{t('Upload a Document')}</span>
-      <p className='text-xs font-medium color-navy-500'>
+      <IconCloudArrowUp className='cloud-icon' />
+      <span className='upload-area-title'>{t('Upload a Document')}</span>
+      <p className='upload-area-desc'>
         <span>
           Drag and drop your files here or
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions,jsx-a11y/click-events-have-key-events */}
-          <span className='underline cursor-pointer color-blue-500' onClick={() => fileInputRef.current?.click()}> upload a file</span>
+          <span className='upload-area-link' onClick={() => fileInputRef.current?.click()}> upload a file</span>
         </span>
       </p>
       <input
@@ -121,43 +126,47 @@ const UploadDocument = ({
   );
 
   return (
-    <div className='flex flex-col gap-3'>
-      <div className='flex flex-col gap-6 bg-white p-6 radius-md border border-navy-100'>
-        {isEditingMode && (
-          <LabelWrapperItem
-            heading='Title'
-            desc=''
-            customClass='p-0'
-          >
-            <Input
-              id='title'
-              onChange={handleMaterialDataChange}
-              defaultValue={editingMaterial?.title || TRAIN_TYPES.DOCUMENT.name}
-            />
-          </LabelWrapperItem>
-        )}
+    <div className='jfMaterialEditor--container'>
+      <div className='jfMaterialEditor--inner'>
+        <div className='upload-document'>
+          <div className='upload-document-container'>
+            {isEditingMode && (
+              <LabelWrapperItem
+                heading='Title'
+                desc=''
+                customClass='p-0'
+              >
+                <Input
+                  id='title'
+                  onChange={handleMaterialDataChange}
+                  defaultValue={editingMaterial?.title || TRAIN_TYPES.DOCUMENT.name}
+                />
+              </LabelWrapperItem>
+            )}
 
-        <LabelWrapperItem
-          heading='Upload Document'
-          desc='Train the AI based on content from the document'
-          customClass='p-0'
-        >
-          {selectedFile
-            ? <ListFile {...{ selectedFile, setMockFile, setActualFile }} />
-            : <UploadFile />}
-        </LabelWrapperItem>
+            <LabelWrapperItem
+              heading='Upload Document'
+              desc='Train the AI based on content from the document'
+              customClass='label'
+            />
+            {selectedFile
+              ? <ListFile {...{ selectedFile, setMockFile, setActualFile }} />
+              : <UploadFile />}
+          </div>
+        </div>
       </div>
-      <div className='flex justify-end'>
-        <Button
-          className='w-24'
-          size='medium'
-          colorStyle='success'
-          loader={isLoading}
-          onClick={handleUploadButtonClick}
-          disabled={!selectedFile}
-        >
-          {t('Save')}
-        </Button>
+      <div className='jfMaterialEditor--footer'>
+        <div className='upload-document-btn'>
+          <Button
+            size='medium'
+            colorStyle='success'
+            loader={isLoading}
+            onClick={handleUploadButtonClick}
+            disabled={!selectedFile}
+          >
+            {t('Save')}
+          </Button>
+        </div>
       </div>
     </div>
   );

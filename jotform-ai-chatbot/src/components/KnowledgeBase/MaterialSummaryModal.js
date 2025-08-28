@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import classNames from 'classnames';
 import {
   bool, func, object, string
 } from 'prop-types';
@@ -22,9 +23,8 @@ const getTextBlock = (title, content, contentCustomClass) => (
 
 const MaterialSummaryModal = ({
   material,
-  // icon,
-  // color,
-  // fillColor,
+  icon,
+  iconClassName,
   materialTitle,
   materialURL,
   materialContent,
@@ -51,8 +51,8 @@ const MaterialSummaryModal = ({
       size='large'
     >
       <div className='material-summary-modal--title'>
-        <span className='material-summary-modal--title-icon'>
-          <IconAnnotationInfoFilled />
+        <span className={classNames('material-summary-modal--title-icon', iconClassName)}>
+          {icon || <IconAnnotationInfoFilled />}
         </span>
         <div className='material-summary-modal--title-text'>
           <strong>{materialTitle}</strong>
@@ -74,9 +74,8 @@ export default MaterialSummaryModal;
 
 MaterialSummaryModal.propTypes = {
   material: object,
-  // icon: string,
-  // color: string,
-  // fillColor: string,
+  icon: string,
+  iconClassName: string,
   materialURL: string,
   materialTitle: string,
   materialContent: string,

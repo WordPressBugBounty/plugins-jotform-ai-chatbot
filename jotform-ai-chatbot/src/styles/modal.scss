@@ -66,13 +66,35 @@
       color: var(--jfv-navy-300);
       text-align: center;
       font-size: 14px;
-      line-height: 18px;
+      line-height: 20px;
       margin-top: 8px;
     }
     @media (min-width: 480px) {
       h3 {
         font-size: 18px;
-        line-height: 22px;
+        line-height: 24px;
+      }
+    }
+    &-info {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      background-color: var(--jfv-navy-25);
+      color: var(--jfv-navy-300);
+      margin-top: 16px;
+      p {
+        text-align: left;
+        margin: 0;
+      }
+      &-icon {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        margin: 2px 0;
       }
     }
   }
@@ -111,6 +133,83 @@
     @media (min-width: 480px) {
       flex-direction: row;
     }
+  }
+  &--whats-new {
+    .jfModal--close {
+      top: 28px;
+      right: 28px;
+      @media (max-width: 480px) {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+  &--header {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--jfv-navy-50);
+    &-title {
+      padding-inline-end: 32px;
+      h3 {
+        color: var(--jfv-navy-700);
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 28px;
+        margin: 0;
+      }
+      p {
+        color: var(--jfv-navy-300);
+        font-size: 14px;
+        line-height: 20px;
+        margin: 0;
+      }
+      @media (max-width: 480px) {
+        h3 {
+          font-size: 16px;
+          line-height: 20px;
+        }
+        p {
+          font-size: 12px;
+          line-height: 16px;
+        }
+      }
+    }
+  }
+  &--body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--jfv-navy-50);
+    overflow-y: scroll;
+    &-img {
+      width: 100%;
+      height: auto;
+    }
+    &-list {
+      margin: 0;
+      list-style: unset;
+      color: #252f58;
+      font-size: 14px;
+      line-height: 24px;
+      letter-spacing: -0.28px;
+      padding-inline-start: 24px;
+      li {
+        margin: 0;
+        span {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+  &--footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding: 16px 32px;
   }
   @media (max-width: 480px) {
     padding: 32px;

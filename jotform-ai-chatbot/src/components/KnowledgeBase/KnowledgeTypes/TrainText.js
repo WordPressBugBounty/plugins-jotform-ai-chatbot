@@ -52,8 +52,8 @@ const TrainText = ({
         )}
 
         <LabelWrapperItem
-          heading='Knowledge for Your AI'
-          desc='Write an info that the AI can use to provide accurate answers'
+          heading='Information for Your Agent'
+          desc='Enter accurate info your AI can use as answers'
         >
           <Textarea
             id='data'

@@ -15,25 +15,29 @@ const InfoBox = ({
   desc,
   isBackVisible = false,
   iconClassName,
+  isNameVisible = false,
+  isDescVisible = false,
+  isIconVisible = false,
   handleBack = f => f
 }) => (
   <div className='jfInfobox'>
     {isBackVisible && (
-      <Button
-        colorStyle='secondary'
-        variant='ghost'
-        startIcon={<IconChevronLeft />}
-        onClick={handleBack}
-      />
+    <Button
+      colorStyle='secondary'
+      variant='ghost'
+      startIcon={<IconChevronLeft />}
+      onClick={handleBack}
+      className='jfInfobox--back-btn'
+    />
     )}
-    {icon && (
+    {isIconVisible && icon && (
     <div className={classnames('jfInfobox--icon', iconClassName)}>
       {icon}
     </div>
-    ) }
+    )}
     <div className='jfInfobox--content'>
-      <span className='jfInfobox--name'>{name}</span>
-      <span className='jfInfobox--desc'>{desc}</span>
+      {isNameVisible && <span className='jfInfobox--name'>{name}</span>}
+      {isDescVisible && <span className='jfInfobox--desc'>{desc}</span>}
     </div>
   </div>
 );
@@ -46,5 +50,8 @@ InfoBox.propTypes = {
   desc: string,
   handleBack: func,
   isBackVisible: bool,
-  iconClassName: string
+  iconClassName: string,
+  isNameVisible: bool,
+  isDescVisible: bool,
+  isIconVisible: bool
 };

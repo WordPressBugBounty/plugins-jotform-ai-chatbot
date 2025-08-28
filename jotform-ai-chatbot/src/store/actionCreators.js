@@ -1,54 +1,23 @@
 import {
-  ADD_MATERIAL, BULK_DELETE_MATERIAL, CHECK_AI_CHATBOT_LIMITS, CHECK_FROM_WP_LANDING, DELETE_MATERIAL, DELETE_PLATFORM_AGENT, FETCH_USER,
-  GET_ALL_AGENTS,
-  GET_AVATARS,
-  GET_PLATFORM_AGENT,
-  GET_PLATFORM_SETTINGS,
-  NEXT_STEP, PREVIOUS_STEP, RESET_AVATARS, SAVE_PLATFORM_AGENT_EMBED, SAVE_PLATFORM_AGENT_PAGES, SAVE_PROVIDER_API_KEY,
-  SELECT_AGENT,
-  SET_AGENT_CHATTINESS,
-  SET_AGENT_NAME,
-  SET_AGENT_ROLE,
-  SET_AVATARS,
-  SET_GET_PLATFORM_AGENT_ONCE,
-  SET_INITAL_LOADING,
-  SET_LANGUAGE,
-  SET_LIMIT_DIALOG_VISIBLE,
-  SET_PAGE_SAVE_DISABLED,
-  SET_PLATFORM_SETTINGS,
-  SET_PROMPT, SET_PROVIDER_API_KEY,
-  SET_SELECTED_PLATFORM_PAGES, SET_STEP,
-  SET_TONE_OF_VOICE,
-  SET_USER, SET_WP_PAGE_SELECTION_SEEN, TERMS_ACCEPTED, UPDATE_AGENT,
-  UPDATE_AGENT_PROPERTY,
-  UPDATE_CUSTOMIZATION, UPDATE_CUSTOMIZATION_ASYNC,
-  UPDATE_MATERIAL, UPDATE_THEME, UPDATE_THEME_PROPERTY, UPDATE_USER_SETTINGS, USE_AGENT,
+  ADD_MATERIAL, BULK_DELETE_MATERIAL, CHECK_AI_CHATBOT_LIMITS, DELETE_MATERIAL, DELETE_PLATFORM_AGENT, FETCH_CHATS, FETCH_CONVERSATIONS, FETCH_MATERIALS, FETCH_USER,
+  GET_ALL_AGENTS, GET_AVATARS, GET_PLATFORM_AGENT, GET_PLATFORM_SETTINGS, PUBLISH_AGENT, RESET_AVATARS,
+  SAVE_PLATFORM_AGENT_PAGES, SAVE_PROVIDER_API_KEY, SET_AGENT_CHATTINESS,
+  SET_AGENT_NAME, SET_AGENT_ROLE, SET_AVATARS, SET_FETCH_CONVERSATIONS_LOADING, SET_GET_PLATFORM_AGENT_ONCE, SET_INITAL_LOADING, SET_IS_PUBLISHED, SET_LANGUAGE,
+  SET_LIMIT_DIALOG_VISIBLE, SET_PERSONA, SET_PLATFORM_SETTINGS, SET_PROMPT,
+  SET_PROVIDER_API_KEY, SET_SELECTED_PAGES, SET_STEP, SET_TONE_OF_VOICE, SET_USER, SET_VISIBLE_DEVICE,
+  TERMS_ACCEPTED, UPDATE_AGENT, UPDATE_AGENT_PROPERTY, UPDATE_CUSTOMIZATION,
+  UPDATE_CUSTOMIZATION_ASYNC, UPDATE_MATERIAL, UPDATE_THEME, UPDATE_THEME_PROPERTY, UPDATE_USER_SETTINGS,
   USE_PLATFORM_AGENT
 } from './actions';
 
 export const ACTION_CREATORS = {
-  // step actions
-  nextStep: () => ({ type: NEXT_STEP }),
-  previousStep: () => ({ type: PREVIOUS_STEP }),
   setStep: (step, initialScreen) => ({
     type: SET_STEP,
     payload: { step, initialScreen }
   }),
-  selectAgent: selectedTemplateAgentId => ({
-    type: SELECT_AGENT,
-    payload: { selectedTemplateAgentId }
-  }),
-  // use agent
-  useAgentRequest: () => ({
-    type: USE_AGENT.REQUEST
-  }),
-  useAgentSuccess: result => ({
-    type: USE_AGENT.SUCCESS,
-    payload: { result }
-  }),
-  useAgentError: result => ({
-    type: USE_AGENT.ERROR,
-    payload: { result }
+  setIsPublished: (isPublished) => ({
+    type: SET_IS_PUBLISHED,
+    payload: { isPublished }
   }),
   setAgentName: agentName => ({
     type: SET_AGENT_NAME,
@@ -111,15 +80,16 @@ export const ACTION_CREATORS = {
     payload: { result }
   }),
   // save platform agent embed
-  savePlatformAgentEmbedRequest: () => ({
-    type: SAVE_PLATFORM_AGENT_EMBED.REQUEST
+  publishAgentRequest: (key) => ({
+    type: PUBLISH_AGENT.REQUEST,
+    payload: { key }
   }),
-  savePlatformAgentEmbedSuccess: result => ({
-    type: SAVE_PLATFORM_AGENT_EMBED.SUCCESS,
-    payload: { result }
+  publishAgentSuccess: (result, key) => ({
+    type: PUBLISH_AGENT.SUCCESS,
+    payload: { result, key }
   }),
-  savePlatformAgentEmbedError: result => ({
-    type: SAVE_PLATFORM_AGENT_EMBED.ERROR,
+  publishAgentError: result => ({
+    type: PUBLISH_AGENT.ERROR,
     payload: { result }
   }),
   // save platform agent pages
@@ -209,6 +179,17 @@ export const ACTION_CREATORS = {
     type: TERMS_ACCEPTED,
     payload: value
   }),
+  // fetch materials
+  fetchMaterialsRequest: () => ({
+    type: FETCH_MATERIALS.REQUEST
+  }),
+  fetchMaterialsSuccess: result => ({
+    type: FETCH_MATERIALS.SUCCESS,
+    payload: { result }
+  }),
+  fetchMaterialsError: () => ({
+    type: FETCH_MATERIALS.ERROR
+  }),
   // add material
   addMaterialRequest: () => ({
     type: ADD_MATERIAL.REQUEST
@@ -288,12 +269,8 @@ export const ACTION_CREATORS = {
     type: SET_PLATFORM_SETTINGS,
     payload: { platformSettings }
   }),
-  setPageSaveDisabled: isDisabled => ({
-    type: SET_PAGE_SAVE_DISABLED,
-    payload: { isDisabled }
-  }),
   setSelectedPages: selectedPages => ({
-    type: SET_SELECTED_PLATFORM_PAGES,
+    type: SET_SELECTED_PAGES,
     payload: { selectedPages }
   }),
   // fetch user
@@ -321,9 +298,6 @@ export const ACTION_CREATORS = {
   setTryGetPlatformAgentOnce: tryOnce => ({
     type: SET_GET_PLATFORM_AGENT_ONCE,
     payload: { tryOnce }
-  }),
-  setWpPageSelectionSeen: () => ({
-    type: SET_WP_PAGE_SELECTION_SEEN
   }),
   getAllAgentsRequest: () => ({
     type: GET_ALL_AGENTS.REQUEST
@@ -366,14 +340,40 @@ export const ACTION_CREATORS = {
     type: SET_LIMIT_DIALOG_VISIBLE,
     payload: { isLimitDialogVisible }
   }),
-  checkFromWpLandingRequest: () => ({
-    type: CHECK_FROM_WP_LANDING.REQUEST
+  setPersona: persona => ({
+    type: SET_PERSONA,
+    payload: { persona }
   }),
-  checkFromWpLandingSuccess: result => ({
-    type: CHECK_FROM_WP_LANDING.SUCCESS,
+  updateVisibleDevice: visibleDevice => ({
+    type: SET_VISIBLE_DEVICE,
+    payload: { visibleDevice }
+  }),
+  // fetch conversations
+  fetchConversationsRequest: () => ({
+    type: FETCH_CONVERSATIONS.REQUEST
+  }),
+  fetchConversationsSuccess: result => ({
+    type: FETCH_CONVERSATIONS.SUCCESS,
     payload: { result }
   }),
-  checkFromWpLandingError: () => ({
-    type: CHECK_FROM_WP_LANDING.ERROR
+  fetchConversationsError: result => ({
+    type: FETCH_CONVERSATIONS.ERROR,
+    payload: { result }
+  }),
+  setFetchConversationsLoading: loading => ({
+    type: SET_FETCH_CONVERSATIONS_LOADING,
+    payload: { loading }
+  }),
+  // fetch chats
+  fetchChatsRequest: () => ({
+    type: FETCH_CHATS.REQUEST
+  }),
+  fetchChatsSuccess: result => ({
+    type: FETCH_CHATS.SUCCESS,
+    payload: { result }
+  }),
+  fetchChatsError: result => ({
+    type: FETCH_CHATS.ERROR,
+    payload: { result }
   })
 };
