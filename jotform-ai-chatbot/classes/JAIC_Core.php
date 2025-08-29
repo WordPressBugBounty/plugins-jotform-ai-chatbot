@@ -265,7 +265,7 @@ class JAIC_Core {
                     ($device === "mobile" && $this->isMobileDevice()) ||
                     ($device === "desktop" && !$this->isMobileDevice())
                 ) {
-                    echo "<div id=\"ai-chatbot\">" . strip_tags(rawurldecode(base64_decode($chatbotEmbedCode)), '<script>') . "</div>";
+                    echo $this->getEmbedRendererCode($chatbotEmbedCode);
                 }
             }
         }
@@ -1035,9 +1035,73 @@ class JAIC_Core {
         return preg_match('/^([a-z0-9-]+\.)+[a-z]{2,}(:\d+)?(\/[^\s]*)?$/i', $url);
     }
 
-    private function getPluginVersion() {
-        $plugin_file = WP_PLUGIN_DIR . '/jotform-ai-chatbot/jotform-ai-chatbot.php';
-        $plugin_data = get_file_data($plugin_file, array('Version' => 'Version'));
-        return $plugin_data['Version'] ?? '-';
+    /**
+     * Get active plugin version
+     *
+     * @return string Version of the plugin
+     */
+    private function getPluginVersion(): string {
+        $pluginFile = WP_PLUGIN_DIR . '/jotform-ai-chatbot/jotform-ai-chatbot.php';
+        $pluginData = get_file_data($pluginFile, ['Version' => 'Version']);
+        return $pluginData['Version'] ?? '-';
+    }
+
+    /**
+     * Get chatbot embed code
+     *
+     * @return string Chatbot embed code
+     */
+    private function getEmbedRendererCode(string $embedCode = ""): string {
+        $embedCode = strip_tags(rawurldecode(base64_decode($embedCode)), '<script>');
+        // Old Version Embed Code
+        if (strstr($embedCode, "AgentInitializer")) {
+            if (preg_match('/formID:\s*"([^"]+)"/', $embedCode, $matches)) {
+                if (!empty($matches[1])) {
+                    $embedAssetURL = 'https://cdn.jotfor.ms/agent/embedjs/' . $matches[1] . '/embed.js';
+                    if (preg_match('/queryParams:\s*\[([^\]]+)\]/', $embedCode, $matches)) {
+                        $paramsArray = explode(',', $matches[1]);
+                        $paramsArray = array_map(function ($item) {
+                            return trim($item, " \"'");
+                        }, $paramsArray);
+
+                        $queryString = implode('&', $paramsArray);
+                        if (!empty($queryString)) {
+                            $embedAssetURL .= "?" . $queryString;
+                        }
+                    }
+
+                    return $this->generateEmbedJSCode($embedAssetURL);
+                }
+            }
+
+            return $embedCode;
+        }
+
+        // New Version Embed Code
+        if (preg_match("/<script[^>]+src=['\"]([^'\"]+)['\"]/i", $embedCode, $matches)) {
+            return $this->generateEmbedJSCode($matches[1]);
+        }
+
+        return '';
+    }
+
+    /**
+     * Function to generate embed JS Code
+     *
+     * @param string $url The main chatbot embed asset url
+     * @return string Embed JS Code to render chatbot on website
+     */
+    private function generateEmbedJSCode(string $url): string {
+        return '
+            <div id="ai-chatbot"></div>
+            <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var s = document.createElement("script");
+                s.src = "' . $url . '";
+                s.async = true;
+                document.body.appendChild(s);
+            });
+            </script>
+        ';
     }
 }

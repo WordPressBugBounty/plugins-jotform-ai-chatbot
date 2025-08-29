@@ -198,7 +198,7 @@
 }
 
 .jfpChatbot-plugin-section > h2 {
-  display: none;
+  display: none !important;
 }
 
 @media screen and (max-width: 782px) {

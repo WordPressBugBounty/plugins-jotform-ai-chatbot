@@ -628,11 +628,11 @@ const sax = {
   ]
 };
 
-export const themeMap = {
+export const THEME_MAP = {
   default: defaultTheme, oceanic, savannah, caffeine, detox, shadow, sakura, parliament, sax
 };
 
-export const themes = [
+export const THEMES = [
   { id: 1, name: 'default' },
   { id: 2, name: 'oceanic' },
   { id: 3, name: 'savannah' },

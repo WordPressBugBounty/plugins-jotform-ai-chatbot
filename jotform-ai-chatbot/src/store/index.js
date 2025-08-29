@@ -1,3 +1,3 @@
-export * from './actions';
-export * from './reducer';
-export * from './actionCreators';
+export { ACTION_CREATORS } from './actionCreators';
+
+export { rootReducer, initialState } from './slices/rootReducer';

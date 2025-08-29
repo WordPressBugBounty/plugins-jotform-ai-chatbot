@@ -7,7 +7,7 @@ import { saveInstallment, updateAgentProperty } from '../../api';
 import {
   ALL_TEXTS,
   FONTS, THEME_CUSTOMIZATION_KEYS,
-  themeMap, themes
+  THEME_MAP, THEMES
 } from '../../constants';
 import { useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
@@ -36,7 +36,7 @@ const StyleStep = () => {
 
   const handleChangeTheme = async themeNm => {
     await asyncDispatch(
-      () => updateAgentProperty(previewAgentId, themeMap[themeNm], PROVIDER_API_KEY),
+      () => updateAgentProperty(previewAgentId, THEME_MAP[themeNm], PROVIDER_API_KEY),
       ACTION_CREATORS.updateThemeRequest,
       ACTION_CREATORS.updateThemeSuccess,
       ACTION_CREATORS.updateThemeError,
@@ -75,16 +75,16 @@ const StyleStep = () => {
       <div className='jfpContent-wrapper--style'>
         <ul className='jfpContent-wrapper--style-colors'>
           <h3>{t(ALL_TEXTS.COLOR_SCHEME)}</h3>
-          {themes.map(theme => (
+          {THEMES.map(theme => (
             <li
               key={theme.id}
-              style={{ background: getThemeColor(themeMap[theme.name], 'pageBackgroundStart') }}
+              style={{ background: getThemeColor(THEME_MAP[theme.name], 'pageBackgroundStart') }}
               onClick={() => handleChangeTheme(theme.name)}
               className={themeName === theme.name ? 'isSelected' : ''}
             >
-              <span className='chatBg' style={{ background: getThemeColor(themeMap[theme.name], 'chatBackground') }}>
-                <span className='chatText' style={{ color: getThemeColor(themeMap[theme.name], 'inputTextColor') }}>A</span>
-                <span className='agentBg' style={{ background: getThemeColor(themeMap[theme.name], 'agentBackgroundStart') }} />
+              <span className='chatBg' style={{ background: getThemeColor(THEME_MAP[theme.name], 'chatBackground') }}>
+                <span className='chatText' style={{ color: getThemeColor(THEME_MAP[theme.name], 'inputTextColor') }}>A</span>
+                <span className='agentBg' style={{ background: getThemeColor(THEME_MAP[theme.name], 'agentBackgroundStart') }} />
               </span>
             </li>
           ))}

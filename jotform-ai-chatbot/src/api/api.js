@@ -37,14 +37,6 @@ export const addApiKeyToUrl = (url, apiKey = '') => {
   return `${base}?${params.toString()}`;
 };
 
-export const acceptBeta = async (apiKey = '') => {
-  const formData = new FormData();
-  formData.append('aiAgentBetaUser', '1');
-  formData.append('AIAgentBetaAccepted', '1');
-  const url = addApiKeyToUrl('user/settings', apiKey);
-  return getRequestLayer().post(url, formData);
-};
-
 export const apiUsePlatformAgent = (params, apiKey = '') => {
   const url = addApiKeyToUrl('ai-chatbot/use-platform-agent', apiKey);
   return getRequestLayer().post(url, params);

@@ -4,8 +4,7 @@ export const ALL_TEXTS = {
   NEXT: 'Next',
   READ_TO_BUILD_YOUR_AI: 'Ready to build your AI Chatbot?',
   CREATE_AND_CUSTOMIZE_YOUR_AI: 'Create and customize your AI Chatbot in minutes',
-  GO_TO_AI_CHATBOT_BUILDER: 'Go to AI Chatbot Builder',
-  GO_TO_BUILDER: 'Go to Builder',
+
   SETUP_YOUR_AI_CHATBOT: 'Setup Your AI Chatbot',
   USE_TEMPLATE_READY_OR_START_FROM_SCRATCH: 'You can use our ready-to-use templates or start from scratch.',
   GREETING: 'Greeting',
@@ -17,9 +16,7 @@ export const ALL_TEXTS = {
   LEFT: 'Left',
   RIGHT: 'Right',
   CHOOSE_THE_AI_AGENT: 'Choose the AI Agent\'s screen position',
-  I_HAVE_READ_AND_ACCEPT_BETA: 'I have read and accept the [1[Beta Program Terms and Conditions]].',
-  SHARE_YOUR_AI_CHATBOT: 'Share Your AI Chatbot',
-  EASILY_EMBED_YOUR_AGENT: 'Easily embed your agent anywhere on your site',
+
   COLOR_SCHEME: 'COLOR SCHEME',
   AGENT_BACKGROUND_STYLE: 'AGENT BACKGROUND STYLE',
   START_COLOR: 'Start Color',
@@ -36,46 +33,34 @@ export const ALL_TEXTS = {
   MINIMAL: 'Minimal',
   CREATE_AI_CHATBOT: 'Create AI Chatbot',
   CREATE: 'Create',
-  COPY_CODE: 'Copy Code',
-  COPIED_TO_CLIPBOARD: 'Copied to Clipboard!',
-  PASTE_THE_CODE_WHERE_YOU_WANT: 'Paste the code where you want the agent to display on your website',
-  PREVIEW_YOUR_AI_CHATBOT: 'Preview your AI Chatbot',
+
   DESCRIBE_THE_AGENT_YOU_WANT_TO_CREATE: 'Describe the agent you want to create',
   EXAMPLE_PROVIDE_CUSTOMER_SUPPORT_BY_ANSWERING_FAQS_AND_GUIDING_USERS_THROUGH: 'Example: Provide customer support by answering FAQs and guiding users through troubleshooting steps.',
-  REGISTRATION: 'Registration',
-  APPLICATION: 'Application',
   FEEDBACK: 'Feedback',
-  APPOINTMENT: 'Appointment',
-  MY_CHATBOT: 'MY CHATBOT',
-  SELECT_A_SUITABLE_TRAINING_TYPE_BELOW_TO_ADD_A_NEW_KNOWLEDGE: 'Select a suitable training type below to add a new knowledge.',
   SHOW_AI_CHATBOT_ON: 'Show AI Chatbot on',
   CHOOSE_PAGES_THE_AI_CHATBOT_WILL_BE_SHOWN_ON: 'Choose pages the AI Chatbot will be shown on.',
-  LIVE_PREVIEW: 'Live Preview',
-  EDIT: 'Edit',
+
   VIEW_CONVERSATIONS: 'View Conversations',
-  LETS_BUID_YOUR_AI_AGENT: 'Let\'s build your AI Agent',
+
   GIVE_FEEDBACK: 'Give Feedback',
-  CANCEL: 'Cancel',
+
   REMOVE_CHATBOT_FROM_WEBSITE: 'Remove Chatbot from Website?',
   // eslint-disable-next-line max-len
   YOU_CAN_EITHER_UNPUBLISH_OR_REMOVED_THE_CHATBOT: 'Click Unpublish to save the chatbot’s site-specific settings but remove the chatbot from your site. Click Remove from Website to permanently delete these settings and remove the chatbot from your site.',
   WITH_BOTH_OPTIONS_YOUR_CHATBOT: 'With both options, your chatbot and its training data will be saved.',
-  DELETE: 'Delete',
+
   UNPUBLISH: 'Unpublish',
-  DELETE_AI_CHATBOT: 'Delete AI Chatbot',
+
   REMOVE_FROM_WEBSITE: 'Remove from Website',
-  SAVE: 'Save',
-  SAVED: 'Saved',
-  SAVE_CHANGES: 'Save Changes',
+
   ANIMATION_TITLE: 'Chatbot Introduction Animation',
-  CHATBOT_ONBOARDING: 'Chatbot Onboarding',
+
   AGENT_AVATAR: 'Agent Avatar',
   SELECT_AN_AVATAR: 'Select an avatar for your agent.',
   AI_PERSONA: 'AI Persona',
-  WRITE_AND_CUSTOMIZE_HOW_AI_TALKS: 'Write and customize how the AI talks and acts.',
+
   CURRENT_AVATAR: 'Current Avatar',
-  START_USING_YOUR_CHATBOT: 'Start Using Your Chatbot',
-  START_USING: 'Start Using',
+
   AGENT_NAME: 'Agent Name',
   GIVE_A_NAME_TO_YOUR_AGENT_THAT_WILL_BE_DISPLAYED_IN_THE_CONVERSATION: 'Give a name to your agent that will be displayed in the conversation',
   AGENT_ROLE: 'Agent Role',
@@ -85,19 +70,14 @@ export const ALL_TEXTS = {
   GO_TO_PRICING: 'Go to Pricing',
   YOU_HAVE_REACHED_YOUR_LIMIT: 'You\'ve reached your AI Chatbot limit.',
   DELETE_EXISTING_AGENT: 'Delete an existing agent or upgrade to add more.',
-  CUSTOMER_SUPPORT_AI_AGENT: 'Customer Support AI Agent',
-  LEAD_GENERATION_AI_AGENT: 'Lead Generation AI Agent',
-  APPOINTMENT_SCHEDULING_AI_AGENT: 'Appointment Scheduling AI Agent',
-  ONLINE_EVENT_REGISTRATION_AI_AGENT: 'Online Event Registration AI Agent',
-  FEEDBACK_AI_AGENT: 'Feedback AI Agent',
-  PRODUCT_RECOMMENDATION_AI_AGENT: 'Product Recommendation AI Agent',
+
   DESCRIBE: 'Describe',
   SELECT_FROM_AGENTS: 'Select from My AI Agents',
   DEFAULT_LANGUAGE: 'Default Language',
   SELECT_THE_LANGUAGE: 'Select the language in which your agents greet users',
   TONE_OF_VOICE: 'Tone of Voice',
   SELECT_HOW_TO_COMMUNICATE: 'Select how you would like the AI to communicate',
-  CONFIGURE_OPTIONS_FOR_AI_CHATBOT: 'Configure options for AI Chatbot.',
+
   HOW_TO_USE_JOTFORM_AI_CHATBOT: 'How to use Jotform AI Chatbot?',
   AGENT_STYLE: 'Agent style',
   VISIBILITY: 'Visibility',
@@ -145,7 +125,7 @@ export const ALL_TEXTS = {
   LAYOUT: 'Layout',
   EXTENDED: 'Extended',
   CHOOSE_HOW_CHATBOT_APPEARS: 'Choose how the chatbot appears on your website',
-  OK: 'Ok',
+
   WHATS_NEW: 'What’s new 🔥',
   GET_THE_LATEST_CHANGES_AND_UPDATES: 'Get the latest changes and updates',
   TRY_IT_NOW: 'Try it now'

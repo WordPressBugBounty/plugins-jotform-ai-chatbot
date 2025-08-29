@@ -4,18 +4,16 @@ import { node, shape } from 'prop-types';
 import { fetcUser, interactWithPlatform } from '../api';
 import { initializePlatformLayer } from '../api/platformLayerSingleton';
 import {
-  ACTION_CREATORS, initialState, wizardReducer
+  ACTION_CREATORS, initialState, rootReducer
 } from '../store';
 import { createAsyncDispatch, platformSettings as platformSettingsSingleton } from '../utils';
 import { WizardContext } from './WizardContext';
 
 export const WizardProvider = ({
   children,
-  user: userProp = null
+  ...props
 }) => {
-  const [state, dispatch] = useReducer(wizardReducer, {
-    ...initialState, user: userProp
-  });
+  const [state, dispatch] = useReducer(rootReducer, { ...initialState, ...props });
 
   const {
     isInitialPlatformSettingsReady,
