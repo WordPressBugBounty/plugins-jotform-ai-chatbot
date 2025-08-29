@@ -1096,10 +1096,12 @@ class JAIC_Core {
             <div id="ai-chatbot"></div>
             <script>
             document.addEventListener("DOMContentLoaded", function () {
-                var s = document.createElement("script");
-                s.src = "' . $url . '";
-                s.async = true;
-                document.body.appendChild(s);
+                setTimeout(function () {
+                    var s = document.createElement("script");
+                    s.src = "' . $url . '";
+                    s.defer = true;
+                    document.head.appendChild(s);
+                }, 2000);
             });
             </script>
         ';

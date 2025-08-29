@@ -6,6 +6,7 @@ import { platformActionCreators } from './slices/platformSlice';
 import { themeActionCreators } from './slices/themeSlice';
 import { uiActionCreators } from './slices/uiSlice';
 import { userActionCreators } from './slices/userSlice';
+import { woocommerceActionCreators } from './slices/woocommerceSlice';
 
 // Combined action creators from all slices
 export const ACTION_CREATORS = {
@@ -31,5 +32,8 @@ export const ACTION_CREATORS = {
   ...conversationActionCreators,
 
   // UI actions
-  ...uiActionCreators
+  ...uiActionCreators,
+
+  // Woocommerce actions
+  ...woocommerceActionCreators
 };

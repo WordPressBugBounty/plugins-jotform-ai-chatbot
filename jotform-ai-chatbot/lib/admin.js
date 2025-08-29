@@ -13,3 +13,4 @@ const renderJotformLogo = (rootSelector) => () => {
 
 renderJotformLogo('toplevel_page_jotform_ai_chatbot')();
 renderJotformLogo('jotform-ai-chatbot_page_jotform_ai_chatbot_conversations')();
+renderJotformLogo('jotform-ai-chatbot_page_jotform_ai_chatbot_settings')();

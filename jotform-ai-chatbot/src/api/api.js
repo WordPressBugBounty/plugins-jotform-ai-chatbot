@@ -144,3 +144,8 @@ export const fetchChats = (agentId, activeViewId, conversations = [], apiKey = '
 
   return getRequestLayer().get(url);
 };
+
+export const updateWoocommerce = (params, apiKey = '') => {
+  const url = addApiKeyToUrl('ai-chatbot/woocommerce/integration', apiKey);
+  return getRequestLayer().post(url, params);
+};

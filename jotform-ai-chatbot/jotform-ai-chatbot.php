@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.1.0
+* Version: 3.1.1
 * Author URI: https://www.jotform.com/
 */
 
@@ -35,6 +35,16 @@ function jotform_ai_chatbot_plugin_options_page() {
         'jotform_ai_chatbot_render_plugin'
     );
 
+    // enable this when the woocommerce settings page is ready
+    // add_submenu_page(
+    //     'jotform_ai_chatbot',
+    //     'Settings',
+    //     'Settings',
+    //     'manage_options',
+    //     'jotform_ai_chatbot_settings',
+    //     'jotform_ai_chatbot_settings_callback'
+    // );
+
     add_submenu_page(
         'jotform_ai_chatbot',
         'Conversations',
@@ -43,6 +53,15 @@ function jotform_ai_chatbot_plugin_options_page() {
         'jotform_ai_chatbot_conversations',
         'jotform_ai_chatbot_conversations_callback'
     );
+}
+
+function jotform_ai_chatbot_settings_callback ($args) {
+    ?>
+    <div class="wrap">
+        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+    </div>
+    <?php
+    jotform_ai_chatbot_developers_callback($args);
 }
 
 function jotform_ai_chatbot_conversations_callback ($args) {
@@ -97,7 +116,7 @@ add_action("admin_bar_menu", "jotform_ai_chatbot_admin_bar_menu", 100);
  */
 function jaic_hide_notices() {
     $screen = get_current_screen();
-    if ($screen && ($screen->id === 'toplevel_page_jotform_ai_chatbot' || $screen->id === 'jotform-ai-chatbot_page_jotform_ai_chatbot_conversations')) {
+    if ($screen && ($screen->id === 'toplevel_page_jotform_ai_chatbot' || $screen->id === 'jotform-ai-chatbot_page_jotform_ai_chatbot_conversations' || $screen->id === 'jotform-ai-chatbot_page_jotform_ai_chatbot_settings')) {
         echo '<style>
             .notice.notice-success,
             .notice.notice-error,
@@ -438,7 +457,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "3.1.0";
+        $jaic_assetVersion = "3.1.1";
     } catch (\Exception $e) {
     }
 }

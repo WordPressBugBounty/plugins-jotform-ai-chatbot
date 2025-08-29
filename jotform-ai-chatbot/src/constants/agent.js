@@ -222,3 +222,13 @@ export const KEY_KEYCODE_LIST = {
   Space: 32,
   Escape: 27
 };
+
+export const WOO_COMMERCE_PROPERTIES = {
+  CONSUMER_KEY: 'consumerKey',
+  CONSUMER_SECRET: 'consumerSecret',
+  PRODUCT_FILTER: 'product_filter',
+  PRODUCT_RECOMMENDATION: 'product_recommendation',
+  ADD_TO_CART: 'add_to_cart',
+  ORDER_TRACKING: 'order_tracking',
+  REFUND_REQUEST: 'refund_request'
+};

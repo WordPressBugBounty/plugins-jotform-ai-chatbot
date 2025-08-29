@@ -6,6 +6,7 @@ import { platformInitialState, platformReducer } from './platformSlice';
 import { themeInitialState, themeReducer } from './themeSlice';
 import { uiInitialState, uiReducer } from './uiSlice';
 import { userInitialState, userReducer } from './userSlice';
+import { woocommerceInitialState, woocommerceReducer } from './woocommerceSlice';
 
 // Combined initial state from all slices
 export const initialState = {
@@ -16,7 +17,8 @@ export const initialState = {
   ...themeInitialState,
   ...platformInitialState,
   ...conversationInitialState,
-  ...uiInitialState
+  ...uiInitialState,
+  ...woocommerceInitialState
 };
 
 // Reducer map for clean organization and performance
@@ -100,6 +102,12 @@ const reducers = {
       isLimitDialogVisible: state.isLimitDialogVisible,
       tryGetPlatformAgentOnce: state.tryGetPlatformAgentOnce,
       errorMessage: state.errorMessage
+    })
+  },
+  woocommerce: {
+    reducer: woocommerceReducer,
+    select: state => ({
+      woocommerce: state.woocommerce
     })
   }
 };

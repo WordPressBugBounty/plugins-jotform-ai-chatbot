@@ -22,6 +22,7 @@ import IconCopySVG from '../../assets/svg/IconCopy.svg';
 import IconDocumentDocFilledSVG from '../../assets/svg/IconDocumentDocFilled.svg';
 import IconDocumentPdfFilledSVG from '../../assets/svg/IconDocumentPdfFilled.svg';
 import IconEllipsisVerticalSVG from '../../assets/svg/IconEllipsisVertical.svg';
+import IconExclamationCircleSVG from '../../assets/svg/IconExclamationCircle.svg';
 import IconExclamationCircleFilledSVG from '../../assets/svg/IconExclamationCircleFilled.svg';
 import IconEyeFilledSVG from '../../assets/svg/IconEyeFilled.svg';
 import IconInfoCircleSVG from '../../assets/svg/IconInfoCircle.svg';
@@ -81,5 +82,6 @@ export const IconAnnotationInfoFilled = (props) => <Icon Component={IconAnnotati
 export const IconAnnotationQuestionFilled = (props) => <Icon Component={IconAnnotationQuestionFilledSVG} {...props} />;
 export const IconEllipsisVertical = (props) => <Icon Component={IconEllipsisVerticalSVG} {...props} />;
 export const IconNotificationTextFilled = (props) => <Icon Component={IconNotificationTextFilledSVG} {...props} />;
+export const IconExclamationCircle = (props) => <Icon Component={IconExclamationCircleSVG} {...props} />;
 export const IconExclamationCircleFilled = (props) => <Icon Component={IconExclamationCircleFilledSVG} {...props} />;
 export const IconLinkDiagonal = (props) => <Icon Component={IconLinkDiagonalSVG} {...props} />;

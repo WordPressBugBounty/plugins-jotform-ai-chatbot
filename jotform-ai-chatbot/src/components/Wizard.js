@@ -8,7 +8,7 @@ import { PLATFORMS, STEPS } from '../constants';
 import { useWizard } from '../hooks';
 import { ACTION_CREATORS } from '../store';
 import {
-  awaitFor, createEmbed, getRootElement, isConversationsPage, isGuest, resetAgentPreviewRoot,
+  awaitFor, createEmbed, getRootElement, isConversationsPage, isGuest, isSettingsPage, resetAgentPreviewRoot,
   toggleConversationItems
 } from '../utils';
 import Footer from './Footer';
@@ -20,6 +20,7 @@ import {
   KnowledgeStep, LoadingStep, StyleStep, UseCaseStep,
   VisibilityStep
 } from './Steps';
+import SettingsStep from './Steps/SettingsStep';
 import WhatsNewModal from './WhatsNewModal';
 import WizardTabs from './WizardTabs';
 
@@ -95,6 +96,9 @@ const Wizard = props => {
     let nextStep = STEPS.AI_PERSONA;
     if (isConversationsPage()) {
       nextStep = STEPS.CONVERSATIONS;
+    }
+    if (isSettingsPage()) {
+      nextStep = STEPS.SETTINGS;
     }
     const data = { domain: PLATFORM_DOMAIN, platform: PLATFORMS.WORDPRESS };
     await asyncDispatch(
@@ -198,7 +202,8 @@ const Wizard = props => {
     [STEPS.AI_PERSONA]: AiPersonaStep,
     [STEPS.STYLE]: StyleStep,
     [STEPS.KNOWLEDGE]: KnowledgeStep,
-    [STEPS.CONVERSATIONS]: ConversationsStep
+    [STEPS.CONVERSATIONS]: ConversationsStep,
+    [STEPS.SETTINGS]: SettingsStep
   };
 
   const CurrentStep = stepMap[step];
@@ -215,10 +220,10 @@ const Wizard = props => {
         {!isLoaderVisible && (
           <>
             <div className='jfpContent-wrapper' data-step={step}>
-              {![STEPS.INITIAL, STEPS.USECASE_SELECTION, STEPS.CONVERSATIONS].includes(step) && <WizardTabs />}
+              {![STEPS.INITIAL, STEPS.USECASE_SELECTION, STEPS.CONVERSATIONS, STEPS.SETTINGS].includes(step) && <WizardTabs />}
               <CurrentStep {...props} unpublishAgent={unpublishAgent} />
             </div>
-            {step !== STEPS.CONVERSATIONS && <Preview />}
+            {![STEPS.CONVERSATIONS, STEPS.SETTINGS].includes(step) && <Preview />}
           </>
         )}
       </div>

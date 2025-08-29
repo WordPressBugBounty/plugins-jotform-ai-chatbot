@@ -263,6 +263,12 @@ export const isConversationsPage = () => {
   return page === 'jotform_ai_chatbot_conversations';
 };
 
+export const isSettingsPage = () => {
+  const params = new URLSearchParams(window.location.search);
+  const page = params.get('page');
+  return page === 'jotform_ai_chatbot_settings';
+};
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
