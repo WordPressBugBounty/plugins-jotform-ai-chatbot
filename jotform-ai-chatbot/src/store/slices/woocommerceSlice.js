@@ -20,8 +20,6 @@ export const woocommerceInitialState = {
 
 // Woocommerce slice reducer
 export const woocommerceReducer = (state, action) => {
-  console.log(state, action);
-
   switch (action.type) {
     case SET_WOOCOMMERCE_PROPERTY:
       return {

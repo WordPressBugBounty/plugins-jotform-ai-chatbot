@@ -9,15 +9,15 @@ import Button from './UI/Button';
 import { IconExclamationCircleFilled } from './UI/Icon';
 import Modal from './UI/Modal';
 
-const DeleteModal = ({
+const UnpublishModal = ({
   isOpen,
-  isDeleteLoading,
-  onDeleteClick,
+  isPublishLoading,
+  onUnpublishClick,
   onCloseClick
 }) => {
   useEffect(() => {
     if (isOpen) {
-      saveInstallment('deleteDialog');
+      saveInstallment('unpublishDialog');
     }
   }, [isOpen]);
 
@@ -25,7 +25,7 @@ const DeleteModal = ({
     <Modal
       open={isOpen}
       onClose={onCloseClick}
-      ariaLabel={t(ALL_TEXTS.REMOVE_CHATBOT_FROM_WEBSITE)}
+      ariaLabel={t(ALL_TEXTS.UNPUBLISH_CHATBOT_FROM_WEBSITE)}
       size='small'
     >
       <div className='jfModal--title'>
@@ -33,14 +33,14 @@ const DeleteModal = ({
           <IconXmarkCircle />
         </div>
         <h3>
-          {t(ALL_TEXTS.REMOVE_CHATBOT_FROM_WEBSITE)}
+          {t(ALL_TEXTS.UNPUBLISH_CHATBOT_FROM_WEBSITE)}
         </h3>
         <p style={{ marginBottom: 0 }}>
-          {t(ALL_TEXTS.CLICK_REMOVE_FROM_WEBSITE_TO_PERMANENTLY_DELETE)}
+          {t(ALL_TEXTS.CLICK_UNPUBLISH_TO_REMOVE_THE_CHATBOT)}
         </p>
         <div className='jfModal--title-info'>
           <IconExclamationCircleFilled className='jfModal--title-info-icon' />
-          <p>{t(ALL_TEXTS.YOUR_CHATBOT_AND_ITS_TRANING_DATA_WILL_STILL_BE_SAVED)}</p>
+          <p>{t(ALL_TEXTS.YOUR_CHATBOT_AND_ITS_TRANING_DATA_WILL_REMAIN_SAVED)}</p>
         </div>
       </div>
       <div className='jfModal--actions'>
@@ -53,21 +53,21 @@ const DeleteModal = ({
         </Button>
         <Button
           colorStyle='error'
-          loader={isDeleteLoading}
-          onClick={onDeleteClick}
+          loader={isPublishLoading}
+          onClick={onUnpublishClick}
         >
-          {t(ALL_TEXTS.REMOVE_FROM_WEBSITE)}
+          {t(ALL_TEXTS.UNPUBLISH)}
         </Button>
       </div>
     </Modal>
   );
 };
 
-DeleteModal.propTypes = {
+UnpublishModal.propTypes = {
   isOpen: bool.isRequired,
-  onDeleteClick: func.isRequired,
+  onUnpublishClick: func.isRequired,
   onCloseClick: func.isRequired,
-  isDeleteLoading: bool
+  isPublishLoading: bool
 };
 
-export default DeleteModal;
+export default UnpublishModal;

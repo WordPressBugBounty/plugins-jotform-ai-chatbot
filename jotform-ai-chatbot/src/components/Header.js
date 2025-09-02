@@ -6,13 +6,15 @@ import { saveInstallment } from '../api';
 import IconArrowUpRight from '../assets/svg/IconArrowUpRight.svg';
 import IconEyeFilled from '../assets/svg/IconEyeFilled.svg';
 import { ALL_TEXTS, STEP_TO_BUILDER_PATH } from '../constants';
-import { useWizard } from '../hooks';
+import { usePublishButton, useWizard } from '../hooks';
+import { STAGES } from '../hooks/usePublishButton';
 import {
   awaitFor, platformSettings, t
 } from '../utils';
 import Button from './UI/Button';
+import UnpublishModal from './UnpublishModal';
 
-const Header = ({ publishAgent }) => {
+const Header = ({ publishAgent, unpublishAgent }) => {
   const { state } = useWizard();
 
   const {
@@ -25,6 +27,9 @@ const Header = ({ publishAgent }) => {
 
   const [buttonWrappeRoot, setButtonWrapperRoot] = useState(null);
   const [isLivePreviewLoading, setIsLivePreviewLoading] = useState(false);
+  const [isUnpublishModalOpen, setIsUnpublishModalOpen] = useState(false);
+
+  const { buttonProps, startPublish, resetToUnpublished } = usePublishButton(isPublished ? STAGES.PUBLISHED : STAGES.UNPUBLISHED);
 
   const handleJotformLink = async () => {
     saveInstallment('goToJotformButton');
@@ -44,7 +49,15 @@ const Header = ({ publishAgent }) => {
 
   const handlePublishClick = async () => {
     saveInstallment('publishButton');
+    startPublish();
     await publishAgent({ key: 'embed' });
+  };
+
+  const handleUnpublishClick = async () => {
+    saveInstallment('unpublishButton');
+    await unpublishAgent();
+    resetToUnpublished();
+    setIsUnpublishModalOpen(false);
   };
 
   useEffect(() => {
@@ -78,14 +91,22 @@ const Header = ({ publishAgent }) => {
         </Button>
         {/* publish button */}
         <Button
-          colorStyle='primary'
-          loader={isPublishLoading}
+          colorStyle={buttonProps.colorStyle}
+          disabled={buttonProps.disabled}
+          variant={buttonProps.variant}
           className={`publish-cta${isPublished ? '' : ' isPulseAnimation'}`}
-          onClick={handlePublishClick}
-          disabled={isPublished}
+          onClick={isPublished ? () => setIsUnpublishModalOpen(true) : handlePublishClick}
+          style={{ opacity: buttonProps.opacity }}
         >
-          {isPublished ? t(ALL_TEXTS.PUBLISHED) : t(ALL_TEXTS.PUBLISH)}
+          {buttonProps.text}
         </Button>
+        <UnpublishModal
+          isOpen={isUnpublishModalOpen}
+          onUnpublishClick={handleUnpublishClick}
+          onCloseClick={() => setIsUnpublishModalOpen(false)}
+          isPublished={isPublished}
+          isPublishLoading={isPublishLoading}
+        />
       </div>
     </div>,
     buttonWrappeRoot
@@ -93,7 +114,8 @@ const Header = ({ publishAgent }) => {
 };
 
 Header.propTypes = {
-  publishAgent: func.isRequired
+  publishAgent: func.isRequired,
+  unpublishAgent: func.isRequired
 };
 
 export default Header;

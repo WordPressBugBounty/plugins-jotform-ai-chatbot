@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.1.1
+* Version: 3.1.2
 * Author URI: https://www.jotform.com/
 */
 
@@ -54,26 +54,42 @@ function jotform_ai_chatbot_plugin_options_page() {
         'jotform_ai_chatbot_conversations_callback'
     );
 }
-
-function jotform_ai_chatbot_settings_callback ($args) {
-    ?>
-    <div class="wrap">
-        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
-    </div>
-    <?php
-    jotform_ai_chatbot_developers_callback($args);
-}
-
-function jotform_ai_chatbot_conversations_callback ($args) {
-    ?>
-    <div class="wrap">
-        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
-    </div>
-    <?php
-    jotform_ai_chatbot_developers_callback($args);
-}
-
 add_action("admin_menu", "jotform_ai_chatbot_plugin_options_page");
+
+
+/**
+ * Callback function for rendering the AI Chatbot settings page in the WordPress admin area.
+ *
+ * - Outputs the page wrapper and heading using the current admin page title.
+ * - Delegates additional settings/content rendering to `jotform_ai_chatbot_developers_callback()`.
+ *
+ * @param array $args Arguments passed to the settings page (if any).
+ */
+function jotform_ai_chatbot_settings_callback($args) {
+    ?>
+    <div class="wrap">
+        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+    </div>
+    <?php
+    jotform_ai_chatbot_developers_callback($args);
+}
+
+/**
+ * Callback function for rendering the AI Chatbot conversations page in the WordPress admin area.
+ *
+ * - Displays the page wrapper and heading using the current admin page title.
+ * - Hands off the rest of the page content rendering to `jotform_ai_chatbot_developers_callback()`.
+ *
+ * @param array $args Arguments passed to the conversations page (if any).
+ */
+function jotform_ai_chatbot_conversations_callback($args) {
+    ?>
+    <div class="wrap">
+        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+    </div>
+    <?php
+    jotform_ai_chatbot_developers_callback($args);
+}
 
 /**
  * Add plugin to Admin Bar
@@ -111,7 +127,7 @@ function jotform_ai_chatbot_admin_bar_menu($wp_admin_bar) {
 }
 add_action("admin_bar_menu", "jotform_ai_chatbot_admin_bar_menu", 100);
 
-/** 
+/**
  * Hide notices on the plugin page to avoid confusion
  */
 function jaic_hide_notices() {
@@ -158,7 +174,9 @@ add_action('admin_footer', 'jaic_hide_conversations_submenu');
  * @param string $hook The current admin page hook.
  */
 function jaic_deactivate_modal_scripts($hook) {
-    if ($hook !== 'plugins.php') return;
+    if ($hook !== 'plugins.php') {
+        return;
+    }
 
     wp_enqueue_style('jaic-deactivate-modal', plugin_dir_url(__FILE__) . 'lib/css/jaic-deactivate-modal.css');
     wp_enqueue_script('jaic-deactivate-modal', plugin_dir_url(__FILE__) . 'lib/jaic-deactivate-modal.js', [], false, true);
@@ -176,10 +194,11 @@ add_action('admin_enqueue_scripts', 'jaic_deactivate_modal_scripts');
  * @return void
  */
 function jaic_deactivate_modal() {
-    $formID = "252104898587975";
-    $formURL = "https://submit.jotform.com/submit/{$formID}";
+    $formURL = "https://submit.jotform.com/submit/252104898587975";
     $plugin_file = WP_PLUGIN_DIR . '/jotform-ai-chatbot/jotform-ai-chatbot.php';
-    $plugin_data = get_file_data($plugin_file, array('Version' => 'Version'));
+    $plugin_data = get_file_data($plugin_file, [
+        'Version' => 'Version'
+    ]);
     $current_version = $plugin_data['Version'] ?? '-';
     ?>
     <div class="jaic_modal" style="display:none;">
@@ -244,6 +263,24 @@ function jotform_ai_chatbot_initialize_plugin($action) {
         "action"   => $action . "_V2"
     ];
 
+    // Add the API Key if already generated
+    $options = get_option("jotform_ai_chatbot_options");
+    $options = !empty($options) ? json_decode($options, true) : [];
+    if (isset($options["apiKey"]) && !empty($options["apiKey"])) {
+        $args["headers"]["APIKEY"] = $options["apiKey"];
+    } else {
+        // Get Jotform Chatbot Plugin Installment Data
+        $options = get_option("jotform_ai_chatbot_installment_options");
+        $options = !empty($options) ? json_decode($options, true) : [];
+
+        // Check Installment Username Data
+        if (isset($options["username"]) && !empty($options["username"])) {
+            $payload["username"] = $options["username"];
+        } else {
+            $payload["initializeInstallment"] = true;
+        }
+    }
+
     // Request params
     $args = [
         "method"    => "POST",
@@ -253,15 +290,21 @@ function jotform_ai_chatbot_initialize_plugin($action) {
         ]
     ];
 
-    // Add the API Key if already generated
-    $options = get_option("jotform_ai_chatbot_options");
-    $options = !empty($options) ? json_decode($options, true) : [];
-    if (isset($options["apiKey"]) && !empty($options["apiKey"])) {
-        $args["headers"]["APIKEY"] = $options["apiKey"];
-    }
-
     // Make the request
-    wp_remote_request($url, $args);
+    $response = wp_remote_request($url, $args);
+
+    // Update installment Username data
+    if (
+        !empty($payload["initializeInstallment"]) &&
+        !empty($response["body"])
+    ) {
+        $response = json_decode($response["body"], true);
+        if (!empty($response["content"]["username"])) {
+            update_option("jotform_ai_chatbot_installment_options", wp_json_encode([
+                "username" => $response["content"]["username"]
+            ]));
+        }
+    }
 }
 
 /**
@@ -457,7 +500,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "3.1.1";
+        $jaic_assetVersion = "3.1.2";
     } catch (\Exception $e) {
     }
 }

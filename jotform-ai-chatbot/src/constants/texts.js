@@ -46,8 +46,12 @@ export const ALL_TEXTS = {
 
   REMOVE_CHATBOT_FROM_WEBSITE: 'Remove Chatbot from Website?',
   // eslint-disable-next-line max-len
-  YOU_CAN_EITHER_UNPUBLISH_OR_REMOVED_THE_CHATBOT: 'Click Unpublish to save the chatbot’s site-specific settings but remove the chatbot from your site. Click Remove from Website to permanently delete these settings and remove the chatbot from your site.',
-  WITH_BOTH_OPTIONS_YOUR_CHATBOT: 'With both options, your chatbot and its training data will be saved.',
+  CLICK_REMOVE_FROM_WEBSITE_TO_PERMANENTLY_DELETE: 'Click Remove from Website to permanently delete this chatbot’s site-specific settings and remove it from your website.',
+  YOUR_CHATBOT_AND_ITS_TRANING_DATA_WILL_STILL_BE_SAVED: 'Your chatbot and its training data will still be saved, but you’ll need to configure site-specific settings again if you add it back.',
+  UNPUBLISH_CHATBOT_FROM_WEBSITE: 'Unpublish Chatbot from Website?',
+  // eslint-disable-next-line max-len
+  CLICK_UNPUBLISH_TO_REMOVE_THE_CHATBOT: 'Click Unpublish to remove the chatbot from your website while keeping its site-specific settings saved. You can republish it later without losing your setup.',
+  YOUR_CHATBOT_AND_ITS_TRANING_DATA_WILL_REMAIN_SAVED: 'Your chatbot and its training data will remain saved.',
 
   UNPUBLISH: 'Unpublish',
 
@@ -155,5 +159,7 @@ export const ALL_TEXTS = {
   SECRET_PLACEHOLDER: 'Please enter your secret here',
   CHATBOT_ABILITIES: 'CHATBOT ABILITIES',
   COMING_SOON: 'Coming Soon',
-  DISCONNECT_STORE: 'Disconnect Store'
+  DISCONNECT_STORE: 'Disconnect Store',
+  PUBLISHING: 'Publishing...',
+  CANCEL: 'Cancel'
 };

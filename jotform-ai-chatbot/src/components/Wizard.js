@@ -211,7 +211,7 @@ const Wizard = props => {
   return (
     <>
       {[STEPS.AI_PERSONA, STEPS.STYLE, STEPS.VISIBILITY, STEPS.KNOWLEDGE].includes(step)
-        && <Header publishAgent={publishAgent} />}
+        && <Header publishAgent={publishAgent} unpublishAgent={unpublishAgent} />}
       <div
         data-step={step}
         className={`jfpChatbot-container jfpChatbot-container--platformmode${isLoaderVisible ? ' wizard-loading' : ''}`}

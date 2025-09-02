@@ -2,7 +2,6 @@
 // eslint-disable-next-line no-undef
 const pluginSlug = jaicPluginData.pluginSlug;
 // const pluginSlug = 'jotform-ai-chatbot';
-// console.log(pluginSlugA);
 document.addEventListener('DOMContentLoaded', () => {
   const deactivateRow = document.querySelector(`tr[data-slug="${pluginSlug}"]`);
   const deactivateLink = deactivateRow.querySelector('.deactivate #deactivate-jotform-ai-chatbot');
@@ -47,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   otherTextInput.addEventListener('input', () => {
-    // console.log('input');
     if (otherTextInput.value.trim() === '') {
       submitButton.classList.add('disabled');
     } else {
