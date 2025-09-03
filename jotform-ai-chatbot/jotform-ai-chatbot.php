@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.1.2
+* Version: 3.1.3
 * Author URI: https://www.jotform.com/
 */
 
@@ -263,24 +263,6 @@ function jotform_ai_chatbot_initialize_plugin($action) {
         "action"   => $action . "_V2"
     ];
 
-    // Add the API Key if already generated
-    $options = get_option("jotform_ai_chatbot_options");
-    $options = !empty($options) ? json_decode($options, true) : [];
-    if (isset($options["apiKey"]) && !empty($options["apiKey"])) {
-        $args["headers"]["APIKEY"] = $options["apiKey"];
-    } else {
-        // Get Jotform Chatbot Plugin Installment Data
-        $options = get_option("jotform_ai_chatbot_installment_options");
-        $options = !empty($options) ? json_decode($options, true) : [];
-
-        // Check Installment Username Data
-        if (isset($options["username"]) && !empty($options["username"])) {
-            $payload["username"] = $options["username"];
-        } else {
-            $payload["initializeInstallment"] = true;
-        }
-    }
-
     // Request params
     $args = [
         "method"    => "POST",
@@ -290,21 +272,15 @@ function jotform_ai_chatbot_initialize_plugin($action) {
         ]
     ];
 
-    // Make the request
-    $response = wp_remote_request($url, $args);
-
-    // Update installment Username data
-    if (
-        !empty($payload["initializeInstallment"]) &&
-        !empty($response["body"])
-    ) {
-        $response = json_decode($response["body"], true);
-        if (!empty($response["content"]["username"])) {
-            update_option("jotform_ai_chatbot_installment_options", wp_json_encode([
-                "username" => $response["content"]["username"]
-            ]));
-        }
+    // Add the API Key if already generated
+    $options = get_option("jotform_ai_chatbot_options");
+    $options = !empty($options) ? json_decode($options, true) : [];
+    if (isset($options["apiKey"]) && !empty($options["apiKey"])) {
+        $args["headers"]["APIKEY"] = $options["apiKey"];
     }
+
+    // Make the request
+    wp_remote_request($url, $args);
 }
 
 /**
@@ -500,7 +476,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "3.1.2";
+        $jaic_assetVersion = "3.1.3";
     } catch (\Exception $e) {
     }
 }
