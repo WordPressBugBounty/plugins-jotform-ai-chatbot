@@ -324,6 +324,9 @@ class JAIC_Core {
 
                 // Make the request
                 wp_remote_request($url, $args);
+
+                // Clear all WP caches
+                $this->clearWPCaches();
             }
         } else {
             // Delete partial chatbot options from the database
@@ -331,6 +334,9 @@ class JAIC_Core {
                 "apiKey" => (!empty($apiKey) ? $apiKey : ""),
                 "agentId" => ""
             ]));
+
+            // Clear all WP caches
+            $this->clearWPCaches();
 
             // Send a JSON response indicating successful deletion accordingly
             JAIC_Request::responseJSON(
@@ -457,6 +463,9 @@ class JAIC_Core {
         if ($optionKey === "apiKey") {
             $this->setServiceURLs(true);
         }
+
+        // Clear all WP caches
+        $this->clearWPCaches();
 
         // Send a success response in JSON format
         JAIC_Request::responseJSON(
@@ -1023,6 +1032,51 @@ class JAIC_Core {
         update_option(self::$pluginPendingSyncKey, json_encode($pending));
 
         return true;
+    }
+
+    /**
+     * Handles to clear all WP caches
+     */
+    public function clearWPCaches() {
+        if (function_exists('wp_cache_flush')) {
+            wp_cache_flush();
+        }
+
+        if (function_exists('wp_cache_clear_cache')) {
+            wp_cache_clear_cache();
+        }
+
+        if (function_exists('w3tc_flush_all')) {
+            w3tc_flush_all();
+        }
+
+        if (class_exists('\LiteSpeed\Purge')) {
+            \LiteSpeed\Purge::purge_all();
+        }
+
+        if (function_exists('sg_cachepress_purge_cache')) {
+            sg_cachepress_purge_cache();
+        }
+
+        if (function_exists('rocket_clean_domain')) {
+            rocket_clean_domain();
+        }
+
+        if (class_exists('autoptimizeCache')) {
+            autoptimizeCache::clearall();
+        }
+
+        if (function_exists('wphb_clear_page_cache')) {
+            wphb_clear_page_cache();
+        }
+
+        if (function_exists('breeze_clear_cache')) {
+            breeze_clear_cache();
+        }
+
+        if (function_exists('flush_rewrite_rules')) {
+            flush_rewrite_rules();
+        }
     }
 
     /**

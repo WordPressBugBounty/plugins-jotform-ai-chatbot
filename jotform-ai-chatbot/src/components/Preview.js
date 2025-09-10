@@ -33,6 +33,9 @@ const Preview = () => {
         await awaitFor(2500);
       }
 
+      const agentPreviewRoot = document.querySelector('#agent-preview-root');
+      if (!agentPreviewRoot) return;
+
       initAgent({
         agentId: previewAgentId,
         customizations,
