@@ -364,3 +364,9 @@ export const removeStepFromQueryParams = () => {
   url.searchParams.delete('current_tab');
   window.history.replaceState({}, '', url.toString());
 };
+
+export const cleanParams = (keysToRemove = []) => {
+  const url = new URL(window.location.href);
+  keysToRemove.forEach((key) => url.searchParams.delete(key));
+  window.history.replaceState({}, '', url.toString());
+};

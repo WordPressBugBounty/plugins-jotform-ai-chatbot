@@ -28,7 +28,8 @@ const reducers = {
     select: state => ({
       user: state.user,
       termsChecked: state.termsChecked,
-      refetchUser: state.refetchUser
+      refetchUser: state.refetchUser,
+      showNetworkError: state.showNetworkError
     })
   },
   agent: {
@@ -82,7 +83,8 @@ const reducers = {
       platformSettings: state.platformSettings,
       visibleDevice: state.visibleDevice,
       isPublished: state.isPublished,
-      errorMessage: state.errorMessage
+      errorMessage: state.errorMessage,
+      isUnauthorizedApiKey: state.isUnauthorizedApiKey
     })
   },
   conversation: {

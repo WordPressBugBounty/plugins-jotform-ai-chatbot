@@ -1,40 +1,21 @@
 /* eslint-disable max-len */
-import {
-  useCallback, useEffect, useRef, useState
-} from 'react';
+import { useEffect, useRef } from 'react';
 
 const PROJECT_NAME = 'Jotform Wordpress AI Chatbot';
+const PROJECT_URL = window.location.href;
+const ENTERPRISE_LOGIN_ENDPOINT = '/api/legacy-oauth/enterprise-domain';
 
-const openJFAuthPopup = jotformUrl => {
-  const w = 458;
-  const h = 458;
-  let y = global.outerHeight / 2 + global.screenY - h / 2;
-  let x = global.outerWidth / 2 + global.screenX - w / 2;
-  try {
-    y = global.top.outerHeight / 2 + global.top.screenY - h / 2;
-    x = global.top.outerWidth / 2 + global.top.screenX - w / 2;
-  } catch (err) {
-    // error accessing to cross origin frame. Do nothing.
-  }
+const openJFAuthPopup = () => window.open(
+  `https://www.jotform.com/api/oauth.php?registrationType=oauth&client_id=${encodeURIComponent(PROJECT_NAME)}&access_type=full&auth_type=login&ref=${encodeURIComponent(PROJECT_URL)}&integration_auth=1&isNewLoginFlow=1&enterpriseLoginEndpoint=${encodeURIComponent(ENTERPRISE_LOGIN_ENDPOINT)}&rk=1`,
+  '_self'
+);
 
-  return global.open(
-    `${jotformUrl}/api/oauth.php?registrationType=oauth&client_id=${encodeURIComponent(PROJECT_NAME)}&access_type=full&auth_type=login&ref=${encodeURIComponent(global.document.location.href)}&integration_auth=1`,
-    '_blank',
-    `toolbar=0,location=0,menubar=0,width=${w},height=${h},top=${y},left=${x}`
-  );
-};
-
-export const useOAuth = jotformUrl => {
+export const useOAuth = () => {
   const buttonRef = useRef(null);
-  const [popup, setPopup] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [apiKey, setApiKey] = useState('');
 
   useEffect(() => {
     const handleLoginClick = async () => {
-      const newPopup = openJFAuthPopup(jotformUrl);
-      setPopup(newPopup);
-      setIsLoading(true);
+      openJFAuthPopup();
     };
     if (buttonRef.current) {
       buttonRef.current.addEventListener('click', handleLoginClick);
@@ -44,37 +25,7 @@ export const useOAuth = jotformUrl => {
         buttonRef.current.removeEventListener('click', handleLoginClick);
       }
     };
-  }, [buttonRef, jotformUrl]);
+  }, [buttonRef]);
 
-  const removePopup = useCallback(() => {
-    if (popup && popup.closed) {
-      setPopup(null);
-      setIsLoading(false);
-    }
-  }, [popup]);
-
-  useEffect(() => {
-    const checkPopupInterval = setInterval(removePopup, 500);
-    return () => clearInterval(checkPopupInterval);
-  }, [removePopup]);
-
-  useEffect(() => {
-    if (!popup) return;
-    const handlePostMessage = event => {
-      const data = event?.data || '';
-      const match = data?.match?.(/login:(.*)/);
-      if (match) {
-        setApiKey(match[1]);
-      }
-      if (popup && typeof data === 'string' && (data === '' || data.includes('login:'))) {
-        popup.close();
-      }
-    };
-    global.addEventListener('message', handlePostMessage);
-    return () => {
-      global.removeEventListener('message', handlePostMessage);
-    };
-  }, [popup]);
-
-  return { buttonRef, isLoading, apiKey };
+  return { buttonRef };
 };

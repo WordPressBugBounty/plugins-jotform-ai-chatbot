@@ -1,12 +1,7 @@
-import { getBaseURL, platformSettings } from '../utils';
+import { getBaseURL } from '../utils';
 import { createAxiosInstance } from './base';
 
-const isPlatformProduction = () => {
-  const { PROVIDER_API_URL } = platformSettings;
-  return PROVIDER_API_URL?.includes('api.jotform.com');
-};
-
-const createLayer = () => createAxiosInstance(getBaseURL(), !isPlatformProduction());
+const createLayer = () => createAxiosInstance(getBaseURL(), false);
 
 let requestLayer = createLayer();
 

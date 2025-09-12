@@ -161,5 +161,11 @@ export const ALL_TEXTS = {
   COMING_SOON: 'Coming Soon',
   DISCONNECT_STORE: 'Disconnect Store',
   PUBLISHING: 'Publishing...',
-  CANCEL: 'Cancel'
+  CANCEL: 'Cancel',
+  // eslint-disable-next-line max-len
+  NETWORK_ERROR_TITLE: 'Connection issue',
+  NETWORK_ERROR_DESC_ENTERPRISE: 'Using an enterprise account? Contact your system administrator for assistance.',
+  NETWORK_ERROR_DESC_NETWORK: 'Can’t connect to the server. Please check your internet connection or try again.',
+  UNAUTHORIZED_API_KEY_TITLE: 'Unauthorized Access',
+  UNAUTHORIZED_API_KEY_DESC: 'You don’t have permission to use this plugin. Please contact your system administrator to enable access.'
 };

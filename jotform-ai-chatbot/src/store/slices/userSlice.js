@@ -10,7 +10,8 @@ export { FETCH_USER };
 // Initial state for user domain
 export const userInitialState = {
   user: null,
-  refetchUser: false
+  refetchUser: false,
+  showNetworkError: false
 };
 
 // User slice reducer
@@ -29,7 +30,11 @@ export const userReducer = (state, action) => {
     case FETCH_USER.ERROR:
       // Handle EU redirection and error states
       let errorState = {};
-      const errorData = action.payload.result?.data;
+      const errorResult = action.payload.result;
+      const errorData = errorResult?.data;
+      if (errorResult.message === 'Network Error' && errorResult.code === 'ERR_NETWORK') {
+        errorState = { showNetworkError: true };
+      }
       if (errorData?.responseCode === 301 && errorData.location?.includes('eu-api')) {
         errorState = { refetchUser: true };
       }

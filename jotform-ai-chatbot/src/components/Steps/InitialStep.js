@@ -1,65 +1,30 @@
 import React, { useEffect } from 'react';
 import { object } from 'prop-types';
 
-import {
-  fetcUser, interactWithPlatform,
-  saveInstallment
-} from '../../api';
+import { saveInstallment } from '../../api';
 import IconArrowRight from '../../assets/svg/IconArrowRight.svg';
 import LogoJotformColor from '../../assets/svg/LogoJotformColor.svg';
 import { ALL_TEXTS, STEPS } from '../../constants';
 import { useOAuth, useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
-import {
-  awaitFor, isGuest, platformSettings, t,
-  toCamelCase
-} from '../../utils';
+import { isGuest, t, toCamelCase } from '../../utils';
+import NetworkError from '../NetworkError';
 import Button from '../UI/Button';
+import UnauthorizedApiKeyError from '../UnauthorizedApiKeyError';
 
 const InitialStep = ({
   customTexts = {}
 }) => {
-  const { state, dispatch, asyncDispatch } = useWizard();
+  const { state, dispatch } = useWizard();
   const {
-    user, step, platformSettings: { PROVIDER_URL }, refetchUser
+    user, step, showNetworkError, isUnauthorizedApiKey
   } = state;
 
-  const { buttonRef, isLoading, apiKey } = useOAuth(PROVIDER_URL);
+  const { buttonRef } = useOAuth();
   const shouldOAuth = !user || isGuest(user);
 
-  // fetch user
   useEffect(() => {
-    if (!apiKey) return;
-    platformSettings.PROVIDER_API_KEY = apiKey;
-    dispatch(ACTION_CREATORS.setProviderApiKey(apiKey));
-    const fetchUserAsync = async () => {
-      await awaitFor(1000);
-      await asyncDispatch(
-        () => fetcUser(apiKey),
-        ACTION_CREATORS.fetchUserRequest,
-        ACTION_CREATORS.fetchUserSuccess,
-        ACTION_CREATORS.fetchUserError
-      );
-    };
-    fetchUserAsync();
-  }, [apiKey, refetchUser]);
-
-  // save jotform api key to platform
-  useEffect(() => {
-    if (!apiKey) return;
-    const saveProviderApiKey = async () => {
-      const dataApiKey = { action: 'update', key: 'apiKey', value: apiKey };
-      await asyncDispatch(
-        () => interactWithPlatform(dataApiKey),
-        ACTION_CREATORS.saveProviderApiKeyRequest,
-        ACTION_CREATORS.saveProviderApiKeySuccess,
-        ACTION_CREATORS.saveProviderApiKeyError
-      );
-    };
-    saveProviderApiKey();
-  }, [apiKey]);
-
-  useEffect(() => {
+    if (showNetworkError) return;
     saveInstallment(`${toCamelCase(step)}Step`);
   }, []);
 
@@ -79,13 +44,13 @@ const InitialStep = ({
       <Button
         endIcon={<IconArrowRight />}
         onClick={handleStartClick}
-        loader={isLoading}
         buttonRef={shouldOAuth ? buttonRef : { current: null }}
         className='lets-start buttonRTL'
-        disabled={!PROVIDER_URL}
       >
         {t(ALL_TEXTS.LETS_START)}
       </Button>
+      {showNetworkError && <NetworkError />}
+      {isUnauthorizedApiKey && <UnauthorizedApiKeyError />}
     </div>
   );
 };

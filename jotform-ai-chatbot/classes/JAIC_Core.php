@@ -42,19 +42,23 @@ class JAIC_Core {
     private static $serviceURLs = [
         "geu" => [
             "site" => "https://eu.jotform.com",
-            "api"  => "https://eu-api.jotform.com"
+            "api"  => "https://eu-api.jotform.com",
+            "embed" => "https://cdn.jotfor.ms"
         ],
         "hipaa" => [
             "site" => "https://hipaa.jotform.com",
-            "api"  => "https://hipaa-api.jotform.com"
+            "api"  => "https://hipaa-api.jotform.com",
+            "embed" => "https://cdn.jotfor.ms"
         ],
         "us" => [
             "site" => "https://www.jotform.com",
-            "api"  => "https://api.jotform.com"
+            "api"  => "https://api.jotform.com",
+            "embed" => "https://cdn.jotfor.ms"
         ]
     ];
     private static $siteURL;
     private static $siteAPIURL;
+    private static $siteEmbedURL;
 
     /**
      * JAIC_Core constructor.
@@ -324,10 +328,10 @@ class JAIC_Core {
 
                 // Make the request
                 wp_remote_request($url, $args);
-
-                // Clear all WP caches
-                $this->clearWPCaches();
             }
+
+            // Clear all WP caches
+            $this->clearWPCaches();
         } else {
             // Delete partial chatbot options from the database
             update_option(self::$pluginOptionKey, wp_json_encode([
@@ -406,62 +410,72 @@ class JAIC_Core {
      *
      * @param string $key The key of the AI Chatbot Plugin option
      * @param string $value The value of the AI Chatbot Plugin option
+     * @param string $separator The key and value separator string
      *
      * @return void
      */
-    private function update(string $key = "", string $value = ""): void {
+    private function update(string $key = "", string $value = "", string $separator = "|"): void {
         //Get Params
         $nounce = isset($_POST["_nonce"]) ? sanitize_text_field(wp_unslash($_POST["_nonce"])) : false;
         $optionKey = !empty($key) ? $key : ((wp_verify_nonce($nounce, "jotform-ai-chatbot") && isset($_POST["key"])) ? sanitize_text_field(wp_unslash($_POST["key"])) : "");
         $optionValue = !empty($value) ? $value : ((wp_verify_nonce($nounce, "jotform-ai-chatbot") && isset($_POST["value"])) ? sanitize_text_field(wp_unslash($_POST["value"])) : "");
 
-        // Define valid option list
-        $optionKeys = [
-            "pages",
-            "embed",
-            "preview",
-            "apiKey",
-            "device",
-            "unpublish",
-            "agentId"
-        ];
+        $optionKeys = strstr($optionKey, $separator) ? explode($separator, $optionKey) : [$optionKey];
+        $optionValues = strstr($optionValue, $separator) ? explode($separator, $optionValue) : [$optionValue];
 
-        if (empty($optionKey)) {
-            JAIC_Request::response400("Error! Invalid parameters.");
-        }
-        $optionValue = empty($optionValue) ? "" : trim($optionValue);
+        foreach ($optionKeys as $key => $optionKey) {
+            // Get Option Value
+            $optionValue = $optionValues[$key];
 
-        if (!is_string($optionKey) || !in_array($optionKey, $optionKeys)) {
-            JAIC_Request::response403(
-                "Error! You are not authorized to update this option key."
-            );
-        }
+            // Define valid option list
+            $optionKeys = [
+                "pages",
+                "embed",
+                "preview",
+                "apiKey",
+                "enterpriseDomain",
+                "device",
+                "unpublish",
+                "agentId"
+            ];
 
-        // Temp ONUR
-        $optionKey = ($optionKey === "pagesV2") ? "pages" : $optionKey;
+            if (empty($optionKey)) {
+                JAIC_Request::response400("Error! Invalid parameters.");
+            }
+            $optionValue = empty($optionValue) ? "" : trim($optionValue);
 
-        // Get the chatbot options from the database
-        $options = get_option(self::$pluginOptionKey);
+            if (!is_string($optionKey) || !in_array($optionKey, $optionKeys)) {
+                JAIC_Request::response403(
+                    "Error! You are not authorized to update this option key."
+                );
+            }
 
-        // Ensure it's an array
-        $options = (!is_string($options) || empty($options)) ?
-        [] : json_decode($options, true);
+            // Temp ONUR
+            $optionKey = ($optionKey === "pagesV2") ? "pages" : $optionKey;
 
-        if ($optionKey == "embed") {
-            $options["preview"] = [];
-        } elseif ($optionKey == "unpublish") {
-            $options["embed"] = $options["preview"] = [];
-        }
+            // Get the chatbot options from the database
+            $options = get_option(self::$pluginOptionKey);
 
-        // Add new option
-        $options[$optionKey] = $optionValue;
+            // Ensure it's an array
+            $options = (!is_string($options) || empty($options)) ?
+            [] : json_decode($options, true);
 
-        // Save updated options back to the database
-        update_option(self::$pluginOptionKey, wp_json_encode($options));
+            if ($optionKey == "embed") {
+                $options["preview"] = [];
+            } elseif ($optionKey == "unpublish") {
+                $options["embed"] = $options["preview"] = [];
+            }
 
-        // Reset service urls according to user location
-        if ($optionKey === "apiKey") {
-            $this->setServiceURLs(true);
+            // Add new option
+            $options[$optionKey] = $optionValue;
+
+            // Save updated options back to the database
+            update_option(self::$pluginOptionKey, wp_json_encode($options));
+
+            // Reset service urls according to user location
+            if (in_array($optionKey, ["apiKey", "enterpriseDomain"])) {
+                $this->setServiceURLs(true);
+            }
         }
 
         // Clear all WP caches
@@ -616,6 +630,16 @@ class JAIC_Core {
 
         self::$siteURL = self::$serviceURLs["us"]["site"];
         self::$siteAPIURL = self::$serviceURLs["us"]["api"];
+        self::$siteEmbedURL = self::$serviceURLs["us"]["embed"];
+
+        // Check user enterprise domain
+        $enterpriseDomain = $this->getEnterpriseDomain();
+        if (!empty($enterpriseDomain)) {
+            self::$siteURL = "https://" . $options["enterpriseDomain"];
+            self::$siteAPIURL = "https://" . $options["enterpriseDomain"] . "/API";
+            self::$siteEmbedURL = "https://" . $options["enterpriseDomain"];
+            return;
+        }
 
         if (!$forceUserRegionCheck) {
             // Check user region settings
@@ -624,6 +648,7 @@ class JAIC_Core {
                 if (in_array($region, ["geu", "hipaa"])) {
                     self::$siteURL = self::$serviceURLs[$region]["site"];
                     self::$siteAPIURL = self::$serviceURLs[$region]["api"];
+                    self::$siteEmbedURL = self::$serviceURLs[$region]["embed"];
                 }
                 return;
             }
@@ -647,6 +672,7 @@ class JAIC_Core {
                 if (!empty($response["location"]) && strstr($response["location"], "https://eu-api.jotform.com")) {
                     self::$siteURL = self::$serviceURLs["geu"]["site"];
                     self::$siteAPIURL = self::$serviceURLs["geu"]["api"];
+                    self::$siteEmbedURL = self::$serviceURLs["geu"]["embed"];
 
                     // Update user region settings
                     $options["region"] = "geu";
@@ -655,6 +681,7 @@ class JAIC_Core {
                 } elseif (!empty($response["location"]) && strstr($response["location"], "https://hipaa-api.jotform.com")) {
                     self::$siteURL = self::$serviceURLs["hipaa"]["site"];
                     self::$siteAPIURL = self::$serviceURLs["hipaa"]["api"];
+                    self::$siteEmbedURL = self::$serviceURLs["hipaa"]["embed"];
 
                     // Update user region settings
                     $options["region"] = "hipaa";
@@ -741,6 +768,29 @@ class JAIC_Core {
         // Return the API Key If already generated
         if (isset($options["apiKey"]) && !empty($options["apiKey"])) {
             return $options["apiKey"];
+        }
+
+        return "";
+    }
+
+    /**
+     * Retrieves the Enterprise Domain key for the chatbot from the WordPress settings.
+     *
+     * This function fetches the stored chatbot options from the WordPress
+     * settings, decodes them into an array, and checks if an Enterprise Domain key exists.
+     * If a valid Enterprise Domain key is found, it is returned; otherwise, an empty string
+     * is returned.
+     *
+     * @return string The Enterprise Domain key if available, or an empty string if not.
+     */
+    private function getEnterpriseDomain(): string {
+        // Retrieve chatbot options from the WordPress settings
+        $options = get_option(self::$pluginOptionKey);
+        $options = !empty($options) ? json_decode($options, true) : [];
+
+        // Return the Enterprise Domain If already generated
+        if (!empty($options["enterpriseDomain"]) && $this->isAValidDomainURL($options["enterpriseDomain"])) {
+            return $options["enterpriseDomain"];
         }
 
         return "";
@@ -1111,7 +1161,7 @@ class JAIC_Core {
         if (strstr($embedCode, "AgentInitializer")) {
             if (preg_match('/formID:\s*"([^"]+)"/', $embedCode, $matches)) {
                 if (!empty($matches[1])) {
-                    $embedAssetURL = 'https://cdn.jotfor.ms/agent/embedjs/' . $matches[1] . '/embed.js';
+                    $embedAssetURL = self::$siteEmbedURL . '/s/agent/embedjs/' . $matches[1] . '/embed.js';
                     if (preg_match('/queryParams:\s*\[([^\]]+)\]/', $embedCode, $matches)) {
                         $paramsArray = explode(',', $matches[1]);
                         $paramsArray = array_map(function ($item) {
@@ -1146,17 +1196,28 @@ class JAIC_Core {
      * @return string Embed JS Code to render chatbot on website
      */
     private function generateEmbedJSCode(string $url): string {
+        $parts = parse_url($url);
+        $path = $parts['path'] ?? '';
+        $query = isset($parts['query']) ? '?' . $parts['query'] : '';
+
+        $url = self::$siteEmbedURL . $path . $query;
         return '
             <div id="ai-chatbot"></div>
             <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                setTimeout(function () {
-                    var s = document.createElement("script");
-                    s.src = "' . $url . '";
-                    s.defer = true;
-                    document.head.appendChild(s);
-                }, 2000);
-            });
+            let isIframe = false;
+            try {
+                isIframe = window.self !== window.top;
+            } catch (e) {}
+            if (!isIframe) {
+                document.addEventListener("DOMContentLoaded", function () {
+                    setTimeout(function () {
+                        var s = document.createElement("script");
+                        s.src = "' . $url . '";
+                        s.defer = true;
+                        document.head.appendChild(s);
+                    }, 2000);
+                });
+            }
             </script>
         ';
     }

@@ -12,9 +12,9 @@ const SAVE_PLATFORM_AGENT_PAGES = generatePromiseActionType('SAVE_PLATFORM_AGENT
 
 const SET_IS_PUBLISHED = 'SET_IS_PUBLISHED';
 const SET_PLATFORM_SETTINGS = 'SET_PLATFORM_SETTINGS';
-const SET_PROVIDER_API_KEY = 'SET_PROVIDER_API_KEY';
 const SET_SELECTED_PAGES = 'SET_SELECTED_PAGES';
 const SET_VISIBLE_DEVICE = 'SET_VISIBLE_DEVICE';
+const UNAUTHORIZED_API_KEY = 'UNAUTHORIZED_API_KEY';
 
 // Shared action types (exported for use by other slices)
 const DELETE_PLATFORM_AGENT = generatePromiseActionType('DELETE_PLATFORM_AGENT');
@@ -39,7 +39,8 @@ export const platformInitialState = {
   platformSettings: { ...platformSettingsSingleton },
   visibleDevice: DEVICES[0].value,
   isPublished: false,
-  errorMessage: ''
+  errorMessage: '',
+  isUnauthorizedApiKey: false
 };
 
 // Platform slice reducer
@@ -167,12 +168,6 @@ export const platformReducer = (state, action) => {
     case SET_SELECTED_PAGES:
       return { ...state, selectedPages: action.payload.selectedPages };
 
-    case SET_PROVIDER_API_KEY:
-      return {
-        ...state,
-        platformSettings: { ...state.platformSettings, PROVIDER_API_KEY: action.payload.apiKey }
-      };
-
     case SET_VISIBLE_DEVICE:
       return { ...state, visibleDevice: action.payload.visibleDevice };
 
@@ -190,6 +185,9 @@ export const platformReducer = (state, action) => {
       }
 
       return state;
+
+    case UNAUTHORIZED_API_KEY:
+      return { ...state, isUnauthorizedApiKey: action.payload.isUnauthorizedApiKey };
 
     default:
       return state;
@@ -279,11 +277,6 @@ export const platformActionCreators = {
     payload: { selectedPages }
   }),
 
-  setProviderApiKey: apiKey => ({
-    type: SET_PROVIDER_API_KEY,
-    payload: { apiKey }
-  }),
-
   updateVisibleDevice: visibleDevice => ({
     type: SET_VISIBLE_DEVICE,
     payload: { visibleDevice }
@@ -292,5 +285,10 @@ export const platformActionCreators = {
   setIsPublished: (isPublished) => ({
     type: SET_IS_PUBLISHED,
     payload: { isPublished }
+  }),
+
+  setUnauthorizedApiKey: (isUnauthorizedApiKey) => ({
+    type: UNAUTHORIZED_API_KEY,
+    payload: { isUnauthorizedApiKey }
   })
 };
