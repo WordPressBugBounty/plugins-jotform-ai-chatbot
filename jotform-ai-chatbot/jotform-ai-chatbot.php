@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.2.0
+* Version: 3.2.2
 * Author URI: https://www.jotform.com/
 */
 
@@ -476,7 +476,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "3.2.0";
+        $jaic_assetVersion = "3.2.2";
     } catch (\Exception $e) {
     }
 }

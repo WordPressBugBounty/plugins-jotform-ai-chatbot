@@ -1161,7 +1161,7 @@ class JAIC_Core {
         if (strstr($embedCode, "AgentInitializer")) {
             if (preg_match('/formID:\s*"([^"]+)"/', $embedCode, $matches)) {
                 if (!empty($matches[1])) {
-                    $embedAssetURL = self::$siteEmbedURL . '/s/agent/embedjs/' . $matches[1] . '/embed.js';
+                    $embedAssetURL = self::$siteEmbedURL . '/agent/embedjs/' . $matches[1] . '/embed.js';
                     if (preg_match('/queryParams:\s*\[([^\]]+)\]/', $embedCode, $matches)) {
                         $paramsArray = explode(',', $matches[1]);
                         $paramsArray = array_map(function ($item) {

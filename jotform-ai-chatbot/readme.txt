@@ -4,7 +4,7 @@ Contributors: Jotform
 Tags: AI, chatbot, chatGPT, helpdesk, live chat
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 3.2.0
+Stable tag: 3.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -189,6 +189,12 @@ See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org
 5. How It Works
 
 == Changelog ==
+= 3.2.2 (2025-09-15) =
+* Update: Plugin title updated for improve clarity and visibility.
+
+= 3.2.1 (2025-09-15) =
+* Fix: Chatbot render issue
+
 = 3.2.0 (2025-09-12) =
 * Feat: Jotform Enterprise user login support
 
