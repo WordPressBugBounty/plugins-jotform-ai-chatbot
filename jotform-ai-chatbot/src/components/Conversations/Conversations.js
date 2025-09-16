@@ -24,7 +24,7 @@ const Conversations = forwardRef(({
         id,
         lastMessage,
         updated_at: updatedAt,
-        answers: { chat_filler: { answer: { fullName = ALL_TEXTS.ANONYMOUS, avatarURL } = {} } = {} }
+        answers: { chat_filler: { answer: { fullName = ALL_TEXTS.ANONYMOUS, avatarURL, name } = {} } = {} }
       }) => (
         <button
           key={id}
@@ -38,7 +38,7 @@ const Conversations = forwardRef(({
             {avatarURL ? <img src={avatarURL} alt='user avatar' /> : <AvatarPlaceholder />}
           </div>
           <div className='jfpContent-wrapper--conversations-users-btn-name-cont'>
-            <h4 className='jfpContent-wrapper--conversations-users-btn-name'>{fullName}</h4>
+            <h4 className='jfpContent-wrapper--conversations-users-btn-name'>{fullName || name}</h4>
             <p className='jfpContent-wrapper--conversations-users-btn-message'>
               {lastMessage || '—'}
             </p>

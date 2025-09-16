@@ -436,6 +436,7 @@ class JAIC_Core {
                 "enterpriseDomain",
                 "device",
                 "unpublish",
+                "logout",
                 "agentId"
             ];
 
@@ -450,7 +451,19 @@ class JAIC_Core {
                 );
             }
 
-            // Temp ONUR
+            // Logout action
+            if ($optionKey === "logout") {
+                // Complete logout operation
+                $this->delete(true);
+
+                // Send a JSON response indicating successful logged-out
+                JAIC_Request::responseJSON(
+                    200,
+                    ["message" => self::$pluginName . " successfully logged-out!"]
+                );
+            }
+
+            // Temp option key and will be deleted!
             $optionKey = ($optionKey === "pagesV2") ? "pages" : $optionKey;
 
             // Get the chatbot options from the database
@@ -537,20 +550,22 @@ class JAIC_Core {
         $isAgentPublished = !empty($options["embed"]);
 
         $settings = [
-            "PLATFORM"                     => "wordpress",
-            "PLATFORM_PAGES"               => $platformPages,
-            "PLATFORM_CHATBOT_PAGES"       => $pluginPageList,
-            "PLATFORM_CHATBOT_PUBLISHED"   => $isAgentPublished,
-            "PLATFORM_DEVICE"              => $this->getDevice(),
-            "PLATFORM_KNOWLEDGE_BASE"      => $this->getKnowledgeBase(),
-            "PLATFORM_API_URL"             => $this->getPlatformAPIURL(),
-            "PLATFORM_DOMAIN"              => $this->getDomain(),
-            "PLATFORM_PAGE_CONTENTS"       => $this->getPageContents(),
-            "PLATFORM_PREVIEW_URL"         => $this->getPreviewURL(),
-            "PLATFORM_PLUGIN_VERSION"      => $this->getPluginVersion(),
-            "PROVIDER_API_KEY"             => $this->getAPIKey(),
-            "PROVIDER_URL"                 => $this->getSiteURL(),
-            "PROVIDER_API_URL"             => $this->getSiteAPIURL()
+            "PLATFORM"                       => "wordpress",
+            "PLATFORM_PAGES"                 => $platformPages,
+            "PLATFORM_CHATBOT_PAGES"         => $pluginPageList,
+            "PLATFORM_CHATBOT_PUBLISHED"     => $isAgentPublished,
+            "PLATFORM_DEVICE"                => $this->getDevice(),
+            "PLATFORM_KNOWLEDGE_BASE"        => $this->getKnowledgeBase(),
+            "PLATFORM_API_URL"               => $this->getPlatformAPIURL(),
+            "PLATFORM_DOMAIN"                => $this->getDomain(),
+            "PLATFORM_PAGE_CONTENTS"         => $this->getPageContents(),
+            "PLATFORM_PREVIEW_URL"           => $this->getPreviewURL(),
+            "PLATFORM_PLUGIN_VERSION"        => $this->getPluginVersion(),
+            "PLATFORM_WOOCOMMERCE_AVAILABLE" => $this->isPlatformValidToUseWooCommerce(),
+            "PLATFORM_PERMALINK_STRUCTURE"   => $this->getPlatformPermalinkURLStructure(),
+            "PROVIDER_API_KEY"               => $this->getAPIKey(),
+            "PROVIDER_URL"                   => $this->getSiteURL(),
+            "PROVIDER_API_URL"               => $this->getSiteAPIURL(),
         ];
 
         JAIC_Request::responseJSON(
@@ -1148,6 +1163,42 @@ class JAIC_Core {
         $pluginFile = WP_PLUGIN_DIR . '/jotform-ai-chatbot/jotform-ai-chatbot.php';
         $pluginData = get_file_data($pluginFile, ['Version' => 'Version']);
         return $pluginData['Version'] ?? '-';
+    }
+
+    /**
+     * Get this website is valid to use WooCommerce
+     *
+     * @return boolean
+     */
+    private function isPlatformValidToUseWooCommerce(): bool {
+        if (class_exists("WooCommerce")) {
+            return true;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get this website permalink url structure
+     *
+     * @return string
+     */
+    private function getPlatformPermalinkURLStructure(): string {
+        $permalinkStructure = get_option("permalink_structure");
+        switch ($permalinkStructure) {
+            case "":
+                return "Plain";
+            case "/%postname%/":
+                return "PostName";
+            case "/%year%/%monthnum%/%day%/%postname%/":
+                return "DayAndName";
+            case "/%year%/%monthnum%/%postname%/":
+                return "MonthAndName";
+            default:
+                return "Custom";
+        }
+
+        return "Custom";
     }
 
     /**

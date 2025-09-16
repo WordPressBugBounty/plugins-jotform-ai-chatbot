@@ -1,4 +1,5 @@
 import { generatePromiseActionType } from '../actionTypes';
+import { LOGOUT_FROM_JOTFORM } from './commonActions';
 
 // Internal action types (only used within this slice)
 const SET_USER = 'SET_USER';
@@ -39,6 +40,12 @@ export const userReducer = (state, action) => {
         errorState = { refetchUser: true };
       }
       return { ...state, ...errorState };
+
+    case LOGOUT_FROM_JOTFORM.SUCCESS:
+      return {
+        ...state,
+        user: null
+      };
 
     default:
       return state;

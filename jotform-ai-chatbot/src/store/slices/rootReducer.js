@@ -84,6 +84,7 @@ const reducers = {
       visibleDevice: state.visibleDevice,
       isPublished: state.isPublished,
       errorMessage: state.errorMessage,
+      isLogoutLoading: state.isLogoutLoading,
       isUnauthorizedApiKey: state.isUnauthorizedApiKey
     })
   },
@@ -103,7 +104,8 @@ const reducers = {
       isInitialLoading: state.isInitialLoading,
       isLimitDialogVisible: state.isLimitDialogVisible,
       tryGetPlatformAgentOnce: state.tryGetPlatformAgentOnce,
-      errorMessage: state.errorMessage
+      errorMessage: state.errorMessage,
+      activeSettingsTab: state.activeSettingsTab
     })
   },
   woocommerce: {

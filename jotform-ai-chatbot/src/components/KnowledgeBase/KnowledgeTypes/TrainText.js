@@ -24,6 +24,8 @@ const TrainText = ({
   const isEditingMode = !!editingMaterial;
 
   const validateAndSend = () => {
+    // TODO: show warning message
+    if (inputRef.current?.value?.trim() === '') return;
     if (inputRef.current) {
       setInputValidation(getNonValidInputs(inputRef.current.value, 'text'));
       if (inputValidation.length === 0) {

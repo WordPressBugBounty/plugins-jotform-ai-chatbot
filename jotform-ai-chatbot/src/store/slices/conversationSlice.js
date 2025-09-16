@@ -10,6 +10,7 @@ export const conversationInitialState = {
   conversations: {
     loading: false,
     items: [],
+    archivedItems: [],
     lastUUID: '',
     allConversationsFetched: false
   },
@@ -29,16 +30,19 @@ export const conversationReducer = (state, action) => {
       };
 
     case FETCH_CONVERSATIONS.SUCCESS:
-      const conv = action.payload.result;
-      const lastUUID = conv[conv.length - 1]?.id || '';
+      const conv = action.payload.result || [];
+      const filteredConv = conv.filter(c => c.status !== 'ARCHIVED');
+      const archivedConv = conv.filter(c => c.status === 'ARCHIVED');
+      const lastUUID = filteredConv[filteredConv.length - 1]?.id || '';
 
       return {
         ...state,
         conversations: {
-          items: [...state.conversations.items, ...conv],
+          items: [...state.conversations.items, ...filteredConv],
+          archivedItems: [...state.conversations.archivedItems, ...archivedConv],
           lastUUID,
           loading: true,
-          allConversationsFetched: conv?.length === 0
+          allConversationsFetched: filteredConv?.length === 0
         }
       };
 

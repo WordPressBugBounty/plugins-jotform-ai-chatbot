@@ -2,7 +2,7 @@ import { reinitializeRequestLayer } from '../../api';
 import { DEVICES, VISIBILITY_TOGGLE } from '../../constants';
 import { platformSettings as platformSettingsSingleton, removeStepFromQueryParams } from '../../utils';
 import { generatePromiseActionType } from '../actionTypes';
-import { GET_PLATFORM_AGENT, USE_PLATFORM_AGENT } from './agentSlice';
+import { GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT } from './commonActions';
 
 // Internal action types (only used within this slice)
 const GET_PLATFORM_SETTINGS = generatePromiseActionType('GET_PLATFORM_SETTINGS');
@@ -40,7 +40,8 @@ export const platformInitialState = {
   visibleDevice: DEVICES[0].value,
   isPublished: false,
   errorMessage: '',
-  isUnauthorizedApiKey: false
+  isLogoutLoading: false,
+  isUnauthorizedApiKey: false // for teams & form users
 };
 
 // Platform slice reducer
@@ -186,6 +187,19 @@ export const platformReducer = (state, action) => {
 
       return state;
 
+    case LOGOUT_FROM_JOTFORM.REQUEST:
+      return { ...state, isLogoutLoading: true };
+
+    case LOGOUT_FROM_JOTFORM.SUCCESS:
+      platformSettingsSingleton.PROVIDER_API_KEY = '';
+      return {
+        ...state,
+        platformSettings: { ...state.platformSettings, PROVIDER_API_KEY: '' },
+        isLogoutLoading: false
+      };
+
+    case LOGOUT_FROM_JOTFORM.ERROR:
+      return { ...state, isLogoutLoading: false };
     case UNAUTHORIZED_API_KEY:
       return { ...state, isUnauthorizedApiKey: action.payload.isUnauthorizedApiKey };
 
@@ -285,6 +299,20 @@ export const platformActionCreators = {
   setIsPublished: (isPublished) => ({
     type: SET_IS_PUBLISHED,
     payload: { isPublished }
+  }),
+
+  logoutFromJotformRequest: () => ({
+    type: LOGOUT_FROM_JOTFORM.REQUEST
+  }),
+
+  logoutFromJotformSuccess: result => ({
+    type: LOGOUT_FROM_JOTFORM.SUCCESS,
+    payload: { result }
+  }),
+
+  logoutFromJotformError: result => ({
+    type: LOGOUT_FROM_JOTFORM.ERROR,
+    payload: { result }
   }),
 
   setUnauthorizedApiKey: (isUnauthorizedApiKey) => ({

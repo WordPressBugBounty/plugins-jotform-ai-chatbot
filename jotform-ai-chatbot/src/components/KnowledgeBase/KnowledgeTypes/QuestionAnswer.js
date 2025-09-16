@@ -20,6 +20,8 @@ const QuestionAnswer = ({
   const isEditingMode = !!editingMaterial;
 
   const validateAndSend = () => {
+    // TODO: show warning message
+    if (questionRef.current?.value?.trim() === '' || answerRef.current?.value?.trim() === '') return;
     if (questionRef.current && answerRef.current) {
       setInputValidation(getNonValidInputs({ question: questionRef.current, answer: answerRef.current }, 'qa'));
       if (inputValidation.length === 0) {

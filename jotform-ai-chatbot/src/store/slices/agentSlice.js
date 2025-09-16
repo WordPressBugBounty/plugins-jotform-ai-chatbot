@@ -1,4 +1,5 @@
 import { generatePromiseActionType } from '../actionTypes';
+import { GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT } from './commonActions';
 
 // Internal action types (only used within this slice)
 const SET_AGENT_NAME = 'SET_AGENT_NAME';
@@ -10,12 +11,6 @@ const SET_PERSONA = 'SET_PERSONA';
 
 const UPDATE_AGENT = generatePromiseActionType('UPDATE_AGENT');
 const UPDATE_AGENT_PROPERTY = generatePromiseActionType('UPDATE_AGENT_PROPERTY');
-
-// Shared action types (exported for use by other slices)
-const GET_PLATFORM_AGENT = generatePromiseActionType('GET_PLATFORM_AGENT');
-const USE_PLATFORM_AGENT = generatePromiseActionType('USE_PLATFORM_AGENT');
-
-export { GET_PLATFORM_AGENT, USE_PLATFORM_AGENT };
 
 // Initial state for agent domain
 export const agentInitialState = {
@@ -86,6 +81,12 @@ export const agentReducer = (state, action) => {
     case UPDATE_AGENT_PROPERTY.ERROR:
       // These don't modify state but are handled for completeness
       return state;
+
+    case LOGOUT_FROM_JOTFORM.SUCCESS:
+      return {
+        ...state,
+        previewAgentId: null
+      };
 
     default:
       return state;

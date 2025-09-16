@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.2.2
+* Version: 3.2.3
 * Author URI: https://www.jotform.com/
 */
 
@@ -35,16 +35,6 @@ function jotform_ai_chatbot_plugin_options_page() {
         'jotform_ai_chatbot_render_plugin'
     );
 
-    // enable this when the woocommerce settings page is ready
-    // add_submenu_page(
-    //     'jotform_ai_chatbot',
-    //     'Settings',
-    //     'Settings',
-    //     'manage_options',
-    //     'jotform_ai_chatbot_settings',
-    //     'jotform_ai_chatbot_settings_callback'
-    // );
-
     add_submenu_page(
         'jotform_ai_chatbot',
         'Conversations',
@@ -52,6 +42,15 @@ function jotform_ai_chatbot_plugin_options_page() {
         'manage_options',
         'jotform_ai_chatbot_conversations',
         'jotform_ai_chatbot_conversations_callback'
+    );
+
+    add_submenu_page(
+        'jotform_ai_chatbot',
+        'Settings',
+        'Settings',
+        'manage_options',
+        'jotform_ai_chatbot_settings',
+        'jotform_ai_chatbot_settings_callback'
     );
 }
 add_action("admin_menu", "jotform_ai_chatbot_plugin_options_page");
@@ -113,7 +112,7 @@ function jotform_ai_chatbot_admin_bar_menu($wp_admin_bar) {
             "id"     => "jotform_ai_chatbot_settings",
             "parent" => $parent_id,
             "title"  => esc_html__("Settings", "jotform-ai-chatbot"),
-            "href"   => admin_url("admin.php?page=jotform_ai_chatbot"),
+            "href"   => admin_url("admin.php?page=jotform_ai_chatbot_settings"),
         ]);
 
         // Submenu: Conversations
@@ -476,7 +475,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "3.2.2";
+        $jaic_assetVersion = "3.2.3";
     } catch (\Exception $e) {
     }
 }

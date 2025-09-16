@@ -7,7 +7,7 @@ import ConversationEmpty from '../../assets/svg/conversation-empty.svg';
 import AvatarPlaceholder from '../../assets/svg/user-no-avatar.svg';
 import { ALL_TEXTS, THEME_CUSTOMIZATION_KEYS } from '../../constants';
 import { useWizard } from '../../hooks';
-import { getElapsedTime, t } from '../../utils';
+import { formatDate, t } from '../../utils';
 
 const ChatHistory = ({ chat }) => {
   const { state } = useWizard();
@@ -31,7 +31,7 @@ const ChatHistory = ({ chat }) => {
           >
             <div className='jfpContent-wrapper--conversations-chats-message-container'>
               <div className='jfpContent-wrapper--conversations-chats-avatar'>
-                {msg.avatar_url ? (
+                {msg.avatar_url && !['podo', 'gravatar'].some(sub => msg.avatar_url?.toLowerCase().includes(sub)) ? (
                   <img
                     src={msg.avatar_url}
                     alt='avatar'
@@ -43,7 +43,7 @@ const ChatHistory = ({ chat }) => {
                 ) : <AvatarPlaceholder />}
               </div>
               <div className='jfpContent-wrapper--conversations-chats-message-wrapper'>
-                <span className='jfpContent-wrapper--conversations-chats-time'>{getElapsedTime(time)}</span>
+                <span className='jfpContent-wrapper--conversations-chats-time'>{formatDate(time)}</span>
                 <p className='jfpContent-wrapper--conversations-chats-message' dangerouslySetInnerHTML={{ __html: getChatHTML(msg.content) }} />
               </div>
             </div>

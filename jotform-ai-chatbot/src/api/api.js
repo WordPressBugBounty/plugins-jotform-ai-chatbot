@@ -145,7 +145,22 @@ export const fetchChats = (agentId, activeViewId, conversations = [], apiKey = '
   return getRequestLayer().get(url);
 };
 
-export const updateWoocommerce = (params, apiKey = '') => {
+export const setWoocommerceSettings = (params, apiKey = '') => {
   const url = addApiKeyToUrl('ai-chatbot/woocommerce/integration', apiKey);
+  return getRequestLayer().post(url, params);
+};
+
+export const updateWoocommerceSettings = (agentId, params, apiKey = '') => {
+  const url = addApiKeyToUrl(`ai-chatbot/woocommerce/integration/${agentId}`, apiKey);
+  return getRequestLayer().put(url, params);
+};
+
+export const getWoocommerceSettings = (agentId, storeUrl, apiKey = '') => {
+  const url = addApiKeyToUrl(`ai-chatbot/woocommerce/integration/${agentId}/${storeUrl}`, apiKey);
+  return getRequestLayer().get(url);
+};
+
+export const disconnectWoocommerceStore = (params, apiKey = '') => {
+  const url = addApiKeyToUrl('ai-chatbot/woocommerce/integration/disconnect', apiKey);
   return getRequestLayer().post(url, params);
 };

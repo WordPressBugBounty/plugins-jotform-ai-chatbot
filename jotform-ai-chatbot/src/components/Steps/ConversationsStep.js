@@ -19,7 +19,7 @@ const ConversationsStep = () => {
     step,
     previewAgentId,
     activeViewId,
-    platformSettings: { PROVIDER_API_KEY },
+    platformSettings: { PROVIDER_URL, PROVIDER_API_KEY },
     conversations,
     chats,
     allAgents: { items: existingAgents }
@@ -29,7 +29,7 @@ const ConversationsStep = () => {
 
   const { items: chatItems } = chats;
   const {
-    items: conversationItems, loading, lastUUID, allConversationsFetched
+    items: conversationItems, archivedItems: archivedConversationItems, loading, lastUUID, allConversationsFetched
   } = conversations;
 
   const containerRef = useRef(null);
@@ -81,7 +81,7 @@ const ConversationsStep = () => {
   useEffect(() => {
     const getChats = async () => {
       if (!conversationItems.length || allConversationsFetched) return;
-      const lastGroup = conversationItems.slice(conversationItems.length - CONVERSATIONS_LIMIT);
+      const lastGroup = conversationItems.slice(conversationItems.length > CONVERSATIONS_LIMIT ? conversationItems.length - CONVERSATIONS_LIMIT : 0);
       const conversationIds = lastGroup.map(conv => conv.id);
       await asyncDispatch(
         () => fetchChats(previewAgentId, activeViewId, conversationIds, PROVIDER_API_KEY),
@@ -97,7 +97,16 @@ const ConversationsStep = () => {
     setCurrentConversationId(id);
   };
 
-  const currentChatName = conversationItems.find(item => item.id === currentConversationId)?.answers?.chat_filler?.answer?.fullName || ALL_TEXTS.ANONYMOUS;
+  function getConversationFullName(conItems, currentConId) {
+    const item = conItems.find(i => i.id === currentConId);
+    return (
+      item?.answers?.chat_filler?.answer?.fullName
+      || item?.answers?.chat_filler?.answer?.name
+      || ALL_TEXTS.ANONYMOUS
+    );
+  }
+
+  const currentChatName = getConversationFullName(conversationItems, currentConversationId);
 
   const handleSeeConversationClick = async e => {
     e.preventDefault();
@@ -106,7 +115,13 @@ const ConversationsStep = () => {
     window.open(e.target?.href, '_blank');
   };
 
-  const conversationCount = useMemo(() => existingAgents.find(item => item.uuid === previewAgentId)?.totalConversationCount || '0', [existingAgents, previewAgentId]);
+  const conversationCount = useMemo(() => {
+    const agent = existingAgents.find(item => item.uuid === previewAgentId);
+    const total = agent?.totalConversationCount ?? 0;
+    const archivedCount = Array.isArray(archivedConversationItems) ? archivedConversationItems.length : 0;
+    const count = total - archivedCount;
+    return count > 0 ? count : '0';
+  }, [existingAgents, previewAgentId, archivedConversationItems]);
 
   return (
     <div className='jfpContent-wrapper--conversations'>
@@ -141,7 +156,7 @@ const ConversationsStep = () => {
                   <a
                     target='_blank'
                     rel='noreferrer'
-                    href={`https://www.jotform.com/conversations/${activeViewId}`}
+                    href={`${PROVIDER_URL}/conversations/${activeViewId}`}
                     className='jfpContent-wrapper--conversations-chats-title-right-see-link'
                     onClick={handleSeeConversationClick}
                   >

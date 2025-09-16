@@ -6,7 +6,7 @@ const PROJECT_URL = window.location.href;
 const ENTERPRISE_LOGIN_ENDPOINT = '/api/legacy-oauth/enterprise-domain';
 
 const openJFAuthPopup = () => window.open(
-  `https://www.jotform.com/api/oauth.php?registrationType=oauth&client_id=${encodeURIComponent(PROJECT_NAME)}&access_type=full&auth_type=login&ref=${encodeURIComponent(PROJECT_URL)}&integration_auth=1&isNewLoginFlow=1&enterpriseLoginEndpoint=${encodeURIComponent(ENTERPRISE_LOGIN_ENDPOINT)}&rk=1`,
+  `https://www.jotform.com/api/oauth.php?registrationType=oauth&client_id=${encodeURIComponent(PROJECT_NAME)}&access_type=full&auth_type=login&ref=${encodeURIComponent(PROJECT_URL)}&integration_auth=1&isNewLoginFlow=1&enterpriseLoginEndpoint=${encodeURIComponent(ENTERPRISE_LOGIN_ENDPOINT)}&rk=1&wpPlugin=1`,
   '_self'
 );
 

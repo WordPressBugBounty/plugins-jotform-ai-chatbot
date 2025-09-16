@@ -1,8 +1,9 @@
 import { reinitializeRequestLayer } from '../../api';
 import { EU_PROVIDER_API_URL, EU_PROVIDER_URL, STEPS } from '../../constants';
+import { SETTINGS_TABS } from '../../constants/wizard';
 import { platformSettings as platformSettingsSingleton, removeStepFromQueryParams } from '../../utils';
 import { generatePromiseActionType } from '../actionTypes';
-import { GET_PLATFORM_AGENT, USE_PLATFORM_AGENT } from './agentSlice';
+import { GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT } from './commonActions';
 import { DELETE_PLATFORM_AGENT } from './platformSlice';
 import { FETCH_USER } from './userSlice';
 
@@ -12,6 +13,7 @@ const SET_PROMPT = 'SET_PROMPT';
 const SET_LIMIT_DIALOG_VISIBLE = 'SET_LIMIT_DIALOG_VISIBLE';
 const SET_INITAL_LOADING = 'SET_INITAL_LOADING';
 const SET_GET_PLATFORM_AGENT_ONCE = 'SET_GET_PLATFORM_AGENT_ONCE';
+const SET_ACTIVE_SETTINGS_TAB = 'SET_ACTIVE_SETTINGS_TAB';
 
 const CHECK_AI_CHATBOT_LIMITS = generatePromiseActionType('CHECK_AI_CHATBOT_LIMITS');
 
@@ -23,7 +25,8 @@ export const uiInitialState = {
   isInitialLoading: true,
   isLimitDialogVisible: false,
   tryGetPlatformAgentOnce: false,
-  errorMessage: ''
+  errorMessage: '',
+  activeSettingsTab: SETTINGS_TABS.GENERAL
 };
 
 // UI slice reducer
@@ -118,6 +121,18 @@ export const uiReducer = (state, action) => {
         prompt: ''
       };
 
+    case SET_ACTIVE_SETTINGS_TAB:
+      return {
+        ...state,
+        activeSettingsTab: action.payload.tab
+      };
+
+    case LOGOUT_FROM_JOTFORM.SUCCESS:
+      return {
+        ...state,
+        step: STEPS.INITIAL
+      };
+
     default:
       return state;
   }
@@ -191,5 +206,10 @@ export const uiActionCreators = {
   getPlatformAgentError: (result) => ({
     type: GET_PLATFORM_AGENT.ERROR,
     payload: { result }
+  }),
+
+  setActiveSettingsTab: (tab) => ({
+    type: SET_ACTIVE_SETTINGS_TAB,
+    payload: { tab }
   })
 };

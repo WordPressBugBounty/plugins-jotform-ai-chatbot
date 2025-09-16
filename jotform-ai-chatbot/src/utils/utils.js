@@ -283,18 +283,17 @@ export const getElapsedTime = (timestamp) => {
 
   let parsed = null;
 
-  formats.forEach(format => {
-    if (parsed) return;
-
+  for (let i = 0; i < formats.length; i += 1) {
     try {
-      const candidate = dayjs.tz(timestamp, format, zone);
-      if (candidate.isValid() && Number.isFinite(candidate.valueOf())) {
+      const candidate = dayjs.tz(timestamp, formats[i], zone);
+      if (candidate.isValid()) {
         parsed = candidate;
+        break;
       }
     } catch {
-      // Silently ignore format mismatch
+      // ignore invalid format
     }
-  });
+  }
 
   if (!parsed) return 'Invalid date';
 
@@ -310,9 +309,44 @@ export const getElapsedTime = (timestamp) => {
   if (diffInHours < 24) return `${diffInHours}h`;
 
   const diffInDays = now.diff(parsed, 'day');
-  if (diffInDays < 365) return `${diffInDays}d`;
+  if (diffInDays <= 6) return `${diffInDays}d`;
 
-  return `${now.diff(parsed, 'year')}y`;
+  // Same year? -> show "Aug 20"
+  if (now.year() === parsed.year()) {
+    return parsed.format('MMM D');
+  }
+
+  // Different year -> show "Aug 20, 2024"
+  return parsed.format('MMM D, YYYY');
+};
+
+export const formatDate = (timestamp) => {
+  const zone = 'America/New_York';
+  const formats = [
+    'M/D/YYYY, h:mm:ss A', // e.g. 7/16/2025, 6:52:14 AM
+    'M/D/YYYY h:mm:ss A', // fallback if no comma
+    'YYYY-MM-DD HH:mm:ss' // ISO-style fallback
+  ];
+
+  let parsed = null;
+
+  formats.some((format) => {
+    try {
+      const candidate = dayjs.tz(timestamp, format, zone);
+      if (candidate.isValid() && Number.isFinite(candidate.valueOf())) {
+        parsed = candidate;
+        return true; // stop .some() loop
+      }
+    } catch {
+      // ignore format mismatch
+    }
+    return false;
+  });
+
+  if (!parsed) return 'Invalid date';
+
+  // Always show absolute formatted date
+  return parsed.tz(zone).format('MMM D, YYYY h:mm A');
 };
 
 export const scrollToBottom = (element) => {

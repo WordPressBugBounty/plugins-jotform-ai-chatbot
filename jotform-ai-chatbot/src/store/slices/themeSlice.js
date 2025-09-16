@@ -4,7 +4,7 @@ import {
 } from '../../constants';
 import { getGreetingMessege } from '../../utils';
 import { generatePromiseActionType } from '../actionTypes';
-import { GET_PLATFORM_AGENT, USE_PLATFORM_AGENT } from './agentSlice';
+import { GET_PLATFORM_AGENT, USE_PLATFORM_AGENT } from './commonActions';
 
 // Internal action types (only used within this slice)
 const UPDATE_CUSTOMIZATION = 'UPDATE_CUSTOMIZATION';

@@ -1,28 +1,73 @@
-import React, { forwardRef, useEffect, useState } from 'react';
-import { func, number, string } from 'prop-types';
+import React, {
+  forwardRef, useMemo, useRef, useState
+} from 'react';
+import {
+  elementType, func, node, number, shape, string
+} from 'prop-types';
 
 import '../../styles/input.scss';
 
-const Input = forwardRef(({
-  maxLength, onChange = f => f, prefix = '', value = '', ...props
-}, ref) => {
-  const [count, setCount] = useState(0);
+import { IconEyeFilled } from './Icon';
 
-  useEffect(() => {
-    if (!maxLength) return;
-    setCount(value?.length);
-  }, [value, maxLength]);
+const Input = forwardRef(({
+  value, // when provided -> controlled
+  defaultValue, // used only for uncontrolled
+  onChange = f => f,
+  maxLength,
+  prefix = null, // { as, icon, text }
+  suffix = null, // { as, icon, onClick }
+  type = 'text',
+  ...props
+}, ref) => {
+  // detect controlled-ness only once (React warns if it changes mid-life)
+  const isControlled = value != null;
+  const wasControlled = useRef(isControlled);
+  if (process.env.NODE_ENV !== 'production') {
+    if (wasControlled.current !== isControlled) {
+      // eslint-disable-next-line no-console
+      console.warn('Input switched between controlled and uncontrolled. This is not recommended.');
+    }
+  }
+
+  // Internal value only for uncontrolled usage
+  const [innerValue, setInnerValue] = useState(defaultValue ?? '');
+
+  // Password visibility
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Current value for rendering/counter
+  const currentValue = isControlled ? (value ?? '') : innerValue;
+
+  // Counter
+  const count = useMemo(() => (maxLength ? (currentValue?.length ?? 0) : 0), [currentValue, maxLength]);
+
+  const isPasswordType = type === 'password';
+  let inputType = type;
+
+  if (isPasswordType) {
+    inputType = showPassword ? 'text' : 'password';
+  }
+
+  const togglePasswordVisibility = () => setShowPassword(prev => !prev);
 
   const handleChange = (e) => {
-    if (onChange) {
-      onChange(e);
+    if (!isControlled) {
+      setInnerValue(e.target.value);
     }
-    if (maxLength) {
-      setCount(e.target.value.length);
-    }
+    onChange?.(e);
   };
 
   const PrefixTag = prefix?.as || null;
+  const SuffixTag = suffix?.as || (isPasswordType ? 'button' : null);
+
+  let suffixIcon = null;
+  if (isPasswordType) {
+    suffixIcon = <IconEyeFilled />;
+  } else if (suffix?.icon) {
+    suffixIcon = suffix.icon;
+  }
+
+  const suffixClick = isPasswordType ? togglePasswordVisibility : suffix?.onClick;
 
   return (
     <div className='jfInput'>
@@ -35,7 +80,8 @@ const Input = forwardRef(({
       <input
         ref={ref}
         {...props}
-        {...(value && { value })}
+        {...(isControlled ? { value: currentValue } : { defaultValue: currentValue })}
+        type={inputType}
         maxLength={maxLength}
         onChange={handleChange}
       />
@@ -44,19 +90,46 @@ const Input = forwardRef(({
           {`${count} / ${maxLength}`}
         </div>
       )}
+      {SuffixTag && (
+        <SuffixTag
+          className='jfInput--suffix'
+          onClick={suffixClick}
+          type='button'
+        >
+          {suffixIcon && <span className='jfInput--suffix-icon'>{suffixIcon}</span>}
+        </SuffixTag>
+      )}
     </div>
   );
 });
 
 Input.defaultProps = {
-  prefix: ''
+  prefix: null,
+  suffix: null,
+  defaultValue: ''
 };
 
 Input.propTypes = {
-  value: string,
-  maxLength: number,
+  // control
+  value: string, // provide for controlled usage
+  defaultValue: string, // initial value for uncontrolled usage
   onChange: func,
-  prefix: string
+
+  // UI
+  maxLength: number,
+  type: string,
+
+  // decorations
+  prefix: shape({
+    as: elementType,
+    icon: node,
+    text: node
+  }),
+  suffix: shape({
+    as: elementType,
+    icon: node,
+    onClick: func
+  })
 };
 
 export default Input;

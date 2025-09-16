@@ -63,7 +63,7 @@ const UseCaseStep = () => {
 
   const handlePlatformUseAgent = async () => {
     // check limit
-    const result = await asyncDispatch(
+    const result = tab !== 'select' && await asyncDispatch(
       () => getAIAgentsLimitExceeded(PROVIDER_API_KEY),
       ACTION_CREATORS.checkAIChatbotLimitsRequest,
       ACTION_CREATORS.checkAIChatbotLimitsSuccess,
@@ -115,6 +115,21 @@ const UseCaseStep = () => {
     if (tab === 'select') return t(ALL_TEXTS.CONTINUE);
     if (isMobile()) return t(ALL_TEXTS.CREATE);
     return t(ALL_TEXTS.CREATE_AI_CHATBOT);
+  };
+
+  const getAgentDescription = agentData => {
+    if (!agentData) return '';
+    const count = agentData.totalConversationCount;
+    const conversationText = count === 1 ? 'conversation' : 'conversations';
+    const lastConversationDate = new Date(agentData.updated_at).toLocaleDateString(
+      'en-US',
+      {
+        month: 'short',
+        day: '2-digit',
+        year: 'numeric'
+      }
+    );
+    return `${count} ${conversationText}. Last conversation on ${lastConversationDate}`;
   };
 
   return (
@@ -201,11 +216,7 @@ const UseCaseStep = () => {
                 onChange={() => setSelectedAgent(agent.uuid)}
                 avatarImage={agent.avatarIconLink}
                 label={agent.title}
-                description={`${agent.totalConversationCount} conversations. Last conversation on ${new Date(agent.updated_at).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: '2-digit',
-                  year: 'numeric'
-                })}`}
+                description={getAgentDescription(agent)}
               />
             ))}
           </ul>

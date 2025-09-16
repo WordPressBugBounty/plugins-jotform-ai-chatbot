@@ -6,7 +6,7 @@ export const ALL_TEXTS = {
   CREATE_AND_CUSTOMIZE_YOUR_AI: 'Create and customize your AI Chatbot in minutes',
 
   SETUP_YOUR_AI_CHATBOT: 'Setup Your AI Chatbot',
-  USE_TEMPLATE_READY_OR_START_FROM_SCRATCH: 'You can use our ready-to-use templates or start from scratch.',
+  USE_TEMPLATE_READY_OR_START_FROM_SCRATCH: 'You can use our ready-to-use prompts or start from scratch.',
   GREETING: 'Greeting',
   SHOW_A_MESSAGE: 'Show a message to greet users',
   HOW_CAN_I_HELP_YOU: 'Hi! How can I help you?',
@@ -56,6 +56,7 @@ export const ALL_TEXTS = {
   UNPUBLISH: 'Unpublish',
 
   REMOVE_FROM_WEBSITE: 'Remove from Website',
+  REMOVE_FROM_WEBSITE_2: 'Remove from website',
 
   ANIMATION_TITLE: 'Chatbot Introduction Animation',
 
@@ -160,8 +161,16 @@ export const ALL_TEXTS = {
   CHATBOT_ABILITIES: 'CHATBOT ABILITIES',
   COMING_SOON: 'Coming Soon',
   DISCONNECT_STORE: 'Disconnect Store',
+  UPGRADE_PLAN: 'Upgrade Plan',
   PUBLISHING: 'Publishing...',
   CANCEL: 'Cancel',
+  CONNECTED_CHATBOT: 'Connected Chatbot',
+  CONNECTED_JOTFORM_ACCOUNT: 'Connected Jotform Account',
+  LOGOUT: 'Logout',
+  LOGOUT_DIALOG_TITLE: 'Log Out from Your Account?',
+  LOGOUT_DIALOG_DESC: 'Click Logout to sign out of your account. Your settings and preferences will remain saved, and you can log back in anytime without losing your setup.',
+  LOGOUT_DIALOG_INFO: 'All your data and saved progress will remain secure.',
+  CONNECTED_STORE: 'Connected Store',
   // eslint-disable-next-line max-len
   NETWORK_ERROR_TITLE: 'Connection issue',
   NETWORK_ERROR_DESC_ENTERPRISE: 'Using an enterprise account? Contact your system administrator for assistance.',

@@ -1,6 +1,6 @@
 import { getAvatarIdFromUrl, isValidJotformUrl, normalizeAvatarProps } from '../../utils';
 import { generatePromiseActionType } from '../actionTypes';
-import { GET_PLATFORM_AGENT, USE_PLATFORM_AGENT } from './agentSlice';
+import { GET_PLATFORM_AGENT, USE_PLATFORM_AGENT } from './commonActions';
 
 // Internal action types (only used within this slice)
 const GET_AVATARS = generatePromiseActionType('GET_AVATARS');

@@ -16,6 +16,13 @@ export const STEPS = {
   SETTINGS: 'SETTINGS'
 };
 
+export const SETTINGS_TABS = {
+  GENERAL: 'GENERAL',
+  AGENT_SKILLS: 'AGENT_SKILLS',
+  WOOCOMMERCE: 'WOOCOMMERCE',
+  UPGRADE_PLAN: 'UPGRADE_PLAN'
+};
+
 export const STEP_TO_BUILDER_PATH = {
   [STEPS.AI_PERSONA]: '/train/persona',
   [STEPS.STYLE]: '',

@@ -92,4 +92,23 @@
       margin-top: 8px;
     }
   }
+
+  &--suffix {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 12px 0 0;
+    border: none;
+    background-color: unset;
+    cursor: pointer;
+    &-icon {
+      display: block;
+      width: 20px;
+      height: 20px;
+      svg {
+        fill: var(--jfv-navy-700);
+      }
+    }
+  }
 }
