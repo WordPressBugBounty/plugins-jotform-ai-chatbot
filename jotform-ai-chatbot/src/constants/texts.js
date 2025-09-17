@@ -170,10 +170,7 @@ export const ALL_TEXTS = {
   LOGOUT_DIALOG_INFO: 'All your data and saved progress will remain secure.',
   CONNECTED_STORE: 'Connected Store',
   // eslint-disable-next-line max-len
-  NETWORK_ERROR_TITLE: 'Connection issue',
-  NETWORK_ERROR_DESC_ENTERPRISE: 'Using an enterprise account? Contact your system administrator for assistance.',
-  NETWORK_ERROR_DESC_NETWORK: 'Can’t connect to the server. Please check your internet connection or try again.',
-  UNAUTHORIZED_API_KEY_TITLE: 'Unauthorized Access',
+  NETWORK_ERROR_DESC_ENTERPRISE: 'Unable to connect to the server. Please check your internet connection and try again. If you’re using an enterprise account, contact your system administrator for assistance.',
   UNAUTHORIZED_API_KEY_DESC: 'You don’t have permission to use this plugin. Please contact your system administrator to enable access.',
 
   WOOCOMMERCE_PLUGIN_NOT_INSTALLED: 'To use this feature, please make sure the [1[WooCommerce plugin is installed and active]] on your site.',

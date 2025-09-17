@@ -35,23 +35,25 @@ const InitialStep = ({
   };
 
   return (
-    <div className='first-step'>
-      <div className='first-step--logo'>
-        <LogoJotformColor width='148' height='28' />
+    <>
+      <div className='first-step'>
+        <div className='first-step--logo'>
+          <LogoJotformColor width='148' height='28' />
+        </div>
+        <h2>{t(customTexts.title || ALL_TEXTS.READ_TO_BUILD_YOUR_AI)}</h2>
+        <p>{t(customTexts.subtitle || ALL_TEXTS.CREATE_AND_CUSTOMIZE_YOUR_AI)}</p>
+        <Button
+          endIcon={<IconArrowRight />}
+          onClick={handleStartClick}
+          buttonRef={shouldOAuth ? buttonRef : { current: null }}
+          className='lets-start buttonRTL'
+        >
+          {t(ALL_TEXTS.LETS_START)}
+        </Button>
       </div>
-      <h2>{t(customTexts.title || ALL_TEXTS.READ_TO_BUILD_YOUR_AI)}</h2>
-      <p>{t(customTexts.subtitle || ALL_TEXTS.CREATE_AND_CUSTOMIZE_YOUR_AI)}</p>
-      <Button
-        endIcon={<IconArrowRight />}
-        onClick={handleStartClick}
-        buttonRef={shouldOAuth ? buttonRef : { current: null }}
-        className='lets-start buttonRTL'
-      >
-        {t(ALL_TEXTS.LETS_START)}
-      </Button>
       {showNetworkError && <NetworkError />}
       {isUnauthorizedApiKey && <UnauthorizedApiKeyError />}
-    </div>
+    </>
   );
 };
 

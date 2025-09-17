@@ -989,7 +989,7 @@
                 margin-inline-start: 4px;
                 border-radius: 4px;
                 background: linear-gradient(90deg, #7923dd 0%, #09f 100%);
-                color: #fff;
+                color: var(--jfv-white);
                 font-size: 10px;
                 line-height: 16px;
                 font-weight: 400;
@@ -1011,7 +1011,7 @@
             flex: 0 0 auto;
             width: auto;
             align-self: flex-start;
-            background-color: #d4372c;
+            background-color: var(--jfv-red-400);
             color: var(--jfv-white);
             font-size: 12px;
             text-align: left;
