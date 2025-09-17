@@ -17,6 +17,8 @@ class PlatformSingleton {
     this.PLATFORM_DEVICE = '';
     this.PLATFORM_CHATBOT_PUBLISHED = false;
     this.PLATFORM_PLUGIN_VERSION = '';
+    this.PLATFORM_WOOCOMMERCE_AVAILABLE = false;
+    this.PLATFORM_PERMALINK_STRUCTURE = '';
   }
 }
 

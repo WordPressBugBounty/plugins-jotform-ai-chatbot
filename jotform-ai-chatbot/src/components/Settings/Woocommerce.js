@@ -10,22 +10,37 @@ import { ALL_TEXTS } from '../../constants';
 import { useEffectIgnoreFirst, useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
 import { t } from '../../utils';
+import Loading from './Loading';
 import Abilities from './woocommerce/Abilities';
+import ActivationInfoBox from './woocommerce/ActivationInfoBox';
 import ConnectedStore from './woocommerce/ConnectedStore';
 import StoreConnection from './woocommerce/StoreConnection';
 
 const Woocommerce = () => {
   const {
-    asyncDispatch, state
+    dispatch, asyncDispatch, state
   } = useWizard();
 
   const {
     previewAgentId,
-    platformSettings: { PROVIDER_API_KEY },
-    woocommerce: { consumerKey, abilities, isConnected }
+    platformSettings: {
+      PROVIDER_API_KEY, PLATFORM_DOMAIN,
+      PLATFORM_WOOCOMMERCE_AVAILABLE,
+      PLATFORM_PERMALINK_STRUCTURE
+    },
+    woocommerce: {
+      consumerKey, abilities, isConnected, isSettingsLoading, isConnectLoading, invalidCredentialsError
+    }
   } = state;
 
   const integrationOptions = Object.keys(abilities).filter(abilityKey => abilities[abilityKey] === true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch(ACTION_CREATORS.resetInvalidCredentialsError());
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [invalidCredentialsError]);
 
   const setWoocommerceSettings = useCallback(
     async ({ key = '', secret = '' } = {}) => {
@@ -63,13 +78,14 @@ const Woocommerce = () => {
   );
 
   const getWoocommerceSettings = useCallback(async () => {
+    if (!PLATFORM_WOOCOMMERCE_AVAILABLE) return;
     await asyncDispatch(
       () => getWoocommerceSettingsReq(previewAgentId, window.location.hostname, PROVIDER_API_KEY),
       ACTION_CREATORS.getWoocommerceSettingsRequest,
       ACTION_CREATORS.getWoocommerceSettingsSuccess,
       ACTION_CREATORS.getWoocommerceSettingsError
     );
-  }, [previewAgentId]);
+  }, [previewAgentId, PLATFORM_WOOCOMMERCE_AVAILABLE]);
 
   const disconnectWoocommerceStore = useCallback(async () => {
     const data = {
@@ -97,9 +113,23 @@ const Woocommerce = () => {
       <h2 className='jfpContent-wrapper--settings-options-wrapper-title'>
         {t(ALL_TEXTS.WOOCOMMERCE_STORE_SETTINGS)}
       </h2>
-      {!isConnected
-        ? <StoreConnection setWoocommerceSettings={setWoocommerceSettings} />
-        : <ConnectedStore disconnectStore={disconnectWoocommerceStore} />}
+      {!PLATFORM_WOOCOMMERCE_AVAILABLE && <ActivationInfoBox />}
+      {PLATFORM_WOOCOMMERCE_AVAILABLE && isSettingsLoading && <Loading />}
+      {PLATFORM_WOOCOMMERCE_AVAILABLE && !isSettingsLoading && (
+        <>
+          {!isConnected && (
+            <StoreConnection
+              previewAgentId={previewAgentId}
+              platformDomain={PLATFORM_DOMAIN}
+              isConnectLoading={isConnectLoading}
+              invalidCredentialsError={invalidCredentialsError}
+              permalinkStructure={PLATFORM_PERMALINK_STRUCTURE}
+              setWoocommerceSettings={setWoocommerceSettings}
+            />
+          )}
+          {isConnected && <ConnectedStore disconnectStore={disconnectWoocommerceStore} />}
+        </>
+      )}
       <Abilities
         isConnected={isConnected}
       />

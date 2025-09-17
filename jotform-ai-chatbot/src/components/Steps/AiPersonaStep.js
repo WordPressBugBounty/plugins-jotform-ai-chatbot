@@ -8,7 +8,7 @@ import '../../styles/chattiness.scss';
 import { saveInstallment, updateAgent, updateAgentProperty } from '../../api';
 import {
   ALL_TEXTS, CHATTINESS_LEVELS, CUSTOMIZATION_KEYS, GREETING_TEXT_REQ_DEBOUNCE_TIMEOUT,
-  LANGUAGES, TONE_OF_VOICES, VERBAL_TOGGLE, WRITING_DEBOUNCE_TIMEOUT
+  LANGUAGES, TONE_OF_VOICES, VERBAL_TOGGLE, VISIBILITY_LAYOUT, WRITING_DEBOUNCE_TIMEOUT
 } from '../../constants';
 import { useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
@@ -39,7 +39,7 @@ const AiPersonaStep = () => {
     platformSettings: { PROVIDER_API_KEY }
   } = state;
 
-  const { greeting, greetingMessage } = customizations;
+  const { greeting, greetingMessage, layout } = customizations;
 
   const greetingBool = greeting === VERBAL_TOGGLE.YES;
 
@@ -221,23 +221,27 @@ const AiPersonaStep = () => {
         </div>
         <hr className='jfpContent-wrapper--line line-2x' />
         {/* greeting message */}
-        <div className='jfpContent-wrapper--ai-persona-title'>
-          <div className='jfpContent-wrapper--ai-persona-greeting'>
-            <div>
-              <h3>{t(ALL_TEXTS.GREETING_MESSAGE)}</h3>
-              <p>{t(ALL_TEXTS.SHOW_A_MESSAGE_TO_GREET_USERS)}</p>
+        {layout === VISIBILITY_LAYOUT.MINIMAL.value && (
+        <>
+          <div className='jfpContent-wrapper--ai-persona-title'>
+            <div className='jfpContent-wrapper--ai-persona-greeting'>
+              <div>
+                <h3>{t(ALL_TEXTS.GREETING_MESSAGE)}</h3>
+                <p>{t(ALL_TEXTS.SHOW_A_MESSAGE_TO_GREET_USERS)}</p>
+              </div>
+              <Toggle checked={greetingBool} onChange={() => handleChangeGreeting(!greetingBool)} />
             </div>
-            <Toggle checked={greetingBool} onChange={() => handleChangeGreeting(!greetingBool)} />
+            <Input
+              maxLength={80}
+              value={greetingMessageState}
+              placeholder={t(ALL_TEXTS.HOW_CAN_I_HELP_YOU)}
+              onChange={e => handleChangeGreetingText(e.target.value)}
+              disabled={!greetingBool}
+            />
           </div>
-          <Input
-            maxLength={80}
-            value={greetingMessageState}
-            placeholder={t(ALL_TEXTS.HOW_CAN_I_HELP_YOU)}
-            onChange={e => handleChangeGreetingText(e.target.value)}
-            disabled={!greetingBool}
-          />
-        </div>
-        <hr className='jfpContent-wrapper--line' />
+          <hr className='jfpContent-wrapper--line' />
+        </>
+        )}
         {/* agent chattiness */}
         <div className='jfpContent-wrapper--ai-persona-title'>
           <div>

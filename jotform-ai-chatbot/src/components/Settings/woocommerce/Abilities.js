@@ -34,8 +34,8 @@ const Abilities = ({ isConnected }) => {
         {/* show products */}
         <div className='jfpContent-wrapper--settings-options-ability-select'>
           <div>
-            <h4>{t(ALL_TEXTS.SHOW_PRODUCTS)}</h4>
-            <p>{t(ALL_TEXTS.DISPLAY_AVAILABLE_PRODUCTS)}</p>
+            <h4>{t(ALL_TEXTS.FIND_PRODUCTS)}</h4>
+            <p>{t(ALL_TEXTS.HELPS_CUSTOMERS_SEARCH_OR_FILTER_PRODUCTS)}</p>
           </div>
           <Toggle checked={showProducts} onChange={() => handleToggleChange(WOO_COMMERCE_PROPERTIES.PRODUCT_FILTER, !showProducts)} />
         </div>
@@ -43,15 +43,15 @@ const Abilities = ({ isConnected }) => {
         <div className='jfpContent-wrapper--settings-options-ability-select'>
           <div>
             <h4>{t(ALL_TEXTS.RECOMMEND_PRODUCTS)}</h4>
-            <p>{t(ALL_TEXTS.SUGGEST_PERSONALIZED_PRODUCTS)}</p>
+            <p>{t(ALL_TEXTS.SUGGESTS_BEST_SELLERS)}</p>
           </div>
           <Toggle checked={recommendProducts} onChange={() => handleToggleChange(WOO_COMMERCE_PROPERTIES.PRODUCT_RECOMMENDATION, !recommendProducts)} />
         </div>
         {/* add & update cart */}
         <div className='jfpContent-wrapper--settings-options-ability-select'>
           <div>
-            <h4>{t(ALL_TEXTS.ADD_UPDATE_CART)}</h4>
-            <p>{t(ALL_TEXTS.ADD_PRODUCTS)}</p>
+            <h4>{t(ALL_TEXTS.ADD_PRODUCTS_TO_CART)}</h4>
+            <p>{t(ALL_TEXTS.ADD_ITEMS_TO_THE_SHOPPING_CART)}</p>
           </div>
           <Toggle checked={addAndUpdateCart} onChange={() => handleToggleChange(WOO_COMMERCE_PROPERTIES.ADD_TO_CART, !addAndUpdateCart)} />
         </div>
@@ -59,7 +59,7 @@ const Abilities = ({ isConnected }) => {
         <div className='jfpContent-wrapper--settings-options-ability-select'>
           <div>
             <h4>{t(ALL_TEXTS.SHOW_ORDER_STATUS)}</h4>
-            <p>{t(ALL_TEXTS.SHARE_REAL_TIME_UPDATE)}</p>
+            <p>{t(ALL_TEXTS.PRODVIDES_REAL_TIME_UPDATES)}</p>
           </div>
           <Toggle checked={showOrderStatus} onChange={() => handleToggleChange(WOO_COMMERCE_PROPERTIES.ORDER_TRACKING, !showOrderStatus)} />
         </div>

@@ -40,6 +40,7 @@
       border-width: 3px;
       &:before {
         border-width: 3px;
+        inset: -3px;
       }
     }
     &.xsmall {

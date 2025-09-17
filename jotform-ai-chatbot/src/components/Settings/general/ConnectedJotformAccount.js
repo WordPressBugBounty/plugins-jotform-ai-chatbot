@@ -4,7 +4,7 @@ import { interactWithPlatform, saveInstallment } from '../../../api';
 import { ALL_TEXTS } from '../../../constants';
 import { useWizard } from '../../../hooks';
 import { ACTION_CREATORS } from '../../../store';
-import { t } from '../../../utils';
+import { t, toggleSettingsItems } from '../../../utils';
 import LogoutModal from '../../LogoutModal';
 import Button from '../../UI/Button';
 
@@ -24,6 +24,7 @@ const ConnectedJotformAccount = () => {
       ACTION_CREATORS.logoutFromJotformError
     );
     setIsLogoutModalOpen(false);
+    toggleSettingsItems({ action: 'hide' });
   };
 
   const handleLogoutClick = () => {

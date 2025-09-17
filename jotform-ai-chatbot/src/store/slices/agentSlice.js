@@ -1,5 +1,7 @@
 import { generatePromiseActionType } from '../actionTypes';
-import { GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT } from './commonActions';
+import {
+  DELETE_PLATFORM_AGENT, GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT
+} from './commonActions';
 
 // Internal action types (only used within this slice)
 const SET_AGENT_NAME = 'SET_AGENT_NAME';
@@ -82,10 +84,11 @@ export const agentReducer = (state, action) => {
       // These don't modify state but are handled for completeness
       return state;
 
+    case DELETE_PLATFORM_AGENT.SUCCESS:
     case LOGOUT_FROM_JOTFORM.SUCCESS:
       return {
         ...state,
-        previewAgentId: null
+        ...agentInitialState
       };
 
     default:

@@ -1,10 +1,11 @@
 import { reinitializeRequestLayer } from '../../api';
 import { EU_PROVIDER_API_URL, EU_PROVIDER_URL, STEPS } from '../../constants';
 import { SETTINGS_TABS } from '../../constants/wizard';
-import { platformSettings as platformSettingsSingleton, removeStepFromQueryParams } from '../../utils';
+import { isSettingsPage, platformSettings as platformSettingsSingleton, removeStepFromQueryParams } from '../../utils';
 import { generatePromiseActionType } from '../actionTypes';
-import { GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT } from './commonActions';
-import { DELETE_PLATFORM_AGENT } from './platformSlice';
+import {
+  DELETE_PLATFORM_AGENT, GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT
+} from './commonActions';
 import { FETCH_USER } from './userSlice';
 
 // Internal action types (only used within this slice)
@@ -60,7 +61,7 @@ export const uiReducer = (state, action) => {
       if (content === false) {
         return {
           ...state,
-          step: STEPS.USECASE_SELECTION,
+          step: isSettingsPage() ? STEPS.SETTINGS : STEPS.USECASE_SELECTION,
           isUseAgentLoading: false,
           isInitialLoading: false
         };

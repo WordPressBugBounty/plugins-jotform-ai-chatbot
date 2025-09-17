@@ -4,6 +4,7 @@ import { generatePromiseActionType } from '../actionTypes';
 // Internal action types (only used within this slice)
 const SET_WOOCOMMERCE_ABILITY = 'SET_WOOCOMMERCE_ABILITY';
 const SET_WOOCOMMERCE_CONSUMER_KEY = 'SET_WOOCOMMERCE_CONSUMER_KEY';
+const RESET_INVALID_CREDENTIALS_ERROR = 'RESET_INVALID_CREDENTIALS_ERROR';
 const GET_WOOCOMMERCE_SETTINGS = generatePromiseActionType('GET_WOOCOMMERCE_SETTINGS');
 const SET_WOOCOMMERCE_SETTINGS = generatePromiseActionType('SET_WOOCOMMERCE_SETTINGS');
 const UPDATE_WOOCOMMERCE_SETTINGS = generatePromiseActionType('UPDATE_WOOCOMMERCE_SETTINGS');
@@ -14,8 +15,10 @@ export const woocommerceInitialState = {
   woocommerce: {
     consumerKey: '',
     isConnected: false,
-    isSettingsLoading: true,
+    isConnectLoading: false,
+    isSettingsLoading: false,
     isDisconnectLoading: false,
+    invalidCredentialsError: false,
     abilities: {
       [WOO_COMMERCE_PROPERTIES.PRODUCT_FILTER]: true,
       [WOO_COMMERCE_PROPERTIES.PRODUCT_RECOMMENDATION]: true,
@@ -86,13 +89,33 @@ export const woocommerceReducer = (state, action) => {
         }
       };
 
+    case SET_WOOCOMMERCE_SETTINGS.REQUEST:
+      return {
+        ...state,
+        woocommerce: {
+          ...state.woocommerce,
+          isConnectLoading: true
+        }
+      };
+
     case SET_WOOCOMMERCE_SETTINGS.SUCCESS:
       return {
         ...state,
         woocommerce: {
           ...state.woocommerce,
           isConnected: !!action.payload.result?.consumerKeyMasked,
-          consumerKey: action.payload.result?.consumerKeyMasked
+          consumerKey: action.payload.result?.consumerKeyMasked,
+          isConnectLoading: false
+        }
+      };
+
+    case SET_WOOCOMMERCE_SETTINGS.ERROR:
+      return {
+        ...state,
+        woocommerce: {
+          ...state.woocommerce,
+          isConnectLoading: false,
+          invalidCredentialsError: action.payload.result?.data?.responseCode === 401
         }
       };
 
@@ -123,9 +146,14 @@ export const woocommerceReducer = (state, action) => {
         }
       };
 
-    case SET_WOOCOMMERCE_SETTINGS.REQUEST:
-    case SET_WOOCOMMERCE_SETTINGS.ERROR:
-      return state;
+    case RESET_INVALID_CREDENTIALS_ERROR:
+      return {
+        ...state,
+        woocommerce: {
+          ...state.woocommerce,
+          invalidCredentialsError: false
+        }
+      };
 
     default:
       return state;
@@ -189,5 +217,8 @@ export const woocommerceActionCreators = {
   disconnectWoocommerceStoreError: result => ({
     type: DISCONNECT_WOOCOMMERCE_STORE.ERROR,
     payload: { result }
+  }),
+  resetInvalidCredentialsError: () => ({
+    type: RESET_INVALID_CREDENTIALS_ERROR
   })
 };

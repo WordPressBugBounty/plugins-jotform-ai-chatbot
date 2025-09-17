@@ -11,7 +11,7 @@ const ConnectedStore = ({ disconnectStore }) => {
   const { state } = useWizard();
 
   const {
-    woocommerce: { consumerKey }
+    woocommerce: { consumerKey, isDisconnectLoading }
   } = state;
 
   return (
@@ -27,6 +27,7 @@ const ConnectedStore = ({ disconnectStore }) => {
         colorStyle='error'
         variant='outline'
         size='small'
+        loading={isDisconnectLoading}
         className='jfpContent-wrapper--settings-options-wrapper-connected-btn'
         onClick={disconnectStore}
       >

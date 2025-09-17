@@ -2,7 +2,9 @@ import { reinitializeRequestLayer } from '../../api';
 import { DEVICES, VISIBILITY_TOGGLE } from '../../constants';
 import { platformSettings as platformSettingsSingleton, removeStepFromQueryParams } from '../../utils';
 import { generatePromiseActionType } from '../actionTypes';
-import { GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT } from './commonActions';
+import {
+  DELETE_PLATFORM_AGENT, GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT
+} from './commonActions';
 
 // Internal action types (only used within this slice)
 const GET_PLATFORM_SETTINGS = generatePromiseActionType('GET_PLATFORM_SETTINGS');
@@ -15,11 +17,6 @@ const SET_PLATFORM_SETTINGS = 'SET_PLATFORM_SETTINGS';
 const SET_SELECTED_PAGES = 'SET_SELECTED_PAGES';
 const SET_VISIBLE_DEVICE = 'SET_VISIBLE_DEVICE';
 const UNAUTHORIZED_API_KEY = 'UNAUTHORIZED_API_KEY';
-
-// Shared action types (exported for use by other slices)
-const DELETE_PLATFORM_AGENT = generatePromiseActionType('DELETE_PLATFORM_AGENT');
-
-export { DELETE_PLATFORM_AGENT };
 
 // Default selected pages
 const defaultSelectedPages = {
@@ -66,6 +63,8 @@ export const platformReducer = (state, action) => {
       platformSettingsSingleton.PLATFORM_DEVICE = data.PLATFORM_DEVICE;
       platformSettingsSingleton.PLATFORM_CHATBOT_PUBLISHED = data.PLATFORM_CHATBOT_PUBLISHED;
       platformSettingsSingleton.PLATFORM_PLUGIN_VERSION = data.PLATFORM_PLUGIN_VERSION;
+      platformSettingsSingleton.PLATFORM_WOOCOMMERCE_AVAILABLE = data.PLATFORM_WOOCOMMERCE_AVAILABLE;
+      platformSettingsSingleton.PLATFORM_PERMALINK_STRUCTURE = data.PLATFORM_PERMALINK_STRUCTURE;
       reinitializeRequestLayer();
 
       return {

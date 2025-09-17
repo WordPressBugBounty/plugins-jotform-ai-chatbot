@@ -1,15 +1,27 @@
 import React, { useRef } from 'react';
-import { func } from 'prop-types';
+import { bool, func, string } from 'prop-types';
 
 import { ALL_TEXTS } from '../../../constants';
 import { t } from '../../../utils';
 import Button from '../../UI/Button';
-import { IconExclamationCircle, IconPlus } from '../../UI/Icon';
+import { IconPlus } from '../../UI/Icon';
 import Input from '../../UI/Input';
+import GuidelineInfoBox from './GuidelineInfoBox';
+import InvalidCredentialsError from './InvalidCredentialsError';
+import NoAgentError from './NoAgentError';
+import PermalinkError from './PermalinkError';
 
-const StoreConnection = ({ setWoocommerceSettings }) => {
+const StoreConnection = ({
+  platformDomain,
+  isConnectLoading,
+  permalinkStructure,
+  invalidCredentialsError,
+  setWoocommerceSettings,
+  previewAgentId
+}) => {
   const consumerKeyRef = useRef('');
   const consumerSecrefRef = useRef('');
+  const showPermalinkError = permalinkStructure === 'Plain';
 
   const handleConnectClick = () => {
     const consumerKey = consumerKeyRef.current.value;
@@ -50,32 +62,35 @@ const StoreConnection = ({ setWoocommerceSettings }) => {
           />
         </div>
       </div>
-      {/* info box */}
-      <div className='jfpContent-wrapper--settings-options-wrapper-info-box'>
-        <div className='jfpContent-wrapper--settings-options-wrapper-info-box-icon'>
-          <IconExclamationCircle />
-        </div>
-        <div className='jfpContent-wrapper--settings-options-wrapper-info-box-message'>
-          {t(ALL_TEXTS.WOO_COMMERCE_INFO_BOX)}
-          <strong>{t(ALL_TEXTS.WOO_COMMERCE_EMP)}</strong>
-        </div>
-      </div>
+      {/* info boxes */}
+      <GuidelineInfoBox />
+      {showPermalinkError && <PermalinkError platformDomain={platformDomain} />}
       {/* connect btn */}
-      <div>
+      <div className='jfpContent-wrapper--settings-options-connect-btn-wrapper'>
         <Button
+          loader={isConnectLoading}
+          className='jfpContent-wrapper--settings-options-connect-btn'
           startIcon={<IconPlus />}
           colorStyle='primary'
           onClick={handleConnectClick}
+          disabled={!previewAgentId}
         >
           {t(ALL_TEXTS.CONNECT)}
         </Button>
+        {invalidCredentialsError && <InvalidCredentialsError />}
+        {!previewAgentId && <NoAgentError />}
       </div>
     </>
   );
 };
 
 StoreConnection.propTypes = {
-  setWoocommerceSettings: func.isRequired
+  setWoocommerceSettings: func.isRequired,
+  platformDomain: string.isRequired,
+  permalinkStructure: string.isRequired,
+  invalidCredentialsError: bool.isRequired,
+  isConnectLoading: bool.isRequired,
+  previewAgentId: string.isRequired
 };
 
 export default StoreConnection;

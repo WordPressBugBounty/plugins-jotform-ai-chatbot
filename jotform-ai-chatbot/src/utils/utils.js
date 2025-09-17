@@ -77,6 +77,13 @@ export const isValidRgba = color => {
 export const classNames = (...arr) => arr.flat().filter(Boolean).join(' ');
 
 export const t = f => f;
+export const translationRenderer = (text) => (renderers) => text.split(/(\[\d+\[.*?\]\])/g).map((part) => {
+  const match = part.match(/^\[(\d+)\[(.*)\]\]$/);
+  if (!match) return part;
+  const [, idx, inner] = match;
+  const fn = renderers[`renderer${idx}`];
+  return fn ? fn(inner) : inner;
+});
 
 // Expects event as parameter
 export const prepareKeyList = keyList => Object.keys(KEY_KEYCODE_LIST).filter(key => keyList.indexOf(key) > -1).map(key => ({ key, keyCode: KEY_KEYCODE_LIST[key] }));
@@ -369,14 +376,38 @@ const hideElement = (element) => {
 
 export const toggleConversationItems = ({ action }) => {
   const sidebarMenu = document.querySelector('#toplevel_page_jotform_ai_chatbot > ul');
-  const adminBarMenu = document.querySelector('#wp-admin-bar-jotform_ai_chatbot .ab-submenu');
+  const createAgentMenuItem = sidebarMenu?.querySelector('li.wp-first-item > a[href="admin.php?page=jotform_ai_chatbot"]');
+  const conversationsMenuItem = sidebarMenu?.querySelector('a[href="admin.php?page=jotform_ai_chatbot_conversations"]');
+  const conversationsAdminBarMenuItem = document.querySelector('#wp-admin-bar-jotform_ai_chatbot_conversations');
+
   if (action === 'show') {
-    showElement(sidebarMenu);
-    showElement(adminBarMenu);
+    if (createAgentMenuItem) {
+      createAgentMenuItem.text = 'My AI Chatbot';
+    }
+    showElement(conversationsMenuItem);
+    showElement(conversationsAdminBarMenuItem);
   }
   if (action === 'hide') {
-    hideElement(sidebarMenu);
-    hideElement(adminBarMenu);
+    if (createAgentMenuItem) {
+      createAgentMenuItem.text = 'Create AI Chatbot';
+    }
+    hideElement(conversationsMenuItem);
+    hideElement(conversationsAdminBarMenuItem);
+  }
+};
+
+export const toggleSettingsItems = ({ action }) => {
+  const sidebarMenu = document.querySelector('#toplevel_page_jotform_ai_chatbot > ul');
+  const settingsMenuItem = sidebarMenu?.querySelector('a[href="admin.php?page=jotform_ai_chatbot_settings"]');
+  const settingsAdminBarMenuItem = document.querySelector('#wp-admin-bar-jotform_ai_chatbot_settings');
+
+  if (action === 'show') {
+    showElement(settingsMenuItem);
+    showElement(settingsAdminBarMenuItem);
+  }
+  if (action === 'hide') {
+    hideElement(settingsMenuItem);
+    hideElement(settingsAdminBarMenuItem);
   }
 };
 

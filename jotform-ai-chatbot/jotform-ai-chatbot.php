@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.2.3
+* Version: 3.3.0
 * Author URI: https://www.jotform.com/
 */
 
@@ -23,13 +23,19 @@ function jotform_ai_chatbot_plugin_options_page() {
         "manage_options",
         "jotform_ai_chatbot",
         "jotform_ai_chatbot_render_plugin",
-        "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9ImN1cnJlbnRDb2xvciIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0zLjY2NyAxMi4zMTFhMi41MTUgMi41MTUgMCAwIDEgMC0zLjU3M0w5LjcgMi43NGEyLjU1NSAyLjU1NSAwIDAgMSAzLjU5NyAwIDIuNTE1IDIuNTE1IDAgMCAxIDAgMy41NzRMNy4yNjMgMTIuMzFhMi41NTUgMi41NTUgMCAwIDEtMy41OTcgMFptOS40NyA1LjM3NWEyLjUxNSAyLjUxNSAwIDAgMCAwIDMuNTc0IDIuNTU1IDIuNTU1IDAgMCAwIDMuNTk4IDBsMy41ODQtMy41NjJhMi41MTUgMi41MTUgMCAwIDAgMC0zLjU3MyAyLjU1NSAyLjU1NSAwIDAgMC0zLjU5NyAwbC0zLjU4NSAzLjU2MVpNNy40NjcgMjJjLjUzNiAwIC44MDMtLjYyNy40MjUtLjk5M0wzLjkzNSAxNy4xN2MtLjM3OC0uMzY2LTEuMDI1LS4xMDgtMS4wMjUuNDEydjMuMjUzYzAgLjY0Mi41MzkgMS4xNjQgMS4yIDEuMTY0aDMuMzU3Wm0xLjEzMS04Ljk4OGEyLjUxNSAyLjUxNSAwIDAgMCAwIDMuNTc0IDIuNTU1IDIuNTU1IDAgMCAwIDMuNTk3IDBsOC4xNTItOC4wOThhMi41MTUgMi41MTUgMCAwIDAgMC0zLjU3NCAyLjU1NSAyLjU1NSAwIDAgMC0zLjU5NyAwbC04LjE1MiA4LjA5OFoiIGNsaXAtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg=="
+        "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNhN2FhYWQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIgogICAgZD0iTTMuNjY3IDEyLjMxMWEyLjUxNSAyLjUxNSAwIDAgMSAwLTMuNTczTDkuNyAyLjc0YTIuNTU1IDIuNTU1IDAgMCAxIDMuNTk3IDAgMi41MTUgMi41MTUgMCAwIDEgMCAzLjU3NEw3LjI2MyAxMi4zMWEyLjU1NSAyLjU1NSAwIDAgMS0zLjU5NyAwWm05LjQ3IDUuMzc1YTIuNTE1IDIuNTE1IDAgMCAwIDAgMy41NzQgMi41NTUgMi41NTUgMCAwIDAgMy41OTggMGwzLjU4NC0zLjU2MmEyLjUxNSAyLjUxNSAwIDAgMCAwLTMuNTczIDIuNTU1IDIuNTU1IDAgMCAwLTMuNTk3IDBsLTMuNTg1IDMuNTYxWk03LjQ2NyAyMmMuNTM2IDAgLjgwMy0uNjI3LjQyNS0uOTkzTDMuOTM1IDE3LjE3Yy0uMzc4LS4zNjYtMS4wMjUtLjEwOC0xLjAyNS40MTJ2My4yNTNjMCAuNjQyLjUzOSAxLjE2NCAxLjIgMS4xNjRoMy4zNTdabTEuMTMxLTguOTg4YTIuNTE1IDIuNTE1IDAgMCAwIDAgMy41NzQgMi41NTUgMi41NTUgMCAwIDAgMy41OTcgMGw4LjE1Mi04LjA5OGEyLjUxNSAyLjUxNSAwIDAgMCAwLTMuNTc0IDIuNTU1IDIuNTU1IDAgMCAwLTMuNTk3IDBsLTguMTUyIDguMDk4WiIKICAgIGNsaXAtcnVsZT0iZXZlbm9kZCIgLz4KPC9zdmc+"
     );
+
+    $options = get_option('jotform_ai_chatbot_options');
+    $options = !empty($options) ? json_decode($options, true) : [];
+
+    // Determine link text based on the presence of ai chatbot
+    $link_text = (!empty($options["agentId"])) ? 'My AI Chatbot' : 'Create AI Chatbot';
 
     add_submenu_page(
         'jotform_ai_chatbot',
-        'My AI Chatbot',
-        'My AI Chatbot',
+        $link_text,
+        $link_text,
         'manage_options',
         'jotform_ai_chatbot',
         'jotform_ai_chatbot_render_plugin'
@@ -107,20 +113,20 @@ function jotform_ai_chatbot_admin_bar_menu($wp_admin_bar) {
             "href"   => admin_url("admin.php?page=jotform_ai_chatbot")
         ]);
 
-        // Submenu: Settings
-        $wp_admin_bar->add_node([
-            "id"     => "jotform_ai_chatbot_settings",
-            "parent" => $parent_id,
-            "title"  => esc_html__("Settings", "jotform-ai-chatbot"),
-            "href"   => admin_url("admin.php?page=jotform_ai_chatbot_settings"),
-        ]);
-
         // Submenu: Conversations
         $wp_admin_bar->add_node([
             "id"     => "jotform_ai_chatbot_conversations",
             "parent" => $parent_id,
             "title"  => esc_html__("Conversations", "jotform-ai-chatbot"),
             "href"   => admin_url("admin.php?page=jotform_ai_chatbot_conversations"),
+        ]);
+
+        // Submenu: Settings
+        $wp_admin_bar->add_node([
+            "id"     => "jotform_ai_chatbot_settings",
+            "parent" => $parent_id,
+            "title"  => esc_html__("Settings", "jotform-ai-chatbot"),
+            "href"   => admin_url("admin.php?page=jotform_ai_chatbot_settings"),
         ]);
     }
 }
@@ -146,26 +152,47 @@ function jaic_hide_notices() {
 add_action('admin_head', 'jaic_hide_notices');
 
 /**
- * Hide conversations submenu if no agent is set
+ * Hide submenus conditionally
  */
-function jaic_hide_conversations_submenu() {
+function jaic_hide_submenus() {
     $options = get_option("jotform_ai_chatbot_options");
     $options = !empty($options) ? json_decode($options, true) : [];
     if (empty($options["agentId"])) {
         ?>
         <script>
             jQuery(document).ready(function($) {
+                const sidebarMenu = $('#toplevel_page_jotform_ai_chatbot > ul');
+                const conversationsMenuItem = sidebarMenu?.find('a[href="admin.php?page=jotform_ai_chatbot_conversations"]');
+                const conversationsAdminBarMenuItem = $('#wp-admin-bar-jotform_ai_chatbot_conversations');
+
                 // Hide sidebar submenu 
-                $('#toplevel_page_jotform_ai_chatbot > ul').hide().addClass('jaic-hidden-submenu');
+                $(conversationsMenuItem).hide();
                 // Hide admin bar submenu
-                $('#wp-admin-bar-jotform_ai_chatbot .ab-submenu').hide().addClass('jaic-hidden-submenu');
+                $(conversationsAdminBarMenuItem).hide();
+            });
+        </script>
+        <?php
+    }
+
+    if (empty($options["apiKey"])) {
+        ?>
+        <script>
+            jQuery(document).ready(function($) {
+                const sidebarMenu = $('#toplevel_page_jotform_ai_chatbot > ul');
+                const settingsTabMenu = sidebarMenu?.find('a[href="admin.php?page=jotform_ai_chatbot_settings"]');
+                const settingsAdminBarMenuItem = $('#wp-admin-bar-jotform_ai_chatbot_settings');
+
+                // Hide sidebar submenu 
+                $(settingsTabMenu).hide();
+                // Hide admin bar submenu
+                $(settingsAdminBarMenuItem).hide();
             });
         </script>
         <?php
     }
 }
 
-add_action('admin_footer', 'jaic_hide_conversations_submenu');
+add_action('admin_footer', 'jaic_hide_submenus');
 
 /**
  * Enqueue scripts for the deactivate modal
@@ -475,7 +502,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "3.2.3";
+        $jaic_assetVersion = "3.3.0";
     } catch (\Exception $e) {
     }
 }

@@ -976,16 +976,25 @@ class JAIC_Core {
     private function isMobileDevice(): bool {
         $userAgent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
 
+        if (function_exists('wp_is_mobile') && wp_is_mobile()) {
+            return true;
+        }
+
         $mobileKeywords = [
-            'iphone', 'ipod', 'android', 'blackberry', 'opera mini', 'windows phone',
-            'windows mobile', 'iemobile', 'mobile', 'tablet', 'kindle', 'silk', 'fennec',
-            'nokia', 'webos', 'palm', 'symbian', 'htc'
+            'iphone', 'ipod', 'blackberry', 'opera mini', 'windows phone',
+            'windows mobile', 'iemobile', 'mobile', 'nokia', 'webos', 'palm', 'symbian', 'htc',
+            'ipad', 'tablet', 'kindle', 'silk', 'playbook', 'nexus 7', 'nexus 9', 'nexus 10',
+            'galaxy tab', 'xoom', 'sch-i800', 'gt-p1000', 'touchpad', 'kfapwi', 'kfthwi', 'kfsawi'
         ];
 
         foreach ($mobileKeywords as $keyword) {
             if (strpos($userAgent, $keyword) !== false) {
                 return true;
             }
+        }
+
+        if (strpos($userAgent, 'android') !== false && strpos($userAgent, 'mobile') === false) {
+            return true;
         }
 
         return false;
@@ -1175,7 +1184,7 @@ class JAIC_Core {
             return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -1253,17 +1262,16 @@ class JAIC_Core {
 
         $url = self::$siteEmbedURL . $path . $query;
         return '
-            <div id="ai-chatbot"></div>
             <script>
-            let isIframe = false;
+            var dJAIC = false;
             try {
-                isIframe = window.self !== window.top;
+                dJAIC = (window.self !== window.top) && !document.location.href.includes("AiChatbotIframeEmbed");
             } catch (e) {}
-            if (!isIframe) {
+            if (!dJAIC) {
                 document.addEventListener("DOMContentLoaded", function () {
                     setTimeout(function () {
                         var s = document.createElement("script");
-                        s.src = "' . $url . '";
+                        s.src = "' . esc_url($url) . '";
                         s.defer = true;
                         document.head.appendChild(s);
                     }, 2000);

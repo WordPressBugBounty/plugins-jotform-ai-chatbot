@@ -9,7 +9,8 @@ import {
   ACTION_CREATORS, initialState, rootReducer
 } from '../store';
 import {
-  awaitFor, cleanParams, createAsyncDispatch, platformSettings as platformSettingsSingleton
+  awaitFor, cleanParams, createAsyncDispatch, platformSettings as platformSettingsSingleton,
+  toggleSettingsItems
 } from '../utils';
 import { WizardContext } from './WizardContext';
 
@@ -81,6 +82,7 @@ export const WizardProvider = ({
         ACTION_CREATORS.saveProviderApiKeyError
       );
       await awaitFor(1000);
+      toggleSettingsItems({ action: 'show' });
       setCredentialsSaved(true);
       cleanParams(['code', 'domain']);
     };

@@ -13,7 +13,7 @@ const SettingsTab = () => {
 
   const { activeSettingsTab } = state;
 
-  const { GENERAL } = SETTINGS_TABS;
+  const { GENERAL, WOOCOMMERCE } = SETTINGS_TABS;
 
   const handleTabClick = (tab) => {
     dispatch(ACTION_CREATORS.setActiveSettingsTab(tab));
@@ -47,7 +47,7 @@ const SettingsTab = () => {
             {t(ALL_TEXTS.AGENT_SKILLS)}
           </Button>
         </li> */}
-        {/* <li className='jfpContent-wrapper--settings-panel-btn'>
+        <li className='jfpContent-wrapper--settings-panel-btn'>
           <Button
             colorStyle='secondary'
             variant='ghost'
@@ -59,7 +59,7 @@ const SettingsTab = () => {
             {' '}
             <span className='new-badge'>New</span>
           </Button>
-        </li> */}
+        </li>
         {/* <li className='jfpContent-wrapper--settings-panel-btn'>
           <Button
             colorStyle='secondary'
