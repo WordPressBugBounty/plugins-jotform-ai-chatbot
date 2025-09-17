@@ -3,11 +3,11 @@
 /**
 * Plugin Name: AI Chatbot for WordPress - Jotform
 * Plugin URI: http://wordpress.org/plugins/jotform-ai-chatbot/
-* Description: AI chatbot to engage visitors, answer FAQs, provide customer support, and generate leads — no coding needed.
+* Description: Jotform AI Chatbot - the best AI Chatbot for WordPress, with WooCommerce integration that boosts customer interactions through intelligent automation.
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.3.0
+* Version: 3.3.1
 * Author URI: https://www.jotform.com/
 */
 
@@ -502,7 +502,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "3.3.0";
+        $jaic_assetVersion = "3.3.1";
     } catch (\Exception $e) {
     }
 }
