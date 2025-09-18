@@ -4,14 +4,14 @@ Contributors: Jotform
 Tags: AI, chatbot, chatGPT, helpdesk, live chat
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 3.3.2
+Stable tag: 3.3.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-AI chatbot to engage visitors, answer FAQs, provide customer support, and generate leads — no coding needed.
+AI chatbot offers the best support for WordPress sites with WooCommerce integration to boost customer interactions through intelligent automation.
 
 == Description ==
-**Jotform AI Chatbot, the best AI Chatbot for WordPress, with WooCommerce integration that boosts customer interactions through intelligent automation.**
+Jotform AI Chatbot, the best **AI Chatbot for WordPress**, with **WooCommerce** integration that boosts customer interactions through intelligent automation.
 
 🟪 Jotform AI Chatbot allows businesses to engage visitors, guide them through forms, and streamline communication effortlessly. By providing seamless, real-time assistance, it helps convert passive visitors into active users.
 
@@ -55,7 +55,7 @@ The Jotform AI Chatbot automatically adapts to your visitors’ preferred langua
 
 ℹ️ If you have any questions or concerns regarding your online forms, chatbots, or our Agent Builder, feel free to contact our friendly 24-7 [support team](https://link.jotform.com/xNCqA3ySkh).
 
-Discover all the features and capabilities of the Jotform AI Chatbot Plugin in our detailed [user guide](https://link.jotform.com/Yfrmv3z1JH).
+🔍 Discover all the features and capabilities of the Jotform AI Chatbot Plugin in our detailed [user guide](https://link.jotform.com/Yfrmv3z1JH).
 
 = Who can benefit from Jotform AI Chatbot? =
 Jotform AI Chatbot is designed to meet the needs of various users and industries:
@@ -72,19 +72,19 @@ Jotform AI Chatbot is designed to meet the needs of various users and industries
 == 🛠️ External Services ==
 This plugin connects to external services to provide functionality and improve user experience. Below are the details of the external services used:
 
-🌟 Jotform AI platform
+🌟 **Jotform AI platform**
 
    - The plugin connects to Jotform’s servers to enable chatbot creation, training, and deployment. This includes accessing your Jotform account data to retrieve chatbot configurations and training data.
    - [Privacy Policy](https://www.jotform.com/privacy/?utm_source=wordpress&utm_medium=plugin_directory&utm_campaign=chatbot_plugin_content&utm_content=privacy)
    - [Terms of Use](https://www.jotform.com/terms/?utm_source=wordpress&utm_medium=plugin_directory&utm_campaign=chatbot_plugin_content&utm_content=terms)
 
-⚙️ API usage
+⚙️ **API usage**
 
   - The plugin makes external API requests on the following domain to enable chatbot-related functionalities:
      `https://api.jotform.com`
   - The plugin uses an API to create realtime chatbot agent conversions.
 
-🛍️ WooCommerce integration
+🛍️ **WooCommerce integration**
 
 If WooCommerce is installed and connected, the plugin can access WooCommerce data (such as products, orders, and customer information) to allow the chatbot to answer related questions. This data remains on your WordPress site and is not sent to third-party services except through Jotform's servers when needed for chatbot responses.
 
@@ -119,10 +119,6 @@ Nope! The Jotform AI Chatbot WordPress plugin is user-friendly, requiring no cod
 **Can the chatbot be trained with my business data?**
 
 Yes! The plugin offers robust training tools, allowing you to upload FAQs, documents, and product catalogs to train the chatbot. This ensures it provides accurate, relevant responses about your services, policies, and operations. You can also retrain it anytime to keep information up-to-date for consistent, helpful interactions.
-
-**Is the chatbot compatible with multilingual websites?**
-
-Absolutely! The chatbot supports multiple languages, allowing businesses to engage a global audience. It can adapt based on user preferences or location, ensuring seamless communication. This multilingual feature enhances accessibility, builds trust, and improves user experience worldwide.
 
 **How does the chatbot improve form submissions?**
 
@@ -173,6 +169,9 @@ See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org
 5. How It Works
 
 == Changelog ==
+= 3.3.3 (2025-09-18) =
+* Update: readme.txt file updated
+
 = 3.3.2 (2025-09-17) =
 * Update: Minor UI improvements
 
