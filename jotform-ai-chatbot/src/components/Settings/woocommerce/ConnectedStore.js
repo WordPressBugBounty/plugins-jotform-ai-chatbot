@@ -27,7 +27,7 @@ const ConnectedStore = ({ disconnectStore }) => {
         colorStyle='error'
         variant='outline'
         size='small'
-        loading={isDisconnectLoading}
+        loader={isDisconnectLoading}
         className='jfpContent-wrapper--settings-options-wrapper-connected-btn'
         onClick={disconnectStore}
       >

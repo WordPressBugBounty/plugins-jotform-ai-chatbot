@@ -27,7 +27,8 @@ export const STEP_TO_BUILDER_PATH = {
   [STEPS.AI_PERSONA]: '/train/persona',
   [STEPS.STYLE]: '',
   [STEPS.VISIBILITY]: '/publish/chatbot',
-  [STEPS.KNOWLEDGE]: '/train'
+  [STEPS.KNOWLEDGE]: '/train',
+  [STEPS.SETTINGS]: ''
 };
 
 export const TAB_STEPS = [

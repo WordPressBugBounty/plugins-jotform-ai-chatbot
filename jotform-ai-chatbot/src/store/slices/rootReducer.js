@@ -29,7 +29,9 @@ const reducers = {
       user: state.user,
       termsChecked: state.termsChecked,
       refetchUser: state.refetchUser,
-      showNetworkError: state.showNetworkError
+      showNetworkError: state.showNetworkError,
+      limitWarnings: state.limitWarnings,
+      refetchLimitWarnings: state.refetchLimitWarnings
     })
   },
   agent: {

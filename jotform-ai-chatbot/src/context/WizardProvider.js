@@ -3,7 +3,9 @@ import React, {
 } from 'react';
 import { node, shape } from 'prop-types';
 
-import { fetcUser, interactWithPlatform } from '../api';
+import {
+  fetchUserLimitWarnings, fetcUser, interactWithPlatform
+} from '../api';
 import { initializePlatformLayer } from '../api/platformLayerSingleton';
 import {
   ACTION_CREATORS, initialState, rootReducer
@@ -23,7 +25,8 @@ export const WizardProvider = ({
   const {
     isInitialPlatformSettingsReady,
     platformSettings: { PROVIDER_API_KEY },
-    refetchUser
+    refetchUser,
+    refetchLimitWarnings
   } = state;
 
   // async dispatch
@@ -117,6 +120,20 @@ export const WizardProvider = ({
     };
     fetchUserAsync();
   }, [PROVIDER_API_KEY, refetchUser]);
+
+  // fetch limit warnings on material add
+  useEffect(() => {
+    if (!PROVIDER_API_KEY) return;
+    const fetchLimitWarningsAsync = async () => {
+      await asyncDispatch(
+        () => fetchUserLimitWarnings(PROVIDER_API_KEY),
+        ACTION_CREATORS.fetchLimitWarningsRequest,
+        ACTION_CREATORS.fetchLimitWarningsSuccess,
+        ACTION_CREATORS.fetchLimitWarningsError
+      );
+    };
+    fetchLimitWarningsAsync();
+  }, [PROVIDER_API_KEY, refetchLimitWarnings]);
 
   return (
     <WizardContext.Provider

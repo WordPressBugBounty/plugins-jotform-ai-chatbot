@@ -4,9 +4,8 @@ import { SETTINGS_TABS } from '../../constants/wizard';
 import { isSettingsPage, platformSettings as platformSettingsSingleton, removeStepFromQueryParams } from '../../utils';
 import { generatePromiseActionType } from '../actionTypes';
 import {
-  DELETE_PLATFORM_AGENT, GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT
+  DELETE_PLATFORM_AGENT, FETCH_USER, GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT
 } from './commonActions';
-import { FETCH_USER } from './userSlice';
 
 // Internal action types (only used within this slice)
 const SET_STEP = 'SET_STEP';

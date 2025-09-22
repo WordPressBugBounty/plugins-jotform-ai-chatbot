@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { bool, func, string } from 'prop-types';
 
 import { ALL_TEXTS } from '../../../constants';
@@ -12,7 +12,7 @@ import NoAgentError from './NoAgentError';
 import PermalinkError from './PermalinkError';
 
 const StoreConnection = ({
-  platformDomain,
+  platformUrl,
   isConnectLoading,
   permalinkStructure,
   invalidCredentialsError,
@@ -21,11 +21,22 @@ const StoreConnection = ({
 }) => {
   const consumerKeyRef = useRef('');
   const consumerSecrefRef = useRef('');
+  const [isDisabled, setIsDisabled] = useState(true);
   const showPermalinkError = permalinkStructure === 'Plain';
 
+  const handleChange = () => {
+    const consumerKey = consumerKeyRef.current?.value;
+    const consumerSecret = consumerSecrefRef.current?.value;
+    if (!consumerKey || !consumerSecret) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  };
+
   const handleConnectClick = () => {
-    const consumerKey = consumerKeyRef.current.value;
-    const consumerSecret = consumerSecrefRef.current.value;
+    const consumerKey = consumerKeyRef.current?.value;
+    const consumerSecret = consumerSecrefRef.current?.value;
     if (!consumerKey || !consumerSecret) return;
     setWoocommerceSettings({
       key: consumerKey,
@@ -47,6 +58,7 @@ const StoreConnection = ({
             type='input'
             ref={consumerKeyRef}
             placeholder={t(ALL_TEXTS.KEY_PLACEHOLDER)}
+            onChange={handleChange}
           />
         </div>
         <div className='jfpContent-wrapper--settings-options-wrapper-input'>
@@ -59,26 +71,27 @@ const StoreConnection = ({
             type='password'
             ref={consumerSecrefRef}
             placeholder={t(ALL_TEXTS.SECRET_PLACEHOLDER)}
+            onChange={handleChange}
           />
         </div>
       </div>
       {/* info boxes */}
       <GuidelineInfoBox />
-      {showPermalinkError && <PermalinkError platformDomain={platformDomain} />}
+      {showPermalinkError && <PermalinkError platformUrl={platformUrl} />}
       {/* connect btn */}
       <div className='jfpContent-wrapper--settings-options-connect-btn-wrapper'>
+        {invalidCredentialsError && <InvalidCredentialsError />}
+        {!previewAgentId && <NoAgentError />}
         <Button
           loader={isConnectLoading}
           className='jfpContent-wrapper--settings-options-connect-btn'
           startIcon={<IconPlus />}
           colorStyle='primary'
           onClick={handleConnectClick}
-          disabled={!previewAgentId}
+          disabled={!previewAgentId || isDisabled}
         >
           {t(ALL_TEXTS.CONNECT)}
         </Button>
-        {invalidCredentialsError && <InvalidCredentialsError />}
-        {!previewAgentId && <NoAgentError />}
       </div>
     </>
   );
@@ -86,7 +99,7 @@ const StoreConnection = ({
 
 StoreConnection.propTypes = {
   setWoocommerceSettings: func.isRequired,
-  platformDomain: string.isRequired,
+  platformUrl: string.isRequired,
   permalinkStructure: string.isRequired,
   invalidCredentialsError: bool.isRequired,
   isConnectLoading: bool.isRequired,

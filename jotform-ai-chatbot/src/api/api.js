@@ -164,3 +164,8 @@ export const disconnectWoocommerceStore = (params, apiKey = '') => {
   const url = addApiKeyToUrl('ai-chatbot/woocommerce/integration/disconnect', apiKey);
   return getRequestLayer().post(url, params);
 };
+
+export const fetchUserLimitWarnings = (apiKey = '') => {
+  const url = addApiKeyToUrl('user-limit/limit-warnings', apiKey);
+  return getRequestLayer().get(url);
+};

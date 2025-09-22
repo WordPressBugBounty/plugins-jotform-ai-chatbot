@@ -13,6 +13,7 @@ import {
 } from '../utils';
 import Footer from './Footer';
 import Header from './Header';
+import { LimitWarningBanner } from './LimitWarningBanner';
 import { openLimitDialog } from './openLimitDialog';
 import Preview from './Preview';
 import {
@@ -210,7 +211,8 @@ const Wizard = props => {
 
   return (
     <>
-      {[STEPS.AI_PERSONA, STEPS.STYLE, STEPS.VISIBILITY, STEPS.KNOWLEDGE].includes(step)
+      <LimitWarningBanner />
+      {[STEPS.AI_PERSONA, STEPS.STYLE, STEPS.VISIBILITY, STEPS.KNOWLEDGE, STEPS.CONVERSATIONS, STEPS.SETTINGS].includes(step)
         && <Header publishAgent={publishAgent} unpublishAgent={unpublishAgent} />}
       <div
         data-step={step}

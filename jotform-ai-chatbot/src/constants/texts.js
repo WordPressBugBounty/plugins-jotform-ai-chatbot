@@ -177,5 +177,11 @@ export const ALL_TEXTS = {
   WOOCOMMERCE_CONSUMER_SECRET_AND_KEY: 'You can create your Consumer Secret and Key in [1[WooCommerce > Settings > Advanced > REST API.]]',
   WOOCOMMERCE_PERMALINK_ERROR: 'Your site is using [1[Plain permalinks]], which prevents the integration from working. Please update your permalink settings [2[here.]]',
   INVALID_CREDENTIALS: 'Connection failed - Invalid consumer key or secret.',
-  NO_AGENT_ERROR: 'Please [1[create an agent]] first to connect your store.'
+  NO_AGENT_ERROR: 'Please [1[create an agent]] first to connect your store.',
+  NETWORK_ERROR_TITLE: 'Connection issue',
+  NETWORK_ERROR_DESC_NETWORK: 'Can’t connect to the server. Please check your internet connection or try again.',
+  UNAUTHORIZED_API_KEY_TITLE: 'Unauthorized Access',
+  ALMOST_FULL_LIMIT_WARNING_TEXT: 'You’re close to your [1[{limit}]] [2[limit]]. Upgrade to keep your agent active.',
+  OVERLIMIT_LIMIT_WARNING_TEXT: 'You’ve reached your [1[{limit}]] [2[limit]]. Upgrade to keep your agent active.',
+  UPGRADE_NOW: 'Upgrade Now'
 };

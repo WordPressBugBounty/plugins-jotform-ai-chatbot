@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { saveInstallment } from '../api';
 import IconArrowUpRight from '../assets/svg/IconArrowUpRight.svg';
 import IconEyeFilled from '../assets/svg/IconEyeFilled.svg';
-import { ALL_TEXTS, STEP_TO_BUILDER_PATH } from '../constants';
+import { ALL_TEXTS, STEP_TO_BUILDER_PATH, STEPS } from '../constants';
 import { usePublishButton, useWizard } from '../hooks';
 import { STAGES } from '../hooks/usePublishButton';
 import {
@@ -64,11 +64,12 @@ const Header = ({ publishAgent, unpublishAgent }) => {
     setButtonWrapperRoot(document.querySelector('#button-wrapper-root'));
   }, []);
 
-  if (!buttonWrappeRoot) return null;
+  if (!buttonWrappeRoot || !previewAgentId) return null;
 
   return createPortal(
     <div className='chatbot-header-cta-cont'>
       {/* go to jotform button */}
+      {step !== STEPS.CONVERSATIONS && (
       <Button
         variant='ghost'
         colorStyle='secondary'
@@ -78,6 +79,7 @@ const Header = ({ publishAgent, unpublishAgent }) => {
       >
         {t(ALL_TEXTS.GO_TO_JOTFORM)}
       </Button>
+      )}
       {/* preview button */}
       <div className='mobile-cont'>
         <Button

@@ -1,9 +1,8 @@
 import { generatePromiseActionType } from '../actionTypes';
-import { GET_PLATFORM_AGENT, USE_PLATFORM_AGENT } from './commonActions';
+import { ADD_MATERIAL, GET_PLATFORM_AGENT, USE_PLATFORM_AGENT } from './commonActions';
 
 // Internal action types (only used within this slice)
 const FETCH_MATERIALS = generatePromiseActionType('FETCH_MATERIALS');
-const ADD_MATERIAL = generatePromiseActionType('ADD_MATERIAL');
 const UPDATE_MATERIAL = generatePromiseActionType('UPDATE_MATERIAL');
 const DELETE_MATERIAL = generatePromiseActionType('DELETE_MATERIAL');
 const BULK_DELETE_MATERIAL = generatePromiseActionType('BULK_DELETE_MATERIAL');

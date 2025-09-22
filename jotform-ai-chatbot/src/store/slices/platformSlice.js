@@ -54,6 +54,7 @@ export const platformReducer = (state, action) => {
       platformSettingsSingleton.PROVIDER_API_URL = data.PROVIDER_API_URL;
       platformSettingsSingleton.PROVIDER_URL = data.PROVIDER_URL;
       platformSettingsSingleton.PLATFORM = data.PLATFORM;
+      platformSettingsSingleton.PLATFORM_URL = data.PLATFORM_URL;
       platformSettingsSingleton.PLATFORM_DOMAIN = data.PLATFORM_DOMAIN;
       platformSettingsSingleton.PLATFORM_PAGES = data.PLATFORM_PAGES;
       platformSettingsSingleton.PLATFORM_CHATBOT_PAGES = data.PLATFORM_CHATBOT_PAGES;

@@ -1,18 +1,17 @@
 import { generatePromiseActionType } from '../actionTypes';
-import { LOGOUT_FROM_JOTFORM } from './commonActions';
+import { ADD_MATERIAL, FETCH_USER, LOGOUT_FROM_JOTFORM } from './commonActions';
 
 // Internal action types (only used within this slice)
 const SET_USER = 'SET_USER';
-const FETCH_USER = generatePromiseActionType('FETCH_USER');
-
-// Shared action types (exported for use by other slices)
-export { FETCH_USER };
+const FETCH_LIMIT_WARNINGS = generatePromiseActionType('FETCH_LIMIT_WARNINGS');
 
 // Initial state for user domain
 export const userInitialState = {
   user: null,
   refetchUser: false,
-  showNetworkError: false
+  showNetworkError: false,
+  limitWarnings: {},
+  refetchLimitWarnings: false
 };
 
 // User slice reducer
@@ -29,7 +28,6 @@ export const userReducer = (state, action) => {
       return { ...state, user };
 
     case FETCH_USER.ERROR:
-      // Handle EU redirection and error states
       let errorState = {};
       const errorResult = action.payload.result;
       const errorData = errorResult?.data;
@@ -44,8 +42,26 @@ export const userReducer = (state, action) => {
     case LOGOUT_FROM_JOTFORM.SUCCESS:
       return {
         ...state,
-        user: null
+        ...userInitialState
       };
+
+    case FETCH_LIMIT_WARNINGS.SUCCESS: {
+      return {
+        ...state,
+        limitWarnings: action.payload.result
+      };
+    }
+
+    case ADD_MATERIAL.REQUEST: {
+      return {
+        ...state,
+        refetchLimitWarnings: !state.refetchLimitWarnings
+      };
+    }
+
+    case FETCH_LIMIT_WARNINGS.REQUEST:
+    case FETCH_LIMIT_WARNINGS.ERROR:
+      return state;
 
     default:
       return state;
@@ -71,5 +87,15 @@ export const userActionCreators = {
   fetchUserError: result => ({
     type: FETCH_USER.ERROR,
     payload: { result }
+  }),
+  fetchLimitWarningsRequest: () => ({
+    type: FETCH_LIMIT_WARNINGS.REQUEST
+  }),
+  fetchLimitWarningsSuccess: result => ({
+    type: FETCH_LIMIT_WARNINGS.SUCCESS,
+    payload: { result }
+  }),
+  fetchLimitWarningsError: () => ({
+    type: FETCH_LIMIT_WARNINGS.ERROR
   })
 };

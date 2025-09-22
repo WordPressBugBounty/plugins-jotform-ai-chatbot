@@ -4,7 +4,7 @@ Contributors: Jotform
 Tags: AI, chatbot, chatGPT, helpdesk, live chat
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 3.3.4
+Stable tag: 3.3.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,15 +15,15 @@ Jotform AI Chatbot, the best **AI Chatbot for WordPress** that automates support
 
 🟪 Jotform AI Chatbot allows businesses to engage visitors, guide them through forms, and streamline communication effortlessly. By providing seamless, real-time assistance, it helps convert passive visitors into active users.
 
-[youtube https://www.youtube.com/watch?v=P2VfkT2NKsQ&ab_channel=JotformAIChatbotPlugin]
+[youtube https://www.youtube.com/watch?v=WUFl9IVWqNg&ab_channel=JotformAIChatbotPlugin]
 
 = 💬 What does the Jotform AI Chatbot do? =
 The Jotform AI Chatbot plugin allows you to **easily create and train custom chatbots** to **handle queries, guide users, and share information**. It offers **seamless publish** on any WordPress site without coding and enhances user engagement through **interactive conversations**. You can **customize** chatbot personas, tones, and styles to align with your brand identity. With **WooCommerce integration**, the plugin supports online stores with product Q&A, order tracking, and cart recovery.
 
 = 🎥 Product demo videos: =
 ▶️ [How to Use Jotform AI Chatbot on WordPress](https://link.jotform.com/kNjtHqbtiF)
-▶️ [How to Set Up Your Chatbot WordPress Plugin in 5 Minutes](https://link.jotform.com/PY5VHtTERv)
-▶️ [How to Use Jotform AI Chatbot on WordPress](https://link.jotform.com/eT5aNfLnKK)
+▶️ [How to Set Up Your Chatbot WordPress Plugin in 5 Minutes](https://link.jotform.com/XZ3hoL4IRx)
+▶️ [How to Install Jotform AI Chatbot WordPress Plugin](https://link.jotform.com/wEhyKfnbDS)
 
 = 🚀 Why use Jotform AI Chatbot on your WordPress website? =
 💬 **Instant responses**: Provide quick and accurate answers to FAQs, ensuring users receive the necessary information immediately. 
@@ -140,7 +140,7 @@ The chatbot adapts to specific business needs, ensuring value across diverse app
 Yes! The plugin seamlessly integrates with all modern WordPress themes, ensuring a smooth and consistent user experience. Whether your site has a minimalist or feature-rich design, the chatbot adapts effortlessly. Plus, regular updates keep it compatible with the latest WordPress versions and themes.
 
 == Installation ==
-[youtube https://www.youtube.com/watch?v=z_lNKdsFw4U&ab_channel=JotformAIChatbotPlugin]
+[youtube https://www.youtube.com/watch?v=F4cLHjYAem0&ab_channel=JotformAIChatbotPlugin]
 
 = Jotform AI Chatbot WordPress Plugin installation from the directory: =
 1. **Log in** to your WordPress admin dashboard. 
@@ -169,6 +169,13 @@ See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org
 5. How It Works
 
 == Changelog ==
+= 3.3.6 (2025-09-22) =
+* Update: Setup and installation videos updated
+
+= 3.3.5 (2025-09-22) =
+* Update: Minor UI improvements
+* Update: readme.txt file updated
+
 = 3.3.4 (2025-09-18) =
 * Update: readme.txt file updated
 

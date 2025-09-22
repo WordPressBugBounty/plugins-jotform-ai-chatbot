@@ -5,6 +5,7 @@ class PlatformSingleton {
     this.PROVIDER_URL = '';
     this.PROVIDER_CHATBOT_EMBED_SRC = '';
     this.PLATFORM = '';
+    this.PLATFORM_URL = '';
     this.PLATFORM_API_URL = '';
     this.PLATFORM_DOMAIN = '';
     this.PLATFORM_PAGES = [];

@@ -24,7 +24,7 @@ const Woocommerce = () => {
   const {
     previewAgentId,
     platformSettings: {
-      PROVIDER_API_KEY, PLATFORM_DOMAIN,
+      PROVIDER_API_KEY, PLATFORM_URL,
       PLATFORM_WOOCOMMERCE_AVAILABLE,
       PLATFORM_PERMALINK_STRUCTURE
     },
@@ -120,7 +120,7 @@ const Woocommerce = () => {
           {!isConnected && (
             <StoreConnection
               previewAgentId={previewAgentId}
-              platformDomain={PLATFORM_DOMAIN}
+              platformUrl={PLATFORM_URL}
               isConnectLoading={isConnectLoading}
               invalidCredentialsError={invalidCredentialsError}
               permalinkStructure={PLATFORM_PERMALINK_STRUCTURE}

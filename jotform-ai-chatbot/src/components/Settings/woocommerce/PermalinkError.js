@@ -5,7 +5,7 @@ import { ALL_TEXTS } from '../../../constants';
 import { translationRenderer } from '../../../utils';
 import { IconExclamationTriangle } from '../../UI/Icon';
 
-const PermalinkError = ({ platformDomain }) => (
+const PermalinkError = ({ platformUrl }) => (
   <div className='jfpContent-wrapper--settings-options-wrapper-info-box jfpError'>
     <div className='jfpContent-wrapper--settings-options-wrapper-info-box-icon'>
       <IconExclamationTriangle />
@@ -15,14 +15,14 @@ const PermalinkError = ({ platformDomain }) => (
         renderer1: str => (
           <strong>{str}</strong>),
         renderer2: str => (
-          <a className='jfpContent-wrapper--settings-options-wrapper-info-box-link' href={`${platformDomain}/wp-admin/options-permalink.php`} target='_blank' rel='noreferrer'>{str}</a>)
+          <a className='jfpContent-wrapper--settings-options-wrapper-info-box-link' href={`${platformUrl}/wp-admin/options-permalink.php`} target='_blank' rel='noreferrer'>{str}</a>)
       })}
     </div>
   </div>
 );
 
 PermalinkError.propTypes = {
-  platformDomain: string.isRequired
+  platformUrl: string.isRequired
 };
 
 export default PermalinkError;

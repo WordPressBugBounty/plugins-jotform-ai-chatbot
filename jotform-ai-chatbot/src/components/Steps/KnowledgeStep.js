@@ -9,9 +9,7 @@ import { toCamelCase } from '../../utils';
 import { KnowledgeBase } from '../KnowledgeBase';
 
 const KnowledgeStep = () => {
-  const {
-    state, asyncDispatch
-  } = useWizard();
+  const { state, asyncDispatch } = useWizard();
 
   const {
     step,

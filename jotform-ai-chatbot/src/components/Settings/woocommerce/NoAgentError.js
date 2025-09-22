@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { ALL_TEXTS, STEPS } from '../../../constants';
+import { ALL_TEXTS } from '../../../constants';
 import { useWizard } from '../../../hooks';
-import { ACTION_CREATORS } from '../../../store';
 import { translationRenderer } from '../../../utils';
 
 const NoAgentError = () => {
-  const { dispatch } = useWizard();
+  const { state } = useWizard();
+  const { platformSettings: { PLATFORM_URL } } = state;
 
   const handleClick = () => {
-    dispatch(ACTION_CREATORS.setStep(STEPS.USECASE_SELECTION));
+    window.location.href = `${PLATFORM_URL}/wp-admin/admin.php?page=jotform_ai_chatbot`;
   };
 
   return (

@@ -21,7 +21,7 @@ const LimitDialog = ({
     saveInstallment('goToPricing');
     await awaitFor(1000);
     // eslint-disable-next-line max-len
-    window.open(`${providerUrl}/ai/chatbot/wordpress/?utm_source=limitDialog&utm_content=${utmContent}&utm_campaign=aiAgents-ADMIN&utm_medium=dialog&utm_term=go-to-pricing#pricing`, '_blank');
+    window.open(`${providerUrl}/ai/wordpress-agent/pricing/?utm_source=limitDialog&utm_content=${utmContent}&utm_campaign=aiAgents&utm_medium=dialog&utm_term=go-to-pricing`, '_blank');
   };
 
   return (

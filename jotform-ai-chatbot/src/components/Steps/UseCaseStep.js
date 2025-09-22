@@ -36,15 +36,10 @@ const UseCaseStep = () => {
     }
   } = state;
 
-  const [activeButton, setActiveButton] = useState(null);
-  const [useCaseText, setUseCaseText] = useState('');
   const [tab, setTab] = useState('create');
   const [selectedAgent, setSelectedAgent] = useState('');
-
-  useEffect(() => {
-    if (!useCaseText) return;
-    dispatch(ACTION_CREATORS.setPrompt(useCaseText));
-  }, [useCaseText]);
+  const appendLockRef = useRef(0);
+  const APPEND_COOLDOWN_MS = 500;
 
   useEffect(() => {
     dispatch(ACTION_CREATORS.resetAvatars());
@@ -54,10 +49,6 @@ const UseCaseStep = () => {
   const isCreateButtonDisabled = (tab === 'create' && isEmpty(prompt)) || (tab === 'select' && isEmpty(selectedAgent));
 
   const handlePromptChange = value => {
-    if (value === '') {
-      setActiveButton(null);
-      setUseCaseText('');
-    }
     dispatch(ACTION_CREATORS.setPrompt(value));
   };
 
@@ -132,6 +123,19 @@ const UseCaseStep = () => {
     return `${count} ${conversationText}. Last conversation on ${lastConversationDate}`;
   };
 
+  const handlePromptButtonClick = data => {
+    const now = Date.now();
+    if (now - appendLockRef.current < APPEND_COOLDOWN_MS) return;
+    appendLockRef.current = now;
+
+    const promptTrimmed = (prompt ?? '').trim();
+    const newText = data?.text.trim();
+
+    const finalPrompt = promptTrimmed ? `${promptTrimmed}\n\n${newText}` : newText;
+    dispatch(ACTION_CREATORS.setPrompt(finalPrompt));
+    saveInstallment('promptSuggestionButton');
+  };
+
   return (
     <>
       <div className='jfpContent-wrapper--title'>
@@ -189,15 +193,11 @@ const UseCaseStep = () => {
             <div className='jfpContent-wrapper--buttons'>
               {PROMPTS.map(data => (
                 <Button
-                  colorStyle={activeButton === data.buttonText ? 'primary' : 'secondary'}
                   rounded
-                  variant={activeButton === data.buttonText ? 'outline' : 'filled'}
                   size='small'
-                  onClick={() => {
-                    setActiveButton(data.buttonText);
-                    setUseCaseText(data.text);
-                    saveInstallment('promptSuggestionButton');
-                  }}
+                  colorStyle='secondary'
+                  variant='filled'
+                  onClick={() => handlePromptButtonClick(data)}
                 >
                   {t(data.buttonText)}
                 </Button>

@@ -556,6 +556,7 @@ class JAIC_Core {
             "PLATFORM_CHATBOT_PUBLISHED"     => $isAgentPublished,
             "PLATFORM_DEVICE"                => $this->getDevice(),
             "PLATFORM_KNOWLEDGE_BASE"        => $this->getKnowledgeBase(),
+            "PLATFORM_URL"                   => $this->getPlatformURL(),
             "PLATFORM_API_URL"               => $this->getPlatformAPIURL(),
             "PLATFORM_DOMAIN"                => $this->getDomain(),
             "PLATFORM_PAGE_CONTENTS"         => $this->getPageContents(),
@@ -745,6 +746,15 @@ class JAIC_Core {
         // Update user region settings
         $options["region"] = "us";
         update_option(self::$pluginOptionKey, wp_json_encode($options));
+    }
+
+    /**
+     * Returns the appropriate Platform URL based on the current domain.
+     *
+     * @return string The Platform URL.
+     */
+    public function getPlatformURL(): string {
+        return get_site_url();
     }
 
     /**
