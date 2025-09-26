@@ -1130,6 +1130,11 @@ class JAIC_Core {
             wp_cache_clear_cache();
         }
 
+        if (class_exists('NitroPack\\SDK\\NitroPack')) {
+            $sdk = new \NitroPack\SDK\NitroPack();
+            $sdk->cache()->purge();
+        }
+
         if (function_exists('w3tc_flush_all')) {
             w3tc_flush_all();
         }
