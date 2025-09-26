@@ -1122,49 +1122,105 @@ class JAIC_Core {
      * Handles to clear all WP caches
      */
     public function clearWPCaches() {
-        if (function_exists('wp_cache_flush')) {
-            wp_cache_flush();
-        }
+        try {
+            if (function_exists('wp_cache_flush')) {
+                wp_cache_flush();
+            }
 
-        if (function_exists('wp_cache_clear_cache')) {
-            wp_cache_clear_cache();
-        }
+            if (function_exists('wp_cache_clear_cache')) {
+                wp_cache_clear_cache();
+            }
 
-        if (class_exists('NitroPack\\SDK\\NitroPack')) {
-            $sdk = new \NitroPack\SDK\NitroPack();
-            $sdk->cache()->purge();
-        }
+            if (function_exists('wpengine_flush_cache')) {
+                wpengine_flush_cache();
+            }
 
-        if (function_exists('w3tc_flush_all')) {
-            w3tc_flush_all();
-        }
+            if (class_exists('WP_Optimize')) {
+                WP_Optimize::clear_cache();
+            }
 
-        if (class_exists('\LiteSpeed\Purge')) {
-            \LiteSpeed\Purge::purge_all();
-        }
+            if (function_exists('flying_press_clear_cache')) {
+                flying_press_clear_cache();
+            }
 
-        if (function_exists('sg_cachepress_purge_cache')) {
-            sg_cachepress_purge_cache();
-        }
+            if (class_exists('NitroPack\\SDK\\NitroPack')) {
+                $sdk = new \NitroPack\SDK\NitroPack();
+                $sdk->cache()->purge();
+            }
 
-        if (function_exists('rocket_clean_domain')) {
-            rocket_clean_domain();
-        }
+            if (class_exists('W3_Plugin_TotalCacheAdmin') && method_exists('W3_Plugin_TotalCacheAdmin', 'flush_all')) {
+                W3_Plugin_TotalCacheAdmin::flush_all();
+            }
 
-        if (class_exists('autoptimizeCache')) {
-            autoptimizeCache::clearall();
-        }
+            if (class_exists('LiteSpeed_Cache_API')) {
+                LiteSpeed_Cache_API::purge_all();
+            }
 
-        if (function_exists('wphb_clear_page_cache')) {
-            wphb_clear_page_cache();
-        }
+            if (function_exists('sg_cachepress_purge_cache')) {
+                sg_cachepress_purge_cache();
+            }
 
-        if (function_exists('breeze_clear_cache')) {
-            breeze_clear_cache();
-        }
+            if (function_exists('rocket_clean_domain')) {
+                rocket_clean_domain();
+            }
 
-        if (function_exists('flush_rewrite_rules')) {
-            flush_rewrite_rules();
+            if (class_exists('autoptimizeCache')) {
+                autoptimizeCache::clearall();
+            }
+
+            if (function_exists('wphb_clear_page_cache')) {
+                wphb_clear_page_cache();
+            }
+
+            if (function_exists('breeze_clear_cache')) {
+                breeze_clear_cache();
+            }
+
+            if (class_exists('FastVelocityMinifyCache')) {
+                FastVelocityMinifyCache::clear();
+            }
+
+            if (function_exists('kinsta_flush_cache')) {
+                kinsta_flush_cache();
+            }
+
+            if (class_exists('Docket_Cache')) {
+                Docket_Cache::flush_all();
+            }
+
+            if (class_exists('SpeedyCache')) {
+                SpeedyCache::clear_cache();
+            }
+
+            if (class_exists('Cloudflare\Plugin')) {
+                \Cloudflare\Plugin::purge_cache();
+            }
+
+            if (class_exists('Swift_Performance')) {
+                $swift = new Swift_Performance();
+                $swift->cache->clear_all();
+            }
+
+            if (function_exists('comet_cache_flush')) {
+                comet_cache_flush();
+            }
+
+            if (function_exists('hyper_cache_clear_cache')) {
+                hyper_cache_clear_cache();
+            }
+
+            if (class_exists('WpFastestCache')) {
+                WpFastestCache::deleteCache();
+            }
+
+            if (function_exists('super_page_cache_clear_cache')) {
+                super_page_cache_clear_cache();
+            }
+
+            if (function_exists('flush_rewrite_rules')) {
+                flush_rewrite_rules();
+            }
+        } catch (\Exception $e) {
         }
     }
 
