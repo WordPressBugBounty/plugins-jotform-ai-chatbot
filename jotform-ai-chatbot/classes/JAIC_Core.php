@@ -498,11 +498,7 @@ class JAIC_Core {
         JAIC_Request::responseJSON(
             200,
             [
-                "message" => self::$pluginName . " successfully updated!",
-                "data" => [
-                    "PROVIDER_URL"      => $this->getSiteURL(),
-                    "PROVIDER_API_URL"  => $this->getSiteAPIURL()
-                ]
+                "message" => self::$pluginName . " successfully updated!"
             ]
         );
     }
@@ -547,7 +543,9 @@ class JAIC_Core {
 
         $options = get_option(self::$pluginOptionKey);
         $options = !empty($options) ? json_decode($options, true) : [];
+
         $isAgentPublished = !empty($options["embed"]);
+        $enterpriseDomain = $this->getEnterpriseDomain();
 
         $settings = [
             "PLATFORM"                       => "wordpress",
@@ -567,6 +565,7 @@ class JAIC_Core {
             "PROVIDER_API_KEY"               => $this->getAPIKey(),
             "PROVIDER_URL"                   => $this->getSiteURL(),
             "PROVIDER_API_URL"               => $this->getSiteAPIURL(),
+            "PROVIDER_ENV"                   => !empty($enterpriseDomain) ? "ENTERPRISE" : "REGULAR"
         ];
 
         JAIC_Request::responseJSON(

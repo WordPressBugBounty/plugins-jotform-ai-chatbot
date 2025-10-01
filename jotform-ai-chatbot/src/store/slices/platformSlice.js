@@ -153,15 +153,7 @@ export const platformReducer = (state, action) => {
       return state;
 
     case SAVE_PROVIDER_API_KEY.SUCCESS:
-      const { result: { data: { PROVIDER_URL, PROVIDER_API_URL } = {} } = {} } = action.payload;
-      platformSettingsSingleton.PROVIDER_URL = PROVIDER_URL;
-      platformSettingsSingleton.PROVIDER_API_URL = PROVIDER_API_URL;
-      reinitializeRequestLayer();
-
-      return {
-        ...state,
-        platformSettings: { ...state.platformSettings, PROVIDER_API_URL, PROVIDER_URL }
-      };
+      return state;
 
     case SAVE_PROVIDER_API_KEY.ERROR:
       return { ...state, errorMessage: action.payload.result?.message };

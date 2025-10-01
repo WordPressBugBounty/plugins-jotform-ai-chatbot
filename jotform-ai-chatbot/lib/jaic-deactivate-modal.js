@@ -10,9 +10,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const cancelButton = document.querySelector('.jaic.secondary');
   const hiddenIframe = document.getElementById('jaic_hidden_iframe');
   const allRadioInputs = document.querySelectorAll('input[name="q4_feedback"]');
-  const otherInput = document.getElementById('jaic_other');
-  const otherTextInput = document.getElementById('jaic_other_text');
-  const otherTextWrapper = document.getElementById('jaic_other_text_wrapper');
+  const detailWrapper = document.getElementById('jaic_detail_text_wrapper');
+  const detailInput = document.getElementById('jaic_detail_text');
+
+  const placeholders = {
+    "jaic_not_working": "Please describe where it failed",
+    "jaic_missing_features": "Which features are missing for you?",
+    "jaic_better_alternative": "Which alternative did you switch to?",
+    "jaic_other": "Tell us more…"
+  };
+
+  const triggerReasons = ["not_working", "missing_features", "better_alternative", "other"];
+
   let deactivateUrl = '';
 
   document.addEventListener('click', (e) => {
@@ -31,62 +40,64 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function hideDetailInput() {
+    detailWrapper.style.display = 'none';
+    detailInput.value = '';
+    detailInput.placeholder = '';
+    detailInput.required = false;
+    detailInput.setAttribute('aria-required', 'false');
+  }
+
   allRadioInputs.forEach(radio => {
     radio.addEventListener('change', () => {
-      otherTextWrapper.style.display = otherInput.checked ? 'flex' : 'none';
+      hideDetailInput();
+
+      const reasonId = radio.id.replace("jaic_", "");
+      if (triggerReasons.includes(reasonId)) {
+        detailWrapper.style.display = 'flex';
+        detailInput.placeholder = placeholders[radio.id];
+        const optionElement = radio.closest('.jaic_option');
+        optionElement.insertAdjacentElement('afterend', detailWrapper);
+
+        const ph = placeholders[radio.id] || '';
+        detailInput.placeholder = ph;
+        detailWrapper.style.display = 'flex';
+
+        const shouldRequire = (reasonId === 'other');
+        detailInput.required = shouldRequire;
+        detailInput.setAttribute('aria-required', shouldRequire ? 'true' : 'false');
+      }
+
+      updateRequirementError();
     });
   });
 
-  otherInput.addEventListener('change', () => {
-    if (otherInput.checked) {
-      otherTextWrapper.style.display = 'flex';
-    } else {
-      otherTextWrapper.style.display = 'none';
-    }
-  });
-
-  otherTextInput.addEventListener('input', () => {
-    if (otherTextInput.value.trim() === '') {
-      submitButton.classList.add('disabled');
-    } else {
-      submitButton.classList.remove('disabled');
-    }
-  });
-
   function updateRequirementError() {
-    const isOtherSelected = otherInput?.checked;
-    const isOtherTextFilled = otherTextInput.value.trim() !== '';
+    const selectedRadio = Array.from(allRadioInputs).find(i => i.checked);
+    const isRadioSelected = !!selectedRadio;
+    const selectedReason = selectedRadio ? selectedRadio.id.replace('jaic_', '') : null;
+    const requiresDetailForOther = selectedReason === 'other';
+    const detailFilled = detailInput.value.trim() !== '';
 
-    if (isOtherSelected && !isOtherTextFilled) {
+    if (!isRadioSelected) {
       submitButton.classList.add('disabled');
       return;
     }
 
-    const isAnyRadioSelected = Array.from(allRadioInputs)
-      .filter(input => input !== otherInput)
-      .some(input => input.checked);
-
-    if (!isAnyRadioSelected && !isOtherSelected) {
+    if (requiresDetailForOther && !detailFilled) {
       submitButton.classList.add('disabled');
-    } else {
-      submitButton.classList.remove('disabled');
+      return;
     }
+
+    submitButton.classList.remove('disabled');
   }
 
-  document.querySelectorAll('input[name="q4_feedback"]').forEach(input => {
-    input.addEventListener('change', updateRequirementError);
-  });
+  detailInput.addEventListener('input', updateRequirementError);
 
   form.addEventListener('submit', (e) => {
     updateRequirementError();
 
-    const isRadioSelected = Array.from(allRadioInputs).some(input => input.checked);
-
-    if (otherInput.checked && otherTextInput.value.trim()) {
-      submitButton.classList.remove('disabled');
-    }
-
-    if (!isRadioSelected) {
+    if (submitButton.classList.contains('disabled')) {
       e.preventDefault();
       return;
     }
@@ -98,12 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
     submitButton.querySelector('.jaic_loader').style.opacity = '1';
 
     setTimeout(() => {
-      if (hiddenIframe) {
-        if (form) {
-          form.reset();
-        }
-        window.location.href = deactivateUrl;
-      }
+      form.reset();
+      hideDetailInput();
+      window.location.href = deactivateUrl;
     }, 1500);
   });
 
@@ -115,4 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelector('.jaic_modal').style.display = 'none';
     });
   }
+
+  hideDetailInput();
+  updateRequirementError();
 });

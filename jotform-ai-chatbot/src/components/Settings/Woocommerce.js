@@ -14,6 +14,7 @@ import Loading from './Loading';
 import Abilities from './woocommerce/Abilities';
 import ActivationInfoBox from './woocommerce/ActivationInfoBox';
 import ConnectedStore from './woocommerce/ConnectedStore';
+import LocalhostError from './woocommerce/LocalhostError';
 import StoreConnection from './woocommerce/StoreConnection';
 
 const Woocommerce = () => {
@@ -26,13 +27,15 @@ const Woocommerce = () => {
     platformSettings: {
       PROVIDER_API_KEY, PLATFORM_URL,
       PLATFORM_WOOCOMMERCE_AVAILABLE,
-      PLATFORM_PERMALINK_STRUCTURE
+      PLATFORM_PERMALINK_STRUCTURE,
+      PLATFORM_DOMAIN
     },
     woocommerce: {
       consumerKey, abilities, isConnected, isSettingsLoading, isConnectLoading, invalidCredentialsError
     }
   } = state;
 
+  const isLocalhost = PLATFORM_DOMAIN === 'localhost';
   const integrationOptions = Object.keys(abilities).filter(abilityKey => abilities[abilityKey] === true);
 
   useEffect(() => {
@@ -113,7 +116,8 @@ const Woocommerce = () => {
       <h2 className='jfpContent-wrapper--settings-options-wrapper-title'>
         {t(ALL_TEXTS.WOOCOMMERCE_STORE_SETTINGS)}
       </h2>
-      {!PLATFORM_WOOCOMMERCE_AVAILABLE && <ActivationInfoBox />}
+      {isLocalhost && <LocalhostError />}
+      {!isLocalhost && !PLATFORM_WOOCOMMERCE_AVAILABLE && <ActivationInfoBox />}
       {PLATFORM_WOOCOMMERCE_AVAILABLE && isSettingsLoading && <Loading />}
       {PLATFORM_WOOCOMMERCE_AVAILABLE && !isSettingsLoading && (
         <>

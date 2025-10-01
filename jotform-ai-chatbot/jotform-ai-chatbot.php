@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.3.8
+* Version: 3.3.9
 * Author URI: https://www.jotform.com/
 */
 
@@ -226,8 +226,11 @@ function jaic_deactivate_modal() {
         'Version' => 'Version'
     ]);
     $current_version = $plugin_data['Version'] ?? '-';
+    $current_user = wp_get_current_user();
+    $current_user_email = esc_attr($current_user->user_email ?? '');
     ?>
     <div class="jaic_modal" style="display:none;">
+    <div class="jaic_modal_inner">
         <div class="jaic_modal_content">
             <iframe name="jaic_hidden_iframe" style="display:none;" id="jaic_hidden_iframe"></iframe>
             <h2 class="jaic_title">😞 We’re sorry to see you go</h2>
@@ -235,18 +238,34 @@ function jaic_deactivate_modal() {
             <form id="jaic_deactivate_form" action="<?php echo $formURL; ?>" method="post" target="jaic_hidden_iframe">
                 <input type="hidden" name="q3_domain" value="<?php echo wp_parse_url(home_url(), PHP_URL_HOST); ?>">
                 <input type="hidden" name="q7_version" value="<?php echo $current_version; ?>">
+                <label for="jaic_email" class="jaic_input_label">
+                    Email
+                    <span>(optional)</span>
+                </label>
+                <p class="jaic_input_subtext">
+                    Please provide your email address so we may contact you if needed.
+                </p>
+                <div id='jaic_email_wrapper'>
+                    <input type='text' id='jaic_email' class='jaic-text-input' name='q10_email' placeholder='Email' value="<?php echo $current_user_email; ?>" />
+                </div>
+                <h3 class="jaic_subtitle">Why are you leaving?</h3>
                 <?php
                 $reasons = [
+                    "only_testing" => "I was only testing the plugin",
                     "no_longer_needed" => "I no longer need the plugin",
+                    "temporarily_deactivated" => "I temporarily deactivated it",
                     "not_working" => "I couldn’t get it to work",
-                    "better_alternative" => "I found a better alternative",
-                    "missing_features" => "It doesn’t have the features I need",
+                    "published_not_visible" => "I published it, but it didn’t appear on my site",
+                    "sign_up_issue" => "I couldn’t sign up / log in",
+                    "woocommerce_issue" => "I have an issue with WooCommerce integration",
                     "performance" => "It affected my site’s performance",
+                    "missing_features" => "It doesn’t have the features I need",
+                    "better_alternative" => "I found a better alternative",
                     "other" => "Other"
                 ];
                 foreach ($reasons as $value => $label) {
                     $escaped_label = htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
-                    echo "<div class='jaic_option'>
+                    echo "<div class='jaic_option' data-id='$value'>
                             <div class='checkmark'>
                                 <input type='radio' name='q4_feedback' value='$escaped_label' id='jaic_$value'>
                                 <div class='checkmark-inner'></div>
@@ -255,9 +274,11 @@ function jaic_deactivate_modal() {
                         </div>";
                 }
                 ?>
-                <div id="jaic_other_text_wrapper" style="display:none;">
-                    <input type="text" id="jaic_other_text" class="other-text-input" name="q5_detail" placeholder="Please specify..." />
+
+                <div id="jaic_detail_text_wrapper" style="display:none;">
+                    <input type="text" name="q5_detail" id="jaic_detail_text" class="jaic-text-input" placeholder="" aria-required="false">
                 </div>
+
                 <div class="jaic_buttons">
                     <button type="button" class="jaic secondary">Continue to use</button>
                     <button type="submit" class="jaic primary disabled">
@@ -267,6 +288,7 @@ function jaic_deactivate_modal() {
                 </div>
             </form>
         </div>
+    </div>
     </div>
     <?php
 }
@@ -502,7 +524,7 @@ function jotform_ai_chatbot_register_plugin() {
 
         // Initialize the asset version
         global $jaic_assetVersion;
-        $jaic_assetVersion = "3.3.8";
+        $jaic_assetVersion = "3.3.9";
     } catch (\Exception $e) {
     }
 }

@@ -183,5 +183,6 @@ export const ALL_TEXTS = {
   UNAUTHORIZED_API_KEY_TITLE: 'Unauthorized Access',
   ALMOST_FULL_LIMIT_WARNING_TEXT: 'You’re close to your [1[{limit}]] [2[limit]]. Upgrade to keep your agent active.',
   OVERLIMIT_LIMIT_WARNING_TEXT: 'You’ve reached your [1[{limit}]] [2[limit]]. Upgrade to keep your agent active.',
-  UPGRADE_NOW: 'Upgrade Now'
+  UPGRADE_NOW: 'Upgrade Now',
+  LOCALHOST_ERROR: 'WooCommerce features can’t be used on a [1[local server.]]'
 };

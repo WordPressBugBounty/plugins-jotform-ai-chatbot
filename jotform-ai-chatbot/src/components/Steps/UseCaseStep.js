@@ -32,7 +32,8 @@ const UseCaseStep = () => {
       PLATFORM_DOMAIN,
       PLATFORM_PAGE_CONTENTS,
       PLATFORM_KNOWLEDGE_BASE,
-      PROVIDER_API_KEY
+      PROVIDER_API_KEY,
+      PROVIDER_ENV
     }
   } = state;
 
@@ -40,6 +41,7 @@ const UseCaseStep = () => {
   const [selectedAgent, setSelectedAgent] = useState('');
   const appendLockRef = useRef(0);
   const APPEND_COOLDOWN_MS = 500;
+  const isEnterprise = PROVIDER_ENV === 'ENTERPRISE';
 
   useEffect(() => {
     dispatch(ACTION_CREATORS.resetAvatars());
@@ -184,11 +186,13 @@ const UseCaseStep = () => {
                 onChange={(e => handlePromptChange(e.target.value))}
                 value={prompt}
               />
+              {!isEnterprise && (
               <PromptSuggestion
                 ref={textareaRef}
                 inputValue={prompt}
                 onSelect={handleSelect}
               />
+              )}
             </div>
             <div className='jfpContent-wrapper--buttons'>
               {PROMPTS.map(data => (
