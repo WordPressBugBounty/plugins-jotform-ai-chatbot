@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
 
 import '../../styles/limit-warning.scss';
 
+import { saveInstallment } from '../../api';
 import AlertSvg from '../../assets/svg/alert-badge.svg';
 import WarningSvg from '../../assets/svg/warning-badge.svg';
 import { ALL_TEXTS } from '../../constants';
@@ -50,6 +51,12 @@ const LimitWarning = () => {
     });
     window.open(`${PROVIDER_URL}/ai/wordpress-agent/pricing?${utms.toString()}`, '_blank');
   };
+
+  useEffect(() => {
+    if (limitKey) {
+      saveInstallment(`seeLimitWarning_${limitKey}_${isOverLimit ? 'overlimit' : 'almostFull'}`);
+    }
+  }, [limitKey, isOverLimit]);
 
   if (isEmpty(limitWarning)) {
     return <></>;

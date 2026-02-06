@@ -23,7 +23,9 @@ export const agentInitialState = {
   agentToneOfVoice: '',
   persona: '',
   previewAgentId: null,
-  activeViewId: null
+  activeViewId: null,
+  refreshPreviewForAvatar: false,
+  isAgentPropertyLoading: false
 };
 
 // Agent slice reducer
@@ -75,12 +77,23 @@ export const agentReducer = (state, action) => {
         persona: agentProperties.persona
       };
 
+    case UPDATE_AGENT_PROPERTY.REQUEST:
+      return { ...state, isAgentPropertyLoading: true };
+
+    case UPDATE_AGENT_PROPERTY.SUCCESS:
+      return {
+        ...state,
+        refreshPreviewForAvatar: action.payload.additionalPayload?.isAvatar ? !state.refreshPreviewForAvatar : state.refreshPreviewForAvatar,
+        agentName: action.payload.additionalPayload?.isAvatar && action.payload.additionalPayload?.agentName ? action.payload.additionalPayload.agentName : state.agentName,
+        isAgentPropertyLoading: false
+      };
+
+    case UPDATE_AGENT_PROPERTY.ERROR:
+      return { ...state, isAgentPropertyLoading: false };
+
     case UPDATE_AGENT.REQUEST:
     case UPDATE_AGENT.SUCCESS:
     case UPDATE_AGENT.ERROR:
-    case UPDATE_AGENT_PROPERTY.REQUEST:
-    case UPDATE_AGENT_PROPERTY.SUCCESS:
-    case UPDATE_AGENT_PROPERTY.ERROR:
       // These don't modify state but are handled for completeness
       return state;
 
@@ -146,9 +159,9 @@ export const agentActionCreators = {
     type: UPDATE_AGENT_PROPERTY.REQUEST
   }),
 
-  updateAgentPropertySuccess: result => ({
+  updateAgentPropertySuccess: (result, additionalPayload) => ({
     type: UPDATE_AGENT_PROPERTY.SUCCESS,
-    payload: { result }
+    payload: { result, additionalPayload }
   }),
 
   updateAgentPropertyError: result => ({

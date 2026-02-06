@@ -26,7 +26,8 @@ export const uiInitialState = {
   isLimitDialogVisible: false,
   tryGetPlatformAgentOnce: false,
   errorMessage: '',
-  activeSettingsTab: SETTINGS_TABS.GENERAL
+  activeSettingsTab: SETTINGS_TABS.GENERAL,
+  showUnauthorizedUserError: false
 };
 
 // UI slice reducer
@@ -76,12 +77,18 @@ export const uiReducer = (state, action) => {
 
     case USE_PLATFORM_AGENT.ERROR:
     case GET_PLATFORM_AGENT.ERROR:
-      const { tryOnce = false } = action.payload;
+      const { tryOnce = false, result } = action.payload;
+
+      // for enterprise teams data user
+      // todo: ideally responseCode should be 401
+      const showUnauthorizedUserError = result?.data?.responseCode === 500 && result?.data?.content === 'Unauthorized Access';
+
       return {
         ...state,
         errorMessage: action.payload.result?.message,
         isUseAgentLoading: false,
-        tryGetPlatformAgentOnce: tryOnce
+        tryGetPlatformAgentOnce: tryOnce,
+        showUnauthorizedUserError
       };
 
     case FETCH_USER.ERROR:

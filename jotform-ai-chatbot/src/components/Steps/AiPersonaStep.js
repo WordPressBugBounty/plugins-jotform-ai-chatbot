@@ -10,7 +10,7 @@ import {
   ALL_TEXTS, CHATTINESS_LEVELS, CUSTOMIZATION_KEYS, GREETING_TEXT_REQ_DEBOUNCE_TIMEOUT,
   LANGUAGES, TONE_OF_VOICES, VERBAL_TOGGLE, VISIBILITY_LAYOUT, WRITING_DEBOUNCE_TIMEOUT
 } from '../../constants';
-import { useWizard } from '../../hooks';
+import { useHideGreetingTooltip, useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
 import { t, toCamelCase } from '../../utils';
 import Avatar from '../Avatar';
@@ -46,7 +46,6 @@ const AiPersonaStep = () => {
   const [agentNameState, setAgentNameState] = useState(agentName);
   const [agentRoleState, setAgentRoleState] = useState(agentRole);
   const [greetingMessageState, setGreetingMessageState] = useState(greetingMessage);
-  const [chattinessState, setChattinessState] = useState(agentChattiness);
 
   useEffect(() => {
     setAgentNameState(agentName);
@@ -55,6 +54,8 @@ const AiPersonaStep = () => {
   useEffect(() => {
     saveInstallment(`${toCamelCase(step)}Step`);
   }, []);
+
+  useHideGreetingTooltip(greetingBool);
 
   // agent name
   const updateAgentName = async value => {
@@ -110,18 +111,24 @@ const AiPersonaStep = () => {
       ACTION_CREATORS.updateAgentPropertySuccess,
       ACTION_CREATORS.updateAgentPropertyError
     );
-    if (prop === 'role') dispatch(ACTION_CREATORS.setAgentRole(value));
     if (prop === 'chattiness') dispatch(ACTION_CREATORS.setAgentChattiness(value));
     if (prop === 'language') dispatch(ACTION_CREATORS.setAgentLanguage(value));
     if (prop === 'tone') dispatch(ACTION_CREATORS.setAgentToneOfVoice(value));
   };
 
-  const debouncedUpdateAgentProp = useCallback(debounce((prop, value) => updateAgentProp(prop, value), WRITING_DEBOUNCE_TIMEOUT), []);
+  const updateAgentRole = async value => {
+    await updateAgentProp('role', value);
+    dispatch(ACTION_CREATORS.setAgentRole(value));
+  };
+
+  const debouncedUpdateAgentRole = useCallback(debounce(updateAgentRole, WRITING_DEBOUNCE_TIMEOUT), []);
+  const handleAgentRoleChange = value => {
+    setAgentRoleState(value);
+    debouncedUpdateAgentRole(value);
+  };
 
   const handleAgentPropChange = (prop, value) => {
-    if (prop === 'role') setAgentRoleState(value);
-    if (prop === 'chattiness') setChattinessState(value);
-    debouncedUpdateAgentProp(prop, value);
+    updateAgentProp(prop, value);
   };
 
   const roleOptions = ['Customer Service Agent', 'Human Resources Agent', 'Contact Sales Agent'];
@@ -129,6 +136,7 @@ const AiPersonaStep = () => {
   return (
     <>
       <div className='jfpContent-wrapper--ai-persona'>
+        <h2 className='sr-only'>{t(ALL_TEXTS.AI_PERSONA)}</h2>
         <Avatar />
         <hr className='jfpContent-wrapper--line line-2x' />
         {/* agent name */}
@@ -153,7 +161,7 @@ const AiPersonaStep = () => {
           <Input
             type='text'
             value={agentRoleState}
-            onChange={e => handleAgentPropChange('role', e.target.value)}
+            onChange={e => handleAgentRoleChange(e.target.value)}
           />
           <div className='role-options'>
             {roleOptions.map(option => (
@@ -164,7 +172,7 @@ const AiPersonaStep = () => {
                 title={option}
                 size='small'
                 onClick={() => {
-                  handleAgentPropChange('role', option);
+                  handleAgentRoleChange(option);
                 }}
               >
                 {option}
@@ -253,9 +261,9 @@ const AiPersonaStep = () => {
             type='range'
             min='1'
             max={CHATTINESS_LEVELS.length}
-            value={chattinessState}
+            value={agentChattiness}
             onChange={e => handleAgentPropChange('chattiness', e.target.value)}
-            style={{ '--value': `${indexToPercentage(chattinessState) || '0%'}` }}
+            style={{ '--value': `${indexToPercentage(agentChattiness) || '0%'}` }}
           />
           <div className='chattiness-slider--labels'>
             {CHATTINESS_LEVELS.map(level => (

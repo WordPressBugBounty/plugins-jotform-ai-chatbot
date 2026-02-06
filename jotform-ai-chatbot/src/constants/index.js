@@ -59,3 +59,8 @@ export {
   VISIBILITY_TOGGLE,
   DUMMY_AVAILABLE_PAGES
 } from './pageSelection';
+
+export const AVATAR_VIEW_MODE = {
+  LIST: 'list',
+  CUSTOM: 'custom'
+};

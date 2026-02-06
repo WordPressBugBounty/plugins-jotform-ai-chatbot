@@ -50,7 +50,7 @@ const StoreConnection = ({
       <div className='jfpContent-wrapper--settings-options-wrapper-input-wrapper'>
         <div className='jfpContent-wrapper--settings-options-wrapper-input'>
           <div className='jfpContent-wrapper--settings-options-wrapper-input-title'>
-            <h3>{t(ALL_TEXTS.CONSUMER_KEY)}</h3>
+            <h3 id='consumerKeyTitle'>{t(ALL_TEXTS.CONSUMER_KEY)}</h3>
             <p>{t(ALL_TEXTS.YOUR_WOO_COMMERCE_API_KEY)}</p>
           </div>
           {/* todo: add show/hide key */}
@@ -59,11 +59,12 @@ const StoreConnection = ({
             ref={consumerKeyRef}
             placeholder={t(ALL_TEXTS.KEY_PLACEHOLDER)}
             onChange={handleChange}
+            aria-labelledby='consumerKeyTitle'
           />
         </div>
         <div className='jfpContent-wrapper--settings-options-wrapper-input'>
           <div className='jfpContent-wrapper--settings-options-wrapper-input-title'>
-            <h3>{t(ALL_TEXTS.CONSUMER_SECRET)}</h3>
+            <h3 id='consumerSecretTitle'>{t(ALL_TEXTS.CONSUMER_SECRET)}</h3>
             <p>{t(ALL_TEXTS.YOUR_WOO_COMMERCE_API_SECRET)}</p>
           </div>
           {/* todo: add show/hide key */}
@@ -72,6 +73,7 @@ const StoreConnection = ({
             ref={consumerSecrefRef}
             placeholder={t(ALL_TEXTS.SECRET_PLACEHOLDER)}
             onChange={handleChange}
+            aria-labelledby='consumerSecretTitle'
           />
         </div>
       </div>

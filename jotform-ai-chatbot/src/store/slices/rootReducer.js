@@ -44,7 +44,8 @@ const reducers = {
       agentToneOfVoice: state.agentToneOfVoice,
       persona: state.persona,
       previewAgentId: state.previewAgentId,
-      activeViewId: state.activeViewId
+      activeViewId: state.activeViewId,
+      refreshPreviewForAvatar: state.refreshPreviewForAvatar
     })
   },
   avatar: {
@@ -107,7 +108,8 @@ const reducers = {
       isLimitDialogVisible: state.isLimitDialogVisible,
       tryGetPlatformAgentOnce: state.tryGetPlatformAgentOnce,
       errorMessage: state.errorMessage,
-      activeSettingsTab: state.activeSettingsTab
+      activeSettingsTab: state.activeSettingsTab,
+      showUnauthorizedUserError: state.showUnauthorizedUserError
     })
   },
   woocommerce: {

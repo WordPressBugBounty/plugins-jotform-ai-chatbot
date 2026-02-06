@@ -14,7 +14,7 @@ const MaterialDeleteModal = ({ isOpen, onDeleteClick, onCloseClick }) => (
     size='small'
   >
     <div className='jfModal--title'>
-      <div className='jfModal--title-icon jfModal--title-icon-error'>
+      <div className='jfModal--title-icon jfModal--title-icon-error' aria-hidden='true'>
         <IconTrashExclamationFilled />
       </div>
       <h3>

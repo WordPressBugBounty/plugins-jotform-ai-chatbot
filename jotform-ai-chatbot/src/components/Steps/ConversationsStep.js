@@ -127,7 +127,7 @@ const ConversationsStep = () => {
     <div className='jfpContent-wrapper--conversations'>
       <div className='jfpContent-wrapper--conversations-users'>
         <div className='jfpContent-wrapper--conversations-users-title'>
-          <h2 className='jfpContent-wrapper--conversations-users-title-content'>{t(ALL_TEXTS.CONVERSATIONS)}</h2>
+          <h2 className='jfpContent-wrapper--conversations-users-title-content' aria-hidden='true'>{t(ALL_TEXTS.CONVERSATIONS)}</h2>
           <span className='jfpContent-wrapper--conversations-users-title-counter'>Showing <span>{conversationItems.length}</span> of <span>{conversationCount}</span> conversation</span>
         </div>
         <Conversations

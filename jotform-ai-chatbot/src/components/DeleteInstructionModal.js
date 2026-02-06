@@ -1,10 +1,10 @@
 import React from 'react';
 import { bool, func } from 'prop-types';
 
-import IconTrashExclamationFilled from '../assets/svg/IconTrashExclamationFilled.svg';
 import { ALL_TEXTS } from '../constants';
 import { t } from '../utils';
 import Button from './UI/Button';
+import { IconTrashExclamationFilled } from './UI/Icon';
 import Modal from './UI/Modal';
 
 const DeleteInstructionModal = ({ isOpen, onDeleteClick, onCloseClick }) => (
@@ -15,7 +15,7 @@ const DeleteInstructionModal = ({ isOpen, onDeleteClick, onCloseClick }) => (
     size='small'
   >
     <div className='jfModal--title'>
-      <div className='jfModal--title-icon jfModal--title-icon-error'>
+      <div className='jfModal--title-icon jfModal--title-icon-error' aria-hidden='true'>
         <IconTrashExclamationFilled />
       </div>
       <h3>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { saveInstallment } from '../api';
-import WhatsNewImg from '../assets/images/whats-new-img.png';
+import WhatsNewImg from '../assets/images/whats-new-img-ca.png';
 import { ALL_TEXTS, WHATS_NEW_MODAL_LCST_FLAG } from '../constants';
 import { useLocalStorageModal } from '../hooks';
 import { t } from '../utils';
@@ -13,7 +13,7 @@ const WhatsNewModal = () => {
 
   useEffect(() => {
     if (isModalVisible) {
-      saveInstallment('whatsNewDialog_v3_0_0');
+      saveInstallment('whatsNewDialog_v3_6_0');
     }
   }, [isModalVisible]);
 
@@ -24,22 +24,24 @@ const WhatsNewModal = () => {
       ariaLabel={t(ALL_TEXTS.WHATS_NEW)}
       size='medium'
       className='jfModal--whats-new'
+      aria-labelledby='whatsNewTitle'
+      aria-describedby='whatsNewTescription'
+      role='dialog'
+      aria-modal='true'
     >
       <div className='jfModal--header'>
         <div className='jfModal--header-title'>
-          <h3>{t(ALL_TEXTS.WHATS_NEW)}</h3>
-          <p>{t(ALL_TEXTS.GET_THE_LATEST_CHANGES_AND_UPDATES)}</p>
+          <h3 id='whatsNewTitle'>{t(ALL_TEXTS.WHATS_NEW)}</h3>
+          <p id='whatsNewTescription'>{t(ALL_TEXTS.GET_THE_LATEST_CHANGES_AND_UPDATES)}</p>
         </div>
       </div>
       <div className='jfModal--body'>
         <img src={WhatsNewImg} className='jfModal--body-img' alt='Chatbot Whats New' />
-        <ul className='jfModal--body-list'>
-          <li><span>Conversations in Plugin –</span> view and manage user chats directly from your WordPress dashboard</li>
-          <li><span>Improved UI –</span> a cleaner look for easier navigation</li>
-          <li><span>Advanced Visibility –</span> control when and where your chatbot appears</li>
-          <li><span>More Control –</span> fine-tune limits, tone, and escalation rules</li>
-          <li><span>UX Improvements –</span> better flow, clearer errors, smoother interactions</li>
-        </ul>
+        <div className='jfModal--body-content' role='region' aria-labelledby='avatar-upload-title'>
+          <p id='avatar-upload-title'>You can now <strong>upload your own image and use it as your chatbot’s avatar.</strong></p>
+          <p>Make your chatbot truly yours by matching your brand, persona, or organization. <span>No more default avatars that don’t fit.</span></p>
+          <p><strong>Upload your image and customize your avatar in seconds.</strong></p>
+        </div>
       </div>
       <div className='jfModal--footer'>
         <Button

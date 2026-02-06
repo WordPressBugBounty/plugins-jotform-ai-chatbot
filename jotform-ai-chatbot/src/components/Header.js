@@ -3,8 +3,6 @@ import { func } from 'prop-types';
 import { createPortal } from 'react-dom';
 
 import { saveInstallment } from '../api';
-import IconArrowUpRight from '../assets/svg/IconArrowUpRight.svg';
-import IconEyeFilled from '../assets/svg/IconEyeFilled.svg';
 import { ALL_TEXTS, STEP_TO_BUILDER_PATH, STEPS } from '../constants';
 import { usePublishButton, useWizard } from '../hooks';
 import { STAGES } from '../hooks/usePublishButton';
@@ -12,6 +10,7 @@ import {
   awaitFor, platformSettings, t
 } from '../utils';
 import Button from './UI/Button';
+import { IconArrowUpRight, IconEyeFilled } from './UI/Icon';
 import UnpublishModal from './UnpublishModal';
 
 const Header = ({ publishAgent, unpublishAgent }) => {
@@ -31,10 +30,15 @@ const Header = ({ publishAgent, unpublishAgent }) => {
 
   const { buttonProps, startPublish, resetToUnpublished } = usePublishButton(isPublished ? STAGES.PUBLISHED : STAGES.UNPUBLISHED);
 
+  const goToJotformUrl = `${PROVIDER_URL}/agent/build/${previewAgentId}${STEP_TO_BUILDER_PATH[step]}`;
+
+  useEffect(() => {
+    const removeItems = document.querySelectorAll('.jotform-ai-chatbot-logo > *:not(.jf-logo):not(.jf-title)');
+    removeItems.forEach(el => el.remove());
+  }, []);
+
   const handleJotformLink = async () => {
     saveInstallment('goToJotformButton');
-    await awaitFor(1000);
-    window.open(`${PROVIDER_URL}/agent/build/${previewAgentId}${STEP_TO_BUILDER_PATH[step]}`, '_blank');
   };
 
   const handleLivePreviewClick = async () => {
@@ -67,18 +71,21 @@ const Header = ({ publishAgent, unpublishAgent }) => {
   if (!buttonWrappeRoot || !previewAgentId) return null;
 
   return createPortal(
-    <div className='chatbot-header-cta-cont'>
+    <div className='chatbot-header-cta-cont' role='toolbar' aria-label='Chatbot Actions'>
       {/* go to jotform button */}
       {step !== STEPS.CONVERSATIONS && (
-      <Button
-        variant='ghost'
-        colorStyle='secondary'
-        className='go-to-jotform-cta'
-        endIcon={<IconArrowUpRight />}
-        onClick={handleJotformLink}
-      >
-        {t(ALL_TEXTS.GO_TO_JOTFORM)}
-      </Button>
+        <Button
+          variant='ghost'
+          colorStyle='secondary'
+          className='go-to-jotform-cta'
+          endIcon={<IconArrowUpRight />}
+          onClick={handleJotformLink}
+          href={goToJotformUrl}
+          target='_blank'
+        >
+          {t(ALL_TEXTS.GO_TO_JOTFORM)}
+          <span className='sr-only'>(opens in a new tab)</span>
+        </Button>
       )}
       {/* preview button */}
       <div className='mobile-cont'>
@@ -90,6 +97,7 @@ const Header = ({ publishAgent, unpublishAgent }) => {
           onClick={handleLivePreviewClick}
         >
           {t(ALL_TEXTS.PREVIEW)}
+          <span className='sr-only'>(opens in a new tab)</span>
         </Button>
         {/* publish button */}
         <Button
@@ -98,7 +106,12 @@ const Header = ({ publishAgent, unpublishAgent }) => {
           variant={buttonProps.variant}
           className={`publish-cta${isPublished ? '' : ' isPulseAnimation'}`}
           onClick={isPublished ? () => setIsUnpublishModalOpen(true) : handlePublishClick}
+          {...(isPublished && {
+            'aria-haspopup': 'dialog',
+            'aria-expanded': isUnpublishModalOpen
+          })}
           style={{ opacity: buttonProps.opacity }}
+          aria-live='polite'
         >
           {buttonProps.text}
         </Button>

@@ -17,6 +17,11 @@
 
 namespace JAIC\Classes;
 
+// Exit if accessed directly
+if (!defined('ABSPATH')) {
+    exit(0);
+}
+
 /**
  * Class JAIC_Request
  *

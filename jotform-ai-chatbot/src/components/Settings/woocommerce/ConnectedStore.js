@@ -19,7 +19,7 @@ const ConnectedStore = ({ disconnectStore }) => {
       <div className='jfpContent-wrapper--settings-options-wrapper-connected-content-wrapper'>
         <WooLogo className='jfpContent-wrapper--settings-options-wrapper-connected-icon' />
         <div className='jfpContent-wrapper--settings-options-wrapper-connected-content'>
-          <h3>{t(ALL_TEXTS.CONNECTED_STORE)}</h3>
+          <strong>{t(ALL_TEXTS.CONNECTED_STORE)}</strong>
           <p style={{ fontFamily: 'monospace' }}>{consumerKey}</p>
         </div>
       </div>

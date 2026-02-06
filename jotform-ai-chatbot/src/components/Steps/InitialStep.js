@@ -4,10 +4,9 @@ import { object } from 'prop-types';
 import { saveInstallment } from '../../api';
 import IconArrowRight from '../../assets/svg/IconArrowRight.svg';
 import LogoJotformColor from '../../assets/svg/LogoJotformColor.svg';
-import { ALL_TEXTS, STEPS } from '../../constants';
-import { useOAuth, useWizard } from '../../hooks';
-import { ACTION_CREATORS } from '../../store';
-import { isGuest, t, toCamelCase } from '../../utils';
+import { ALL_TEXTS } from '../../constants';
+import { useWizard } from '../../hooks';
+import { t, toCamelCase } from '../../utils';
 import NetworkError from '../NetworkError';
 import Button from '../UI/Button';
 import UnauthorizedApiKeyError from '../UnauthorizedApiKeyError';
@@ -15,23 +14,24 @@ import UnauthorizedApiKeyError from '../UnauthorizedApiKeyError';
 const InitialStep = ({
   customTexts = {}
 }) => {
-  const { state, dispatch } = useWizard();
+  const { state } = useWizard();
   const {
-    user, step, showNetworkError, isUnauthorizedApiKey
+    step, showNetworkError, isUnauthorizedApiKey
   } = state;
 
-  const { buttonRef } = useOAuth();
-  const shouldOAuth = !user || isGuest(user);
+  const PROJECT_NAME = 'Jotform Wordpress AI Chatbot';
+  const PROJECT_URL = window.location.href;
+  const ENTERPRISE_LOGIN_ENDPOINT = '/api/legacy-oauth/enterprise-domain';
+  // eslint-disable-next-line max-len
+  const loginUrl = `https://www.jotform.com/api/oauth.php?registrationType=oauth&client_id=${encodeURIComponent(PROJECT_NAME)}&access_type=full&auth_type=login&ref=${encodeURIComponent(PROJECT_URL)}&integration_auth=1&isNewLoginFlow=1&enterpriseLoginEndpoint=${encodeURIComponent(ENTERPRISE_LOGIN_ENDPOINT)}&rk=1&wpPlugin=1`;
 
   useEffect(() => {
     if (showNetworkError) return;
     saveInstallment(`${toCamelCase(step)}Step`);
   }, []);
 
-  const handleStartClick = async () => {
+  const handleStartClick = () => {
     saveInstallment('letsStartButton');
-    if (shouldOAuth) return;
-    dispatch(ACTION_CREATORS.setStep(STEPS.USECASE_SELECTION));
   };
 
   return (
@@ -45,8 +45,9 @@ const InitialStep = ({
         <Button
           endIcon={<IconArrowRight />}
           onClick={handleStartClick}
-          buttonRef={shouldOAuth ? buttonRef : { current: null }}
           className='lets-start buttonRTL'
+          target='_self'
+          href={loginUrl}
         >
           {t(ALL_TEXTS.LETS_START)}
         </Button>

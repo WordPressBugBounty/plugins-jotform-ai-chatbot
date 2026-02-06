@@ -68,6 +68,7 @@ const VisibilityStep = ({ unpublishAgent }) => {
   return (
     <>
       <div className='jfpContent-wrapper--customization'>
+        <h2 className='sr-only'>{t(ALL_TEXTS.VISIBILITY)}</h2>
         {/* layout */}
         <VisibilityLayout />
         {/* visible on */}
@@ -103,6 +104,8 @@ const VisibilityStep = ({ unpublishAgent }) => {
           <Button
             className='remove-chatbot-btn'
             onClick={() => setIsDeleteModalOpen(true)}
+            aria-haspopup='dialog'
+            aria-expanded={isDeleteModalOpen}
           >
             {t(ALL_TEXTS.REMOVE_AI_CHATBOT_FROM_MY_WEBSITE)}
           </Button>

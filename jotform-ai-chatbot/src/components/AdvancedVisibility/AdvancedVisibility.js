@@ -121,64 +121,67 @@ const AdvancedVisibility = () => {
       </div>
       <div className='visibility-filter'>
         <div className='visibility-wrapper'>
-          <div className='visibility-domain'>
-            {/* type dropdown */}
-            <Dropdown
-              value={selectionType}
-              onChange={value => {
-                setSelectionType(value);
-                setInputValue('');
-              }}
-            >
-              {SELECTION_OPTIONS.map(option => (
-                <option key={option.value} value={option.value}>{option.label}</option>
-              ))}
-            </Dropdown>
-          </div>
+          <div className='visibility-input'>
+            <div className='visibility-domain'>
+              {/* type dropdown */}
+              <Dropdown
+                value={selectionType}
+                onChange={value => {
+                  setSelectionType(value);
+                  setInputValue('');
+                }}
+              >
+                {SELECTION_OPTIONS.map(option => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </Dropdown>
+            </div>
 
-          {selectionType === SELECTION_TYPE_VALUES.URL ? (
-            <div className='visibility-selector'>
-              {/* match type dropdown */}
+            {selectionType === SELECTION_TYPE_VALUES.URL ? (
+              <div className='visibility-selector'>
+                {/* match type dropdown */}
+                <Dropdown
+                  colorStyle='default'
+                  size='small'
+                  theme='light'
+                  value={urlMatchType}
+                  onChange={value => setUrlMatchType(value)}
+                >
+                  {URL_MATCH_OPTIONS.map(option => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                  ))}
+                </Dropdown>
+                <Input
+                  type='text'
+                  placeholder={t(ALL_TEXTS.URL)}
+                  value={inputValue}
+                  onChange={e => setInputValue(e.target.value)}
+                  style={{ flex: 1 }}
+                  className='visibility-input'
+                />
+              </div>
+            ) : (
+              // page dropdown
               <Dropdown
                 colorStyle='default'
                 size='small'
                 theme='light'
-                value={urlMatchType}
-                onChange={value => setUrlMatchType(value)}
+                value={inputValue}
+                onChange={value => setInputValue(value)}
+                style={{ flex: 1 }}
               >
-                {URL_MATCH_OPTIONS.map(option => (
-                  <option key={option.value} value={option.value}>{option.label}</option>
+                <option value=''>Select Page</option>
+                {PLATFORM_PAGES.map(page => (
+                  <option key={page.value} value={page.value}>{page.text}</option>
                 ))}
               </Dropdown>
-              <Input
-                type='text'
-                placeholder={t(ALL_TEXTS.URL)}
-                value={inputValue}
-                onChange={e => setInputValue(e.target.value)}
-                style={{ flex: 1 }}
-                className='visibility-input'
-              />
-            </div>
-          ) : (
-          // page dropdown
-            <Dropdown
-              colorStyle='default'
-              size='small'
-              theme='light'
-              value={inputValue}
-              onChange={value => setInputValue(value)}
-              style={{ flex: 1 }}
-            >
-              <option value=''>Select Page</option>
-              {PLATFORM_PAGES.map(page => (
-                <option key={page.value} value={page.value}>{page.text}</option>
-              ))}
-            </Dropdown>
-          )}
+            )}
+          </div>
           <Button
             startIcon={<IconPlus />}
             disabled={isAddDisabled}
             onClick={handleAdd}
+            aria-label='Add Option to the visibility list'
           >
             {`${t(ALL_TEXTS.ADD)}`}
           </Button>
@@ -186,8 +189,8 @@ const AdvancedVisibility = () => {
         {/* selected pages */}
         <ul className='condition-wrapper'>
           {((selectedItems.showOn?.length === 0 && activeMode === VISIBILITY_TOGGLE.SHOW_ON.value)
-          || (selectedItems.hideOn?.length === 0 && activeMode === VISIBILITY_TOGGLE.HIDE_ON.value))
-          && <InfoBox isPublished={isPublished} />}
+            || (selectedItems.hideOn?.length === 0 && activeMode === VISIBILITY_TOGGLE.HIDE_ON.value))
+            && <InfoBox isPublished={isPublished} />}
           {selectedItems[activeMode]?.map((item, index) => (
             <li
               key={item.id}

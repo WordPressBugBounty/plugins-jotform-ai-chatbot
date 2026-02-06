@@ -95,8 +95,11 @@ const Input = forwardRef(({
           className='jfInput--suffix'
           onClick={suffixClick}
           type='button'
+          {...(isPasswordType
+            ? { 'aria-label': showPassword ? 'Hide password' : 'Show password' }
+            : {})}
         >
-          {suffixIcon && <span className='jfInput--suffix-icon'>{suffixIcon}</span>}
+          {suffixIcon && <span className='jfInput--suffix-icon' aria-hidden='true'>{suffixIcon}</span>}
         </SuffixTag>
       )}
     </div>

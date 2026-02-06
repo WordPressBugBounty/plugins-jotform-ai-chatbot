@@ -38,7 +38,7 @@ export const platformInitialState = {
   isPublished: false,
   errorMessage: '',
   isLogoutLoading: false,
-  isUnauthorizedApiKey: false // for teams & form users
+  isUnauthorizedApiKey: false // form users
 };
 
 // Platform slice reducer

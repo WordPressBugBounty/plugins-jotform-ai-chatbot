@@ -53,10 +53,16 @@ export const ALL_TEXTS = {
   CLICK_UNPUBLISH_TO_REMOVE_THE_CHATBOT: 'Click Unpublish to remove the chatbot from your website while keeping its site-specific settings saved. You can republish it later without losing your setup.',
   YOUR_CHATBOT_AND_ITS_TRANING_DATA_WILL_REMAIN_SAVED: 'Your chatbot and its training data will remain saved.',
 
+  OPEN_A_SUPPORT_TICKET: 'Open a Support Ticket',
+  YOU_WILL_BE_REDIRECTED_TO_SUPPORT: 'You’ll be redirected to the Jotform AI Chatbot support page on WordPress.org.',
+  TO_SUBMIT_A_TICKET_PLEASE: 'To submit a ticket, please make sure you’re [1[logged in]] or [2[create a free WordPress.org account.]]',
+
   UNPUBLISH: 'Unpublish',
+  UNPUBLISHING: 'Unpublishing...',
 
   REMOVE_FROM_WEBSITE: 'Remove from Website',
   REMOVE_FROM_WEBSITE_2: 'Remove from website',
+  REMOVING: 'Removing...',
 
   ANIMATION_TITLE: 'Chatbot Introduction Animation',
 
@@ -165,6 +171,7 @@ export const ALL_TEXTS = {
   CONNECTED_CHATBOT: 'Connected Chatbot',
   CONNECTED_JOTFORM_ACCOUNT: 'Connected Jotform Account',
   LOGOUT: 'Logout',
+  LOGGINGOUT: 'Logging out...',
   LOGOUT_DIALOG_TITLE: 'Log Out from Your Account?',
   LOGOUT_DIALOG_DESC: 'Click Logout to sign out of your account. Your settings and preferences will remain saved, and you can log back in anytime without losing your setup.',
   LOGOUT_DIALOG_INFO: 'All your data and saved progress will remain secure.',
@@ -184,5 +191,15 @@ export const ALL_TEXTS = {
   ALMOST_FULL_LIMIT_WARNING_TEXT: 'You’re close to your [1[{limit}]] [2[limit]]. Upgrade to keep your agent active.',
   OVERLIMIT_LIMIT_WARNING_TEXT: 'You’ve reached your [1[{limit}]] [2[limit]]. Upgrade to keep your agent active.',
   UPGRADE_NOW: 'Upgrade Now',
-  LOCALHOST_ERROR: 'WooCommerce features can’t be used on a [1[local server.]]'
+  LOCALHOST_ERROR: 'WooCommerce features can’t be used on a [1[local server.]]',
+  SHOW_MORE: 'Show more',
+  LOADING: 'Loading...',
+  GO_TO_SUPPORT_PAGE: 'Go to support page',
+  GET_SUPPORT: 'Get Support',
+  CHANGE_IMAGE: 'Change Image',
+  SAVE: 'Save',
+  CUSTOM_AVATAR: 'Custom Avatar',
+  EDIT_AVATAR: 'Edit Avatar',
+  CHANGE_AVATAR: 'Change Avatar',
+  IMAGE_SIZE: 'Image Size'
 };

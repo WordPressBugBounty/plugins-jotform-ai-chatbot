@@ -4,7 +4,9 @@ import { ALL_TEXTS } from '../constants';
 import GenericError from './GenericError';
 
 const NetworkError = () => (
-  <GenericError message={ALL_TEXTS.NETWORK_ERROR_DESC_ENTERPRISE} />
+  <div style={{ marginTop: '100px' }}>
+    <GenericError message={ALL_TEXTS.NETWORK_ERROR_DESC_ENTERPRISE} />
+  </div>
 );
 
 export default NetworkError;

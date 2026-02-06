@@ -1,6 +1,8 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable max-len */
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useMemo, useRef, useState
+} from 'react';
 import { string } from 'prop-types';
 
 import '../../styles/loading.scss';
@@ -14,33 +16,109 @@ const LoadingStep = ({ type = 'default' }) => {
     'Almost there! 🚀 Your AI assistant is getting ready to shine. ✨'
   ];
 
-  const [texts, setTexts] = useState(_texts);
+  const [texts] = useState(() => {
+    const textObjects = _texts.map((text, index) => ({
+      id: index,
+      value: text
+    }));
+    textObjects.push({
+      id: 'clone',
+      value: textObjects[0].value
+    });
+
+    return textObjects;
+  });
+  const [itemHeights, setItemHeights] = useState([]);
 
   const textContainer = useRef(null);
-
-  const textAnimation = textLength => {
-    const textHeight = 28;
-    const textDelay = 2500;
-    let count = 0;
-    setInterval(() => {
-      count++;
-      if (textContainer.current) {
-        textContainer.current.style.transform = `translateY(-${textHeight * count}px)`;
-      }
-      if (count % textLength === 0) {
-        setTexts(prev => [...prev, ..._texts]);
-      }
-    }, textDelay);
-  };
+  const animationInterval = useRef(null);
+  const animationTimeout = useRef(null);
 
   useEffect(() => {
-    textAnimation(_texts.length);
+    const measureHeights = () => {
+      if (textContainer.current?.children) {
+        const heights = Array.from(textContainer.current.children).map(
+          (child) => child.offsetHeight
+        );
+        setItemHeights(heights);
+      }
+    };
+
+    measureHeights();
+    window.addEventListener('resize', measureHeights);
+
+    return () => {
+      window.removeEventListener('resize', measureHeights);
+    };
   }, []);
 
+  const cumulativeOffsets = useMemo(() => {
+    if (itemHeights.length === 0) return [];
+
+    const offsets = [0];
+    let accumulatedHeight = 0;
+    for (let i = 0; i < itemHeights.length - 1; i++) {
+      accumulatedHeight += itemHeights[i];
+      offsets.push(accumulatedHeight);
+    }
+    return offsets;
+  }, [itemHeights]);
+
+  useEffect(() => {
+    if (cumulativeOffsets.length === 0 || !textContainer.current) {
+      return undefined;
+    }
+
+    const textContainerEl = textContainer.current;
+    const animationContainerEl = textContainerEl.parentElement;
+
+    textContainerEl.style.transition = 'none';
+    textContainerEl.style.transform = 'translateY(0px)';
+    if (animationContainerEl) {
+      animationContainerEl.style.height = `${itemHeights[0]}px`;
+    }
+
+    let count = 0;
+    const textDelay = 2500;
+    const transitionDuration = 300;
+
+    animationInterval.current = setInterval(() => {
+      count++;
+
+      const offset = cumulativeOffsets[count];
+      const height = itemHeights[count];
+
+      textContainerEl.style.transition = `transform ${transitionDuration}ms ease-in-out`;
+      textContainerEl.style.transform = `translateY(-${offset}px)`;
+      if (animationContainerEl && height) {
+        animationContainerEl.style.transition = `height ${transitionDuration}ms ease-in-out`;
+        animationContainerEl.style.height = `${height}px`;
+      }
+
+      if (count === _texts.length) {
+        animationTimeout.current = setTimeout(() => {
+          textContainerEl.style.transition = 'none';
+          textContainerEl.style.transform = 'translateY(0px)';
+          if (animationContainerEl) {
+            animationContainerEl.style.height = `${itemHeights[0]}px`;
+          }
+          count = 0;
+        }, transitionDuration);
+      }
+    }, textDelay);
+
+    return () => {
+      clearInterval(animationInterval.current);
+      clearTimeout(animationTimeout.current);
+    };
+  }, [cumulativeOffsets, itemHeights, _texts.length]);
+
   return (
-    <div className='create-page-loading'>
+    <div className='create-page-loading' role='status' aria-live='polite' aria-atomic='true'>
       {type === 'default' && (
-        <div className='create-page-loading--spinner' />
+        <div className='create-page-loading--spinner' role='status'>
+          <span className='sr-only'>Loading...</span>
+        </div>
       )}
       {type === 'text' && (
         <>
@@ -51,6 +129,7 @@ const LoadingStep = ({ type = 'default' }) => {
               height='64'
               viewBox='0 0 64 64'
               fill='none'
+              aria-hidden='true'
             >
               <path
                 fillRule='evenodd'
@@ -74,12 +153,11 @@ const LoadingStep = ({ type = 'default' }) => {
             </svg>
           </div>
           <div className='create-page-loading--animation'>
-            <ul className='create-page-loading--text' ref={textContainer}>
-              {texts.map((text) => (
-                <li key={text}>
-                  <span>
-                    {text}
-                  </span>
+            <span className='sr-only'>Your chatbot is being created. Please wait...</span>
+            <ul className='create-page-loading--text' ref={textContainer} aria-hidden='true'>
+              {texts.map((textItem) => (
+                <li key={textItem.id}>
+                  <span>{textItem.value}</span>
                 </li>
               ))}
             </ul>

@@ -169,3 +169,18 @@ export const fetchUserLimitWarnings = (apiKey = '') => {
   const url = addApiKeyToUrl('user-limit/limit-warnings', apiKey);
   return getRequestLayer().get(url);
 };
+
+export const uploadImageFile = (username, file, type, saveImg = true, apiKey = '') => {
+  const url = addApiKeyToUrl(`ai-agent-builder/${username}/uploads`, apiKey);
+  return getRequestLayer().post(url, { file, type, ...(saveImg && { save: '1' }) }, { headers: { 'Content-Type': 'multipart/form-data' } });
+};
+
+export const removeImageBackground = (username, payload, apiKey = '') => {
+  const url = addApiKeyToUrl(`ai-agent-builder/user/${username}/avatars/remove-image-bg`, apiKey);
+  return getRequestLayer().post(url, payload, { headers: { 'Content-Type': 'multipart/form-data' } });
+};
+
+export const getAgentAvatarAsBase64 = (agentId, apiKey = '') => {
+  const url = addApiKeyToUrl(`ai-chatbot/agent-avatar/${agentId}`, apiKey);
+  return getRequestLayer().get(url);
+};

@@ -19,7 +19,7 @@ export const DELETE_INSTRUCTION_DEBOUNCE_TIMEOUT = 500;
 export const GREETING_TEXT_REQ_DEBOUNCE_TIMEOUT = 500;
 
 // Modal and local storage flags
-export const WHATS_NEW_MODAL_LCST_FLAG = 'jaic_wnm_v3_0_0';
+export const WHATS_NEW_MODAL_LCST_FLAG = 'jaic_wnm_v3_6_0';
 
 // Validation patterns
 export const URL_REGEX = /^(https?:\/\/)(localhost|([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})(:\d{1,5})?(\/[^\s]*)?$/i;

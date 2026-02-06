@@ -22,14 +22,15 @@ const SettingsTab = () => {
   return (
     <div className='jfpContent-wrapper--settings-panel'>
       <div className='jfpContent-wrapper--settings-panel-title'>
-        <h2 className='jfpContent-wrapper--settings-panel-title-content'>{t(ALL_TEXTS.SETTINGS)}</h2>
+        <h2 className='jfpContent-wrapper--settings-panel-title-content' aria-hidden='true'>{t(ALL_TEXTS.SETTINGS)}</h2>
       </div>
-      <ul>
+      <ul role='tablist' aria-label='Plugin Settings'>
         <li className='jfpContent-wrapper--settings-panel-btn'>
           <Button
             colorStyle='secondary'
             variant='ghost'
             fullWidth
+            role='tab'
             className={cx({ isActive: activeSettingsTab === GENERAL })}
             onClick={() => handleTabClick(GENERAL)}
           >
@@ -41,6 +42,7 @@ const SettingsTab = () => {
             colorStyle='secondary'
             variant='ghost'
             fullWidth
+            role='tab'
             className={cx({ isActive: activeSettingsTab === AGENT_SKILLS })}
             onClick={() => handleTabClick(AGENT_SKILLS)}
           >
@@ -52,6 +54,7 @@ const SettingsTab = () => {
             colorStyle='secondary'
             variant='ghost'
             fullWidth
+            role='tab'
             className={cx({ isActive: activeSettingsTab === WOOCOMMERCE })}
             onClick={() => handleTabClick(WOOCOMMERCE)}
           >
@@ -65,6 +68,7 @@ const SettingsTab = () => {
             colorStyle='secondary'
             variant='ghost'
             fullWidth
+            role='tab'
             className={cx({ isActive: activeSettingsTab === UPGRADE_PLAN })}
             onClick={() => handleTabClick(UPGRADE_PLAN)}
           >

@@ -27,7 +27,7 @@ const ConnectedChatbot = () => {
             className='jfpContent-wrapper--settings-options-wrapper-connected-icon big full-radius'
           />
           <div className='jfpContent-wrapper--settings-options-wrapper-connected-content'>
-            <h3>{connectedAgent?.title}</h3>
+            <strong>{connectedAgent?.title}</strong>
             <p>
               {connectedAgent?.totalConversationCount}{' '}
               {connectedAgent?.totalConversationCount > 1 ? 'conversations' : 'conversation'}

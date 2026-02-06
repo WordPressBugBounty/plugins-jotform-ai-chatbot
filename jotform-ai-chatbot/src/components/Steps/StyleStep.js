@@ -73,22 +73,25 @@ const StyleStep = () => {
   return (
     <>
       <div className='jfpContent-wrapper--style'>
-        <ul className='jfpContent-wrapper--style-colors'>
+        <h2 className='sr-only'>{t(ALL_TEXTS.AGENT_STYLE)}</h2>
+        <div className='jfpContent-wrapper--style-color-select'>
           <h3>{t(ALL_TEXTS.COLOR_SCHEME)}</h3>
-          {THEMES.map(theme => (
-            <li
-              key={theme.id}
-              style={{ background: getThemeColor(THEME_MAP[theme.name], 'pageBackgroundStart') }}
-              onClick={() => handleChangeTheme(theme.name)}
-              className={themeName === theme.name ? 'isSelected' : ''}
-            >
-              <span className='chatBg' style={{ background: getThemeColor(THEME_MAP[theme.name], 'chatBackground') }}>
-                <span className='chatText' style={{ color: getThemeColor(THEME_MAP[theme.name], 'inputTextColor') }}>A</span>
-                <span className='agentBg' style={{ background: getThemeColor(THEME_MAP[theme.name], 'agentBackgroundStart') }} />
-              </span>
-            </li>
-          ))}
-        </ul>
+          <ul className='jfpContent-wrapper--style-colors'>
+            {THEMES.map(theme => (
+              <li
+                key={theme.id}
+                style={{ background: getThemeColor(THEME_MAP[theme.name], 'pageBackgroundStart') }}
+                onClick={() => handleChangeTheme(theme.name)}
+                className={themeName === theme.name ? 'isSelected' : ''}
+              >
+                <span className='chatBg' style={{ background: getThemeColor(THEME_MAP[theme.name], 'chatBackground') }}>
+                  <span className='chatText' style={{ color: getThemeColor(THEME_MAP[theme.name], 'inputTextColor') }}>A</span>
+                  <span className='agentBg' style={{ background: getThemeColor(THEME_MAP[theme.name], 'agentBackgroundStart') }} />
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
         <hr className='jfpContent-wrapper--line' />
         <div className='jfpContent-wrapper--style-color-select'>
           <h3>{t(ALL_TEXTS.AGENT_BACKGROUND_STYLE)}</h3>

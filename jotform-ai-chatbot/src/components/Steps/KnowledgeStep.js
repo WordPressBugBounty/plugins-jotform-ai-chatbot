@@ -3,9 +3,10 @@ import React, { useEffect } from 'react';
 import {
   addMaterial, bulkDeleteMaterial, deleteMaterial, fetchMaterials, saveInstallment, updateMaterial
 } from '../../api';
+import { ALL_TEXTS } from '../../constants';
 import { useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
-import { toCamelCase } from '../../utils';
+import { t, toCamelCase } from '../../utils';
 import { KnowledgeBase } from '../KnowledgeBase';
 
 const KnowledgeStep = () => {
@@ -77,6 +78,7 @@ const KnowledgeStep = () => {
   return (
     <>
       <div className='jfpContent-wrapper--knowledge' data-js='knowledge-scroll-container'>
+        <h2 className='sr-only'>{t(ALL_TEXTS.KNOWLEDGE_BASE)}</h2>
         <KnowledgeBase
           materials={materials}
           isLoadingMaterials={materialsLoading}

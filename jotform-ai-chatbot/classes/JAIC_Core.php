@@ -18,6 +18,11 @@
 
 namespace JAIC\Classes;
 
+// Exit if accessed directly
+if (!defined('ABSPATH')) {
+    exit(0);
+}
+
 use JAIC\Classes\JAIC_Request;
 
 /**
@@ -38,6 +43,8 @@ class JAIC_Core {
     private static $pluginKnowledgeBaseOptionKey = "jotform_ai_chatbot_knowledgebase";
     private static $pluginPendingSyncKey = "jotform_ai_chatbot_pending_sync";
     private static $pluginSyncedPagesKey = "jotform_ai_chatbot_synced_pages";
+    private static $pluginAgentUnavailableKey = "jotform_ai_chatbot_agent_unavailable";
+    private static $pluginPagesSyncBlockedUntilKey = "jotform_ai_chatbot_pages_sync_blocked_until";
     private static $getPluginPreviewModeKey = "jotform_ai_chatbot_preview";
     private static $serviceURLs = [
         "geu" => [
@@ -59,6 +66,7 @@ class JAIC_Core {
     private static $siteURL;
     private static $siteAPIURL;
     private static $siteEmbedURL;
+    private static $pluginSyncBlockedUntilSeconds = 7 * 24 * 60 * 60; // 7 days
 
     /**
      * JAIC_Core constructor.
@@ -76,7 +84,7 @@ class JAIC_Core {
             // Get action data
             $action = isset($_POST["action"]) ? sanitize_text_field(wp_unslash($_POST["action"])) : null;
             // Include required file for handling requests
-            require_once __DIR__ . "/JAIC_Request.php";
+            require_once JAIC_PLUGIN_DIR . "/classes/JAIC_Request.php";
 
             if (!empty($action) && is_string($action)) {
                 // Check if the method exists in the current class
@@ -134,7 +142,7 @@ class JAIC_Core {
         $pluginPageList = $this->getPluginPageList();
 
         $pluginDisabledForVisitedURL = $pluginEnabledForVisitedURL = false;
-        $requestedURI = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : false;
+        $requestedURI = !empty($_SERVER['REQUEST_URI']) ? sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])) : false;
         if (!empty($pluginPageList["showOn"]) && is_array($pluginPageList["showOn"])) {
             $pluginActivatedPageList = array_map(function ($pluginPageOption) {
                 if (!empty($pluginPageOption["type"]) && ($pluginPageOption["type"] === "page")) {
@@ -152,7 +160,7 @@ class JAIC_Core {
                         $url = "https://" . $url;
                     }
 
-                    $parsedURL = parse_url($url);
+                    $parsedURL = wp_parse_url($url);
                     if (!empty($parsedURL['path'])) {
                         return $parsedURL['path'];
                     }
@@ -169,7 +177,7 @@ class JAIC_Core {
                         $url = "https://" . $url;
                     }
 
-                    $parsedURL = parse_url($url);
+                    $parsedURL = wp_parse_url($url);
                     $path = trim($parsedURL['path'], "/");
                     if (!empty($parsedURL['path']) && strpos($requestedURI, ("/" . $path)) === 0) {
                         $pluginEnabledForVisitedURL = true;
@@ -196,7 +204,7 @@ class JAIC_Core {
                         $url = "https://" . $url;
                     }
 
-                    $parsedURL = parse_url($url);
+                    $parsedURL = wp_parse_url($url);
                     if (!empty($parsedURL['path'])) {
                         return $parsedURL['path'];
                     }
@@ -213,7 +221,7 @@ class JAIC_Core {
                         $url = "https://" . $url;
                     }
 
-                    $parsedURL = parse_url($url);
+                    $parsedURL = wp_parse_url($url);
                     $path = trim($parsedURL['path'], "/");
                     if (!empty($parsedURL['path']) && strpos($requestedURI, ("/" . $path)) === 0) {
                         $pluginDisabledForVisitedURL = true;
@@ -262,13 +270,14 @@ class JAIC_Core {
         ) {
             // Render the chatbot if embed code and device type is available
             $chatbotEmbedCode = ($this->isPreviewMode() && !empty($options["preview"])) ? $options["preview"] : (!empty($options["embed"]) ? $options["embed"] : false);
-            if (!empty($chatbotEmbedCode)) {
+            if (!empty($chatbotEmbedCode) && !is_404()) {
                 if (
                     $this->isPreviewMode() ||
                     ($device === "all") ||
                     ($device === "mobile" && $this->isMobileDevice()) ||
                     ($device === "desktop" && !$this->isMobileDevice())
                 ) {
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     echo $this->getEmbedRendererCode($chatbotEmbedCode);
                 }
             }
@@ -310,6 +319,8 @@ class JAIC_Core {
             delete_option(self::$pluginKnowledgeBaseOptionKey);
             delete_option(self::$pluginPendingSyncKey);
             delete_option(self::$pluginSyncedPagesKey);
+            delete_option(self::$pluginAgentUnavailableKey);
+            delete_option(self::$pluginPagesSyncBlockedUntilKey);
 
             if (!empty($apiKey)) {
                 // Construct the API endpoint URL for deleting the api key
@@ -798,6 +809,29 @@ class JAIC_Core {
     }
 
     /**
+     * Retrieves the agent ID for the chatbot from the WordPress settings.
+     *
+     * This function fetches the stored chatbot options from the WordPress
+     * settings, decodes them into an array, and checks if an agent ID key exists.
+     * If a valid agent ID key is found, it is returned; otherwise, an empty string
+     * is returned.
+     *
+     * @return string The agent ID if available, or an empty string if not.
+     */
+    private function getAgentID(): string {
+        // Retrieve chatbot options from the WordPress settings
+        $options = get_option(self::$pluginOptionKey);
+        $options = !empty($options) ? json_decode($options, true) : [];
+
+        // Return the Agent ID If already generated
+        if (isset($options["agentId"]) && !empty($options["agentId"])) {
+            return $options["agentId"];
+        }
+
+        return "";
+    }
+
+    /**
      * Retrieves the Enterprise Domain key for the chatbot from the WordPress settings.
      *
      * This function fetches the stored chatbot options from the WordPress
@@ -871,7 +905,7 @@ class JAIC_Core {
                 (isset($options["pages"][0]) && is_string($options["pages"][0])) &&
                 (filter_var($options["pages"][0], FILTER_VALIDATE_URL) !== false)
             ) {
-                $path = parse_url($options["pages"][0], PHP_URL_PATH);
+                $path = wp_parse_url($options["pages"][0], PHP_URL_PATH);
                 if (!empty($path) && is_string($path)) {
                     array_push($pageList["showOn"], [
                         "id" => (string) crc32(trim($path, "/")),
@@ -983,7 +1017,7 @@ class JAIC_Core {
      * @return bool Returns true if the device is mobile or tablet, false if it's a desktop.
      */
     private function isMobileDevice(): bool {
-        $userAgent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
+        $userAgent = strtolower(sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'] ?? '')));
 
         if (function_exists('wp_is_mobile') && wp_is_mobile()) {
             return true;
@@ -1022,14 +1056,20 @@ class JAIC_Core {
             return false;
         }
 
+        $agentId = $this->getAgentID();
+        if (empty($agentId)) {
+            return false;
+        }
+
         $url = $this->getSiteAPIURL() . "/ai-chatbot/update-url-material";
 
         // Payload
         $payload = [
-            "platform" => "wordpress",
-            "domain"   => $this->getDomain(),
-            "title"    => $data["title"],
-            "url"      => $data["url"]
+            "platform"  => "wordpress",
+            "domain"    => $this->getDomain(),
+            "title"     => $data["title"],
+            "url"       => $data["url"],
+            "agent_id"  => $agentId
         ];
 
         // Request params
@@ -1048,6 +1088,15 @@ class JAIC_Core {
             $statusCode = wp_remote_retrieve_response_code($response);
             if ($statusCode == 200) {
                 return true;
+            } elseif ($statusCode == 404) {
+                update_option(self::$pluginAgentUnavailableKey, wp_json_encode([
+                    "agent_id" => $agentId,
+                    "marked_at" => time()
+                ]));
+                return false;
+            } elseif ($statusCode == 403) {
+                update_option(self::$pluginPagesSyncBlockedUntilKey, time() + self::$pluginSyncBlockedUntilSeconds);
+                return false;
             }
         }
 
@@ -1062,13 +1111,25 @@ class JAIC_Core {
      * @param bool $update Whether this is an update or a new post.
      */
     public function handlePostUpdate($post_ID, $post, $update) {
-        $pending = get_option(self::$pluginPendingSyncKey);
-        $pending = (!is_string($pending) || empty($pending)) ? [] : json_decode($pending, true);
+        $pending_option = get_option(self::$pluginPendingSyncKey);
+        $pending = (!is_string($pending_option) || empty($pending_option)) ? [] : json_decode($pending_option, true);
 
+        // Build a content-based hash (title + content). This avoids metadata-only updates.
+        $title = get_the_title($post_ID);
+        $content = $post->post_content ?? '';
+        $hash = md5($title . '||' . $content);
+
+        // If it is already pending with the same hash, skip queueing
+        if (isset($pending[$post_ID]) && isset($pending[$post_ID]['hash']) && $pending[$post_ID]['hash'] === $hash) {
+            return;
+        }
+
+        // Queue / overwrite pending entry with hash and queued_at timestamp
         $pending[$post_ID] = [
-            "title"        => get_the_title($post_ID),
-            "url"          => get_permalink($post_ID),
-            "last_updated" => $post->post_modified,
+            'title'       => $title,
+            'url'         => get_permalink($post_ID),
+            'hash'        => $hash,
+            'queued_at'   => time()
         ];
 
         update_option(self::$pluginPendingSyncKey, wp_json_encode($pending));
@@ -1080,10 +1141,33 @@ class JAIC_Core {
      * @return bool True if the cron sync was successful, false otherwise.
      */
     public function handleCronSyncPages() {
-        $pending = get_option(self::$pluginPendingSyncKey);
-        $synced = get_option(self::$pluginSyncedPagesKey);
-        $pending = (!is_string($pending) || empty($pending)) ? [] : json_decode($pending, true);
-        $synced = (!is_string($synced) || empty($synced)) ? [] : json_decode($synced, true);
+        $agentId = $this->getAgentID();
+        if (empty($agentId)) {
+            return false;
+        }
+
+        $unavailableAgent = get_option(self::$pluginAgentUnavailableKey);
+        $unavailableAgent = !empty($unavailableAgent) ? json_decode($unavailableAgent, true) : [];
+        if (!empty($unavailableAgent) && is_array($unavailableAgent) && isset($unavailableAgent['agent_id'])) {
+            // If agent id is unchanged, skip all sync attempts
+            if ($unavailableAgent['agent_id'] === $agentId) {
+                return false;
+            }
+
+            // If agent id changed, clear the block
+            delete_option(self::$pluginAgentUnavailableKey);
+        }
+
+        // Check if the sync is blocked until
+        $blockedUntil = get_option(self::$pluginPagesSyncBlockedUntilKey);
+        if (!empty($blockedUntil) && time() < intval($blockedUntil)) {
+            return false;
+        }
+
+        $pending_option = get_option(self::$pluginPendingSyncKey);
+        $synced_option = get_option(self::$pluginSyncedPagesKey);
+        $pending = (!is_string($pending_option) || empty($pending_option)) ? [] : json_decode($pending_option, true);
+        $synced = (!is_string($synced_option) || empty($synced_option)) ? [] : json_decode($synced_option, true);
 
         if (empty($pending)) {
             return false;
@@ -1096,8 +1180,9 @@ class JAIC_Core {
                 continue;
             }
 
-            // Avoid unnecessary calls
-            if (isset($synced[$post_ID]) && $synced[$post_ID]['last_updated'] === $data['last_updated']) {
+            // If synced already and hash same => nothing to do
+            if (isset($synced[$post_ID]) && isset($synced[$post_ID]['hash']) && $synced[$post_ID]['hash'] === ($data['hash'] ?? '')) {
+                unset($pending[$post_ID]);
                 continue;
             }
 
@@ -1239,7 +1324,7 @@ class JAIC_Core {
      * @return string Version of the plugin
      */
     private function getPluginVersion(): string {
-        $pluginFile = WP_PLUGIN_DIR . '/jotform-ai-chatbot/jotform-ai-chatbot.php';
+        $pluginFile = JAIC_PLUGIN_DIR . '/jotform-ai-chatbot.php';
         $pluginData = get_file_data($pluginFile, ['Version' => 'Version']);
         return $pluginData['Version'] ?? '-';
     }
@@ -1326,27 +1411,21 @@ class JAIC_Core {
      * @return string Embed JS Code to render chatbot on website
      */
     private function generateEmbedJSCode(string $url): string {
-        $parts = parse_url($url);
+        $parts = wp_parse_url($url);
         $path = $parts['path'] ?? '';
         $query = isset($parts['query']) ? '?' . $parts['query'] : '';
 
         $url = self::$siteEmbedURL . $path . $query;
         return '
-            <script>
-            var dJAIC = false;
-            try {
-                dJAIC = (window.self !== window.top) && !document.location.href.includes("AiChatbotIframeEmbed");
-            } catch (e) {}
-            if (!dJAIC) {
-                document.addEventListener("DOMContentLoaded", function () {
-                    setTimeout(function () {
-                        var s = document.createElement("script");
-                        s.src = "' . esc_url($url) . '";
-                        s.defer = true;
-                        document.head.appendChild(s);
-                    }, 2000);
-                });
-            }
+            <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", function () {
+                setTimeout(function () {
+                    var s = document.createElement("script");
+                    s.src = "' . esc_url($url) . '";
+                    s.defer = true;
+                    document.head.appendChild(s);
+                }, 2000);
+            });
             </script>
         ';
     }

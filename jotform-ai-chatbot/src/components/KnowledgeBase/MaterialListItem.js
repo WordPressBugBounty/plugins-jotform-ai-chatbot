@@ -90,7 +90,7 @@ const MaterialListItem = ({
     'MMM D, YYYY h:mm A'
   );
 
-  const materialStatus = MATERIAL_STATUS[type][status];
+  const materialStatus = MATERIAL_STATUS[type]?.[status];
   const showSummary = type !== 'QA' && status === 'PROCESSED';
   const materialURL = getMaterialURL(material);
   const materialTitle = getTitle({ ...material, name });

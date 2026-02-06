@@ -42,7 +42,7 @@ const ConnectedJotformAccount = () => {
             className='jfpContent-wrapper--settings-options-wrapper-connected-icon big full-radius'
           />
           <div className='jfpContent-wrapper--settings-options-wrapper-connected-content'>
-            <h3>{user?.name}</h3>
+            <strong>{user?.name}</strong>
             <p>{user?.email}</p>
           </div>
         </div>
@@ -51,6 +51,8 @@ const ConnectedJotformAccount = () => {
           variant='outline'
           size='small'
           onClick={handleLogoutClick}
+          aria-haspopup='dialog'
+          aria-expanded={isLogoutModalOpen}
           className='jfpContent-wrapper--settings-options-wrapper-connected-btn'
         >
           {t(ALL_TEXTS.LOGOUT)}

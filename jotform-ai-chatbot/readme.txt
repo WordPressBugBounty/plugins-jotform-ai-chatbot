@@ -1,17 +1,17 @@
-=== AI Chatbot for WordPress - Jotform ===
+=== AI Chatbot - Jotform ===
 
 Contributors: Jotform
 Tags: AI, chatbot, chatGPT, helpdesk, live chat
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.0
-Stable tag: 3.4.0
+Stable tag: 3.6.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 AI chatbot that automates support, answers FAQs, drives WooCommerce sales, generates leads, and boosts engagement — easy setup, no coding!
 
 == Description ==
-Jotform AI Chatbot, the best **AI Chatbot for WordPress** that automates support, answers FAQs, drives **WooCommerce** sales, generates leads, and boosts engagement — easy setup, no coding!
+Jotform AI Chatbot, the best **AI Chatbot** that automates support, answers FAQs, drives **WooCommerce** sales, generates leads, and boosts engagement — easy setup, no coding!
 
 🟪 Jotform AI Chatbot allows businesses to engage visitors, guide them through forms, and streamline communication effortlessly. By providing seamless, real-time assistance, it helps convert passive visitors into active users.
 
@@ -24,7 +24,7 @@ The Jotform AI Chatbot plugin allows you to **easily create and train custom cha
 ▶️ [How to Use Jotform AI Chatbot on WordPress](https://link.jotform.com/gKw5OEf1Kq)
 ▶️ [How to Set Up Your Chatbot WordPress Plugin in 5 Minutes](https://link.jotform.com/XZ3hoL4IRx)
 ▶️ [How to Install Jotform AI Chatbot WordPress Plugin](https://link.jotform.com/wEhyKfnbDS)
-▶️ [How to Connect Your Jotform AI Chatbot for WordPress to Your WooCommerce Store](https://link.jotform.com/cEaxwHnep7)
+▶️ [How to Connect Your Jotform AI Chatbot to Your WooCommerce Store](https://link.jotform.com/cEaxwHnep7)
 
 = 🚀 Why use Jotform AI Chatbot on your WordPress website? =
 💬 **Instant responses**: Provide quick and accurate answers to FAQs, ensuring users receive the necessary information immediately. 
@@ -77,13 +77,21 @@ This plugin connects to external services to provide functionality and improve u
 
    - The plugin connects to Jotform’s servers to enable chatbot creation, training, and deployment. This includes accessing your Jotform account data to retrieve chatbot configurations and training data.
    - [Privacy Policy](https://www.jotform.com/privacy/?utm_source=wordpress&utm_medium=plugin_directory&utm_campaign=chatbot_plugin_content&utm_content=privacy)
+   - [AI Terms of Use](https://www.jotform.com/ai-terms/?utm_source=wordpress&utm_medium=plugin_directory&utm_campaign=chatbot_plugin_content&utm_content=ai-terms)
    - [Terms of Use](https://www.jotform.com/terms/?utm_source=wordpress&utm_medium=plugin_directory&utm_campaign=chatbot_plugin_content&utm_content=terms)
 
 ⚙️ **API usage**
-
   - The plugin makes external API requests on the following domain to enable chatbot-related functionalities:
-     `https://api.jotform.com`
-  - The plugin uses an API to create realtime chatbot agent conversions.
+     `**https://api.jotform.com**`
+  - The plugin uses this domain [**https://api.jotform.com**] as an API service to create realtime chatbot agent conversions.
+  
+☁️ **CDN usage**
+- The plugin makes external CDN requests on the following domain to enable chatbot-related functionalities:
+   `**https://cdn.jotfor.ms**`
+- The plugin uses the domain [**https://cdn.jotfor.ms**] as a CDN service to deliver and render the embedded AI Chatbot.
+
+🔑 **API Key usage**
+- The plugin uses an API key, which is sent to the domain [**https://api.jotform.com**] to authenticate with the Jotform API service.
 
 🛍️ **WooCommerce integration**
 
@@ -170,6 +178,57 @@ See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org
 5. How It Works
 
 == Changelog ==
+= 3.6.4 (2026-02-05) =
+* Fix: Fixes on WooCommerce integration options
+
+= 3.6.3 (2026-01-05) =
+* Fix: Minor fix on chatbot rendering issues
+
+= 3.6.2 (2026-01-05) =
+* Update: Chatbot is no longer rendered on 404 pages
+* Update: Minor UI improvements
+
+= 3.6.1 (2025-12-30) =
+* Update: Improvements on custom avatar upload feature
+* Update: Minor UI improvements
+
+= 3.6.0 (2025-12-29) =
+* Update: Add custom avatar upload feature
+* Update: Minor UI improvements
+
+= 3.5.3 (2025-12-19) =
+* Update: Add link to feedback form
+* Update: Minor UI improvements
+
+= 3.5.2 (2025-12-12) =
+* Update: Minor UI improvements
+* Update: Minor UX improvements
+
+= 3.5.1 (2025-12-05) =
+* Update: Screenshots updated
+* Fix: Improve auto-sync stability for post/page updates
+
+= 3.5.0 (2025-12-01) =
+* Update: Major UI improvements
+* Update: Major UX improvements
+* Update: Banner asset updated
+* Fix: Improve auto-sync stability for post/page updates
+
+= 3.4.4 (2025-11-19) =
+* Fix - Minor fix on getting plugin version
+
+= 3.4.3 (2025-11-11) =
+* Updated - Readme.txt file is updated for external service list
+* Updated - Codebase refactor
+
+= 3.4.2 (2025-11-11) =
+* Updated - Codebase refactor
+
+= 3.4.1 (2025-10-07) =
+* Fix: Fixes on escaping and sanitization issues on codebase
+* Fix: Fixes on accessibility issues
+* Update: Minor UI improvements
+
 = 3.4.0 (2025-10-03) =
 * Update: changelog.txt added for WooCommerce
 * Update: Tutorial video for WooCommerce connection added to readme

@@ -20,6 +20,8 @@ const Button = ({
   buttonRef = null,
   fullWidth = false,
   href = '',
+  role,
+  disabled = false,
   ...props
 }) => {
   const buttonClass = classNames(
@@ -38,21 +40,22 @@ const Button = ({
   const content = (
     <>
       {loader && <span className='jfButton--spin' />}
-      {startIcon && <span className='jfButton--icon'>{startIcon}</span>}
+      {startIcon && <span className='jfButton--icon' aria-hidden='true'>{startIcon}</span>}
       {children && <span className='jfButton--text'>{children}</span>}
-      {endIcon && <span className='jfButton--icon'>{endIcon}</span>}
+      {endIcon && <span className='jfButton--icon' aria-hidden='true'>{endIcon}</span>}
     </>
   );
 
   if (href) {
     return (
       <a
+        {...props}
         href={href}
         className={buttonClass}
         onClick={onClick}
         ref={buttonRef}
-        {...props}
         role='button'
+        disabled={loader || disabled}
       >
         {content}
       </a>
@@ -61,12 +64,13 @@ const Button = ({
 
   return (
     <button
+      {...props}
       type='button'
       className={buttonClass}
       onClick={onClick}
-      disabled={loader}
+      disabled={loader || disabled}
       ref={buttonRef}
-      {...props}
+      role={role}
     >
       {content}
     </button>
@@ -86,7 +90,9 @@ Button.propTypes = {
   className: string,
   buttonRef: object,
   fullWidth: bool,
-  href: string
+  href: string,
+  role: string,
+  disabled: bool
 };
 
 export default Button;

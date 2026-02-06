@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import cx from 'classnames';
 import { bool } from 'prop-types';
@@ -37,7 +38,7 @@ const Abilities = ({ isConnected }) => {
             <h4>{t(ALL_TEXTS.FIND_PRODUCTS)}</h4>
             <p>{t(ALL_TEXTS.HELPS_CUSTOMERS_SEARCH_OR_FILTER_PRODUCTS)}</p>
           </div>
-          <Toggle checked={showProducts} onChange={() => handleToggleChange(WOO_COMMERCE_PROPERTIES.PRODUCT_FILTER, !showProducts)} />
+          <Toggle ariaLabel={`${t(ALL_TEXTS.FIND_PRODUCTS)} Toggle`} checked={showProducts} onChange={() => handleToggleChange(WOO_COMMERCE_PROPERTIES.PRODUCT_FILTER, !showProducts)} />
         </div>
         {/* recommend products */}
         <div className='jfpContent-wrapper--settings-options-ability-select'>
@@ -45,7 +46,7 @@ const Abilities = ({ isConnected }) => {
             <h4>{t(ALL_TEXTS.RECOMMEND_PRODUCTS)}</h4>
             <p>{t(ALL_TEXTS.SUGGESTS_BEST_SELLERS)}</p>
           </div>
-          <Toggle checked={recommendProducts} onChange={() => handleToggleChange(WOO_COMMERCE_PROPERTIES.PRODUCT_RECOMMENDATION, !recommendProducts)} />
+          <Toggle ariaLabel={`${t(ALL_TEXTS.RECOMMEND_PRODUCTS)} Toggle`} checked={recommendProducts} onChange={() => handleToggleChange(WOO_COMMERCE_PROPERTIES.PRODUCT_RECOMMENDATION, !recommendProducts)} />
         </div>
         {/* add & update cart */}
         <div className='jfpContent-wrapper--settings-options-ability-select'>
@@ -53,7 +54,7 @@ const Abilities = ({ isConnected }) => {
             <h4>{t(ALL_TEXTS.ADD_PRODUCTS_TO_CART)}</h4>
             <p>{t(ALL_TEXTS.ADD_ITEMS_TO_THE_SHOPPING_CART)}</p>
           </div>
-          <Toggle checked={addAndUpdateCart} onChange={() => handleToggleChange(WOO_COMMERCE_PROPERTIES.ADD_TO_CART, !addAndUpdateCart)} />
+          <Toggle ariaLabel={`${t(ALL_TEXTS.ADD_PRODUCTS_TO_CART)} Toggle`} checked={addAndUpdateCart} onChange={() => handleToggleChange(WOO_COMMERCE_PROPERTIES.ADD_TO_CART, !addAndUpdateCart)} />
         </div>
         {/* show order status */}
         <div className='jfpContent-wrapper--settings-options-ability-select'>
@@ -61,7 +62,7 @@ const Abilities = ({ isConnected }) => {
             <h4>{t(ALL_TEXTS.SHOW_ORDER_STATUS)}</h4>
             <p>{t(ALL_TEXTS.PRODVIDES_REAL_TIME_UPDATES)}</p>
           </div>
-          <Toggle checked={showOrderStatus} onChange={() => handleToggleChange(WOO_COMMERCE_PROPERTIES.ORDER_TRACKING, !showOrderStatus)} />
+          <Toggle ariaLabel={`${t(ALL_TEXTS.SHOW_ORDER_STATUS)} Toggle`} checked={showOrderStatus} onChange={() => handleToggleChange(WOO_COMMERCE_PROPERTIES.ORDER_TRACKING, !showOrderStatus)} />
         </div>
         {/* manage refunds */}
         <div className='jfpContent-wrapper--settings-options-ability-select'>

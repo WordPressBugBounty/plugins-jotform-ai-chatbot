@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 import introVideo from '../assets/videos/intro.mp4';
 import { ALL_TEXTS, STEPS } from '../constants';
 import { useWizard } from '../hooks';
-import { awaitFor, initAgent, t } from '../utils';
+import { initAgent, t } from '../utils';
 
 const Preview = () => {
   const { state } = useWizard();
@@ -20,21 +20,13 @@ const Preview = () => {
     agentLanguage,
     agentToneOfVoice,
     persona,
-    materials
+    materials,
+    refreshPreviewForAvatar
   } = state;
-
-  const prevAvatarRef = useRef(selectedAvatar);
 
   useEffect(() => {
     const refreshAgent = async () => {
-      const avatarChanged = prevAvatarRef.current !== selectedAvatar;
-
-      if (avatarChanged) {
-        await awaitFor(2500);
-      }
-
-      const agentPreviewRoot = document.querySelector('#agent-preview-root');
-      if (!agentPreviewRoot) return;
+      if (!document.querySelector('#agent-preview-root')) return;
 
       initAgent({
         agentId: previewAgentId,
@@ -42,14 +34,11 @@ const Preview = () => {
         customAvatarUrl: selectedAvatar.avatarIconLink,
         ...themeCustomizations
       });
-
-      // update previous avatar ref
-      prevAvatarRef.current = selectedAvatar;
     };
 
     refreshAgent();
   }, [
-    selectedAvatar,
+    refreshPreviewForAvatar,
     agentName,
     agentRole,
     agentLanguage,
@@ -78,9 +67,6 @@ const Preview = () => {
         <div className='agent-preview'>
           <div className='agent-preview-bg' />
           <div id='agent-preview-root' />
-          {![STEPS.INITIAL, STEPS.USECASE_SELECTION, STEPS.WP_PAGE_SELECTION].includes(step) && (
-            <div />
-          )}
         </div>
       )}
     </>

@@ -1,5 +1,10 @@
 <?php
 
+// Exit if accessed directly
+if (!defined('ABSPATH')) {
+    exit(0);
+}
+
 // Check if the uninstall process is triggered by WordPress.
 // This ensures the code runs only when the plugin is deleted via the WordPress admin interface.
 if (!defined("WP_UNINSTALL_PLUGIN")) {

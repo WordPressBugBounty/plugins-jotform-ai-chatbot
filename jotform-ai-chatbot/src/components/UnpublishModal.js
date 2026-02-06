@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 import { bool, func } from 'prop-types';
 
 import { saveInstallment } from '../api';
-import IconXmarkCircle from '../assets/svg/IconXmarkCircle.svg';
 import { ALL_TEXTS } from '../constants';
 import { t } from '../utils';
 import Button from './UI/Button';
-import { IconExclamationCircleFilled } from './UI/Icon';
+import { IconExclamationCircleFilled, IconXmarkCircle } from './UI/Icon';
 import Modal from './UI/Modal';
 
 const UnpublishModal = ({
@@ -25,21 +24,21 @@ const UnpublishModal = ({
     <Modal
       open={isOpen}
       onClose={onCloseClick}
-      ariaLabel={t(ALL_TEXTS.UNPUBLISH_CHATBOT_FROM_WEBSITE)}
+      aria-labelledby='unpublishDialogTitle'
       size='small'
     >
       <div className='jfModal--title'>
-        <div className='jfModal--title-icon jfModal--title-icon-error'>
+        <div className='jfModal--title-icon jfModal--title-icon-error' aria-hidden='true'>
           <IconXmarkCircle />
         </div>
-        <h3>
+        <h2 id='unpublishDialogTitle'>
           {t(ALL_TEXTS.UNPUBLISH_CHATBOT_FROM_WEBSITE)}
-        </h3>
+        </h2>
         <p style={{ marginBottom: 0 }}>
           {t(ALL_TEXTS.CLICK_UNPUBLISH_TO_REMOVE_THE_CHATBOT)}
         </p>
         <div className='jfModal--title-info'>
-          <IconExclamationCircleFilled className='jfModal--title-info-icon' />
+          <IconExclamationCircleFilled className='jfModal--title-info-icon' aria-hidden='true' />
           <p>{t(ALL_TEXTS.YOUR_CHATBOT_AND_ITS_TRANING_DATA_WILL_REMAIN_SAVED)}</p>
         </div>
       </div>
@@ -53,10 +52,14 @@ const UnpublishModal = ({
         </Button>
         <Button
           colorStyle='error'
-          loader={isPublishLoading}
+          // loader={isPublishLoading}
+          disabled={isPublishLoading}
           onClick={onUnpublishClick}
+          aria-live='polite'
         >
-          {t(ALL_TEXTS.UNPUBLISH)}
+          {isPublishLoading
+            ? t(ALL_TEXTS.UNPUBLISHING)
+            : t(ALL_TEXTS.UNPUBLISH)}
         </Button>
       </div>
     </Modal>

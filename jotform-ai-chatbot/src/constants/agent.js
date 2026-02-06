@@ -101,6 +101,22 @@ export const MATERIAL_STATUS = {
     PROCESSED: 'Agent trained',
     FAILED: 'Failed',
     ACTION_REQUIRED: 'Added'
+  },
+  VIDEO: {
+    IN_PROGRESS: 'Agent is processing the video...',
+    STEP1: 'Agent is analyzing the video content...',
+    STEP2: 'Agent is extracting key information from the video...',
+    STEP3: 'Agent is preparing the video content for understanding...',
+    PROCESSED: 'Agent learned',
+    FAILED: 'Failed',
+    ACTION_REQUIRED: 'Added',
+    UNSUPPORTED: 'Agent cannot process this video format.'
+  },
+  THIRD_PARTY: {
+    IN_PROGRESS: '',
+    PROCESSED: 'Agent learned',
+    FAILED: 'Failed',
+    ACTION_REQUIRED: 'Added'
   }
 };
 

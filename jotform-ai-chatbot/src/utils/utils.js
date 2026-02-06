@@ -374,6 +374,19 @@ const hideElement = (element) => {
   element.style.display = 'none';
 };
 
+const toggleAdminBarWrapper = async () => {
+  await awaitFor(1000);
+  const ulEl = document.querySelector('#wp-admin-bar-jotform_ai_chatbot-default');
+  if (!ulEl) return;
+  const liEls = ulEl.querySelectorAll('li');
+  if (!liEls || liEls.length === 0) {
+    ulEl.style.display = 'none';
+    return;
+  }
+  const areAllItemsHidden = Array.from(liEls).every(el => el?.style?.display === 'none');
+  ulEl.style.display = areAllItemsHidden ? 'none' : 'block';
+};
+
 export const toggleConversationItems = ({ action }) => {
   const sidebarMenu = document.querySelector('#toplevel_page_jotform_ai_chatbot > ul');
   const createAgentMenuItem = sidebarMenu?.querySelector('li.wp-first-item > a[href="admin.php?page=jotform_ai_chatbot"]');
@@ -394,6 +407,7 @@ export const toggleConversationItems = ({ action }) => {
     hideElement(conversationsMenuItem);
     hideElement(conversationsAdminBarMenuItem);
   }
+  toggleAdminBarWrapper();
 };
 
 export const toggleSettingsItems = ({ action }) => {
@@ -409,6 +423,7 @@ export const toggleSettingsItems = ({ action }) => {
     hideElement(settingsMenuItem);
     hideElement(settingsAdminBarMenuItem);
   }
+  toggleAdminBarWrapper();
 };
 
 export const isNumericString = (value) => typeof value === 'string' && value.trim() !== '' && !!Number(value);

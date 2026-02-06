@@ -57,7 +57,6 @@ const Modal = forwardRef(({
         aria-label={ariaLabel}
         className={modalClassName}
         {...rest}
-        tabIndex={0}
       >
         <div className='jfModal--close'>
           <Button
@@ -65,6 +64,7 @@ const Modal = forwardRef(({
             startIcon={<IconXmark />}
             colorStyle='secondary'
             rounded
+            aria-label='Close Button'
           />
         </div>
         {children}
@@ -101,7 +101,7 @@ Modal.defaultProps = {
   fitOnMobile: false,
   className: '',
   initialFocus: null,
-  ariaLabel: ''
+  ariaLabel: null
 };
 
 export default Modal;

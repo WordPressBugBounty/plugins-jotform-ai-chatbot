@@ -14,6 +14,7 @@ import AgentRadio from '../UI/AgentRadio';
 import Button from '../UI/Button';
 import Tab from '../UI/Tab';
 import Textarea from '../UI/Textarea';
+import UnauthorizedUserError from '../UnauthorizedUserError';
 
 const UseCaseStep = () => {
   const textareaRef = useRef();
@@ -24,6 +25,7 @@ const UseCaseStep = () => {
     prompt,
     step,
     isUseAgentLoading,
+    showUnauthorizedUserError,
     allAgents: {
       items: existingAgents
     },
@@ -39,6 +41,7 @@ const UseCaseStep = () => {
 
   const [tab, setTab] = useState('create');
   const [selectedAgent, setSelectedAgent] = useState('');
+  const [selectedPrompt, setSelectedPrompt] = useState(null);
   const appendLockRef = useRef(0);
   const APPEND_COOLDOWN_MS = 500;
   const isEnterprise = PROVIDER_ENV === 'ENTERPRISE';
@@ -98,6 +101,7 @@ const UseCaseStep = () => {
 
   const handleSelect = (suggestion) => {
     handlePromptChange(suggestion);
+    textareaRef.current?.focus();
   };
 
   useEffect(() => {
@@ -129,11 +133,13 @@ const UseCaseStep = () => {
     const now = Date.now();
     if (now - appendLockRef.current < APPEND_COOLDOWN_MS) return;
     appendLockRef.current = now;
+    setSelectedPrompt(data);
 
     const promptTrimmed = (prompt ?? '').trim();
     const newText = data?.text.trim();
 
     const finalPrompt = promptTrimmed ? `${promptTrimmed}\n\n${newText}` : newText;
+    textareaRef.current?.focus();
     dispatch(ACTION_CREATORS.setPrompt(finalPrompt));
     saveInstallment('promptSuggestionButton');
   };
@@ -141,11 +147,11 @@ const UseCaseStep = () => {
   return (
     <>
       <div className='jfpContent-wrapper--title'>
-        <h2>{t(ALL_TEXTS.SETUP_YOUR_AI_CHATBOT)}</h2>
+        <h2 id='setupYourAIChatbot'>{t(ALL_TEXTS.SETUP_YOUR_AI_CHATBOT)}</h2>
         <p>{t(ALL_TEXTS.USE_TEMPLATE_READY_OR_START_FROM_SCRATCH)}</p>
       </div>
       {!isEmpty(existingAgents) && (
-        <div className='jfpContent-wrapper--tabs'>
+        <div className='jfpContent-wrapper--tabs' role='tablist' aria-labelledby='setupYourAIChatbot'>
           <div
             className='jfpContent-wrapper--tabs-toggle-active'
             style={{
@@ -153,18 +159,22 @@ const UseCaseStep = () => {
                 ? 'translateX(0%) translateY(-50%)'
                 : 'translateX(100%) translateY(-50%)'
             }}
+            aria-hidden='true'
           />
           <Tab
             label={ALL_TEXTS.DESCRIBE}
             isActive={tab === 'create'}
+            ariaSelected={tab === 'create'}
             onClick={() => {
               setTab('create');
               saveInstallment('useCaseStep_describeTab');
             }}
           />
           <Tab
+            id='selectFromAgentsTitle'
             label={ALL_TEXTS.SELECT_FROM_AGENTS}
             isActive={tab === 'select'}
+            ariaSelected={tab === 'select'}
             onClick={() => {
               setTab('select');
               saveInstallment('useCaseStep_selectFromAgentsTab');
@@ -176,25 +186,33 @@ const UseCaseStep = () => {
         {tab === 'create' && (
           <>
             <div className='jfpContent-wrapper--customization-title'>
-              <h3>{t(ALL_TEXTS.DESCRIBE_THE_AGENT_YOU_WANT_TO_CREATE)}</h3>
+              <h3 id='describeAgentTitle'>{t(ALL_TEXTS.DESCRIBE_THE_AGENT_YOU_WANT_TO_CREATE)}</h3>
             </div>
             <div className='jfpContent-wrapper--input'>
+              <label
+                htmlFor='promptArea'
+                id='promptLabel'
+                className={`jfpContent-wrapper--input-label ${!isEmpty(prompt) ? 'hidden' : ''}`}
+              >
+                {t(ALL_TEXTS.EXAMPLE_PROVIDE_CUSTOMER_SUPPORT_BY_ANSWERING_FAQS_AND_GUIDING_USERS_THROUGH)}
+              </label>
               <Textarea
+                id='promptArea'
                 ref={textareaRef}
-                placeholder={t(ALL_TEXTS.EXAMPLE_PROVIDE_CUSTOMER_SUPPORT_BY_ANSWERING_FAQS_AND_GUIDING_USERS_THROUGH)}
                 style={{ height: '120px' }}
                 onChange={(e => handlePromptChange(e.target.value))}
                 value={prompt}
+                aria-labelledby='describeAgentTitle'
               />
               {!isEnterprise && (
-              <PromptSuggestion
-                ref={textareaRef}
-                inputValue={prompt}
-                onSelect={handleSelect}
-              />
+                <PromptSuggestion
+                  ref={textareaRef}
+                  inputValue={prompt}
+                  onSelect={handleSelect}
+                />
               )}
             </div>
-            <div className='jfpContent-wrapper--buttons'>
+            <div className='jfpContent-wrapper--buttons' role='region' aria-label='Select one of the prompt examples'>
               {PROMPTS.map(data => (
                 <Button
                   rounded
@@ -202,6 +220,8 @@ const UseCaseStep = () => {
                   colorStyle='secondary'
                   variant='filled'
                   onClick={() => handlePromptButtonClick(data)}
+                  aria-label={`${data.buttonText} Example`}
+                  aria-pressed={selectedPrompt === data}
                 >
                   {t(data.buttonText)}
                 </Button>
@@ -210,13 +230,14 @@ const UseCaseStep = () => {
           </>
         )}
         {tab === 'select' && !isEmpty(existingAgents) && (
-          <ul className='jfpContent-wrapper--select-agent'>
+          <ul className='jfpContent-wrapper--select-agent' role='radiogroup' aria-labelledby='selectFromAgentsTitle'>
             {existingAgents.map(agent => (
               <AgentRadio
                 key={agent.id}
                 name='selectedAgent'
                 value={agent.uuid}
                 checked={agent.uuid === selectedAgent}
+                aria-checked={agent.uuid === selectedAgent}
                 onChange={() => setSelectedAgent(agent.uuid)}
                 avatarImage={agent.avatarIconLink}
                 label={agent.title}
@@ -225,6 +246,7 @@ const UseCaseStep = () => {
             ))}
           </ul>
         )}
+        {showUnauthorizedUserError && <UnauthorizedUserError />}
       </div>
       <div className='jfpContent-wrapper--actions'>
         {/* use chatbot button */}

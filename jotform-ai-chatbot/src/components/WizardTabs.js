@@ -31,12 +31,13 @@ const WizardTabs = () => {
 
   return (
     <div className={cx('jfpContent-wrapper--main-tabs')}>
-      <div className={cx('jfpContent-wrapper--main-tabs-container')}>
+      <div className={cx('jfpContent-wrapper--main-tabs-container')} role='tablist'>
         <div
           className={cx('jfpContent-wrapper--main-tabs-toggle', {
             invisible: !isAnyTabActive
           })}
           style={toggleStyle}
+          aria-hidden='true'
         />
         {TAB_STEPS.map(({ label, name }) => (
           <button
@@ -46,6 +47,8 @@ const WizardTabs = () => {
             className={cx('jfpContent-wrapper--main-tabs-button', {
               isActive: step === name
             })}
+            role='tab'
+            aria-selected={step === name}
           >
             {t(label)}
           </button>

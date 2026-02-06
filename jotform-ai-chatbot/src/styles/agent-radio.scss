@@ -6,6 +6,9 @@
   user-select: none;
   gap: 16px;
   width: 100%;
+  @media screen and (max-width: 480px) {
+    gap: 12px;
+  }
   &--checkmark {
     position: relative;
     display: inline-flex;

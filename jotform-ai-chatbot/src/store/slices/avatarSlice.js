@@ -10,7 +10,7 @@ const RESET_AVATARS = 'RESET_AVATARS';
 
 // Default avatar object
 const defaultSelectedAvatar = {
-  id: 0, avatarName: '', avatarIconLink: '', avatarLink: '', avatarType: '', propmt: ''
+  id: 0, avatarName: '', avatarIconLink: '', avatarLink: '', avatarType: '', propmt: '', customAvatar: false
 };
 
 // Initial state for avatar domain
@@ -71,7 +71,7 @@ export const avatarReducer = (state, action) => {
       const {
         result: {
           content = undefined,
-          agentProperties = {},
+          agentProperties = { avatarLink: '' },
           agentName
         }
       } = action.payload;
@@ -86,7 +86,8 @@ export const avatarReducer = (state, action) => {
         avatarLink: agentProperties.avatarLink,
         prompt: agentProperties.avatarPrompt,
         avatarIconLink: agentProperties.avatarIconLink,
-        id: getAvatarIdFromUrl(agentProperties.avatarIconLink)
+        id: getAvatarIdFromUrl(agentProperties.avatarIconLink),
+        customAvatar: agentProperties.avatarLink?.includes('avatar_images') ?? false
       };
 
       return {

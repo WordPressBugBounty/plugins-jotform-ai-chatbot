@@ -1,10 +1,10 @@
 import React from 'react';
-import { bool, func } from 'prop-types';
+import { bool, func, string } from 'prop-types';
 
 import '../../styles/toggle.scss';
 
-const Toggle = ({ checked, onChange }) => (
-  <label className='chatbot-toggle'>
+const Toggle = ({ checked, onChange, ariaLabel }) => (
+  <label className='chatbot-toggle' aria-label={ariaLabel}>
     <input
       className='chatbot-toggle--input'
       type='checkbox'
@@ -17,7 +17,8 @@ const Toggle = ({ checked, onChange }) => (
 
 Toggle.propTypes = {
   checked: bool.isRequired,
-  onChange: func.isRequired
+  onChange: func.isRequired,
+  ariaLabel: string
 };
 
 export default Toggle;

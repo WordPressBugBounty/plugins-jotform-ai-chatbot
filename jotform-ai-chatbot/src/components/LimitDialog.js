@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { func, string } from 'prop-types';
 
 import { saveInstallment } from '../api';
-import IconInfoSquareFilled from '../assets/svg/IconInfoSquareFilled.svg';
 import { ALL_TEXTS } from '../constants';
 import { awaitFor, t } from '../utils';
 import Button from './UI/Button';
+import { IconInfoSquareFilled } from './UI/Icon';
 import Modal from './UI/Modal';
 
 const LimitDialog = ({
@@ -32,7 +32,7 @@ const LimitDialog = ({
       size='small'
     >
       <div className='jfModal--title'>
-        <div className='jfModal--title-icon jfModal--title-icon-error'>
+        <div className='jfModal--title-icon jfModal--title-icon-error' aria-hidden='true'>
           <IconInfoSquareFilled />
         </div>
         <h3>

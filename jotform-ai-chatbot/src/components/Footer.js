@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { string } from 'prop-types';
 
 import { saveInstallment } from '../api';
-import IconNotificationText from '../assets/svg/IconNotificationText.svg';
 import { ALL_TEXTS } from '../constants';
 import { t } from '../utils';
+import SupportModal from './SupportModal';
 import Button from './UI/Button';
+import { IconHeadset } from './UI/Icon';
 
 const Footer = ({ platformDomain, platformPluginVersion }) => {
-  const domainQuery = `?domainField=${platformDomain}&versionField=${platformPluginVersion}`;
+  const domainQuery = `?domain=${platformDomain}&plugin_version=${platformPluginVersion}`;
+  const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
 
   const handleHowToUseClick = e => {
     e.preventDefault();
@@ -16,10 +18,17 @@ const Footer = ({ platformDomain, platformPluginVersion }) => {
     window.open(e.target.href, '_blank');
   };
 
-  const handleFeedbackClick = () => {
-    saveInstallment('giveFeedbackButton');
-    const feedbackUrl = `https://link.jotform.com/V9WBvjTyR2${domainQuery}`;
+  const handleGetSupportClick = () => {
+    setIsSupportModalOpen(true);
+    saveInstallment('getSupportButton');
+  };
+
+  const handleGoToSupportPageClick = e => {
+    e.preventDefault();
+    const feedbackUrl = `https://link.jotform.com/YmN9tHjSBA${domainQuery}`;
     window.open(feedbackUrl, '_blank');
+    setIsSupportModalOpen(false);
+    saveInstallment('goToSupportPageButton');
   };
 
   return (
@@ -30,17 +39,23 @@ const Footer = ({ platformDomain, platformPluginVersion }) => {
         target='_blank'
         rel='noreferrer'
         onClick={handleHowToUseClick}
+        aria-label='How to use Jotform AI Chatbot? (opens in new tab)'
       >
         {(t(ALL_TEXTS.HOW_TO_USE_JOTFORM_AI_CHATBOT))}
       </a>
       <Button
-        startIcon={<IconNotificationText />}
+        startIcon={<IconHeadset />}
         variant='outline'
         colorStyle='secondary'
-        onClick={handleFeedbackClick}
+        onClick={handleGetSupportClick}
       >
-        {(t(ALL_TEXTS.GIVE_FEEDBACK))}
+        {(t(ALL_TEXTS.GET_SUPPORT))}
       </Button>
+      <SupportModal
+        isModalVisible={isSupportModalOpen}
+        onCloseClick={() => setIsSupportModalOpen(false)}
+        onGotoSupportPageClick={handleGoToSupportPageClick}
+      />
     </footer>
   );
 };

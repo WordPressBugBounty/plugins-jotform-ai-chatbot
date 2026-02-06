@@ -27,7 +27,7 @@
     opacity: 0.5;
   }
 
-  &--counter{ 
+  &--counter {
     font-size: 14px;
     color: var(--jfv-navy-200);
     padding: 0 12px 8px;
@@ -49,6 +49,10 @@
     border: 0 !important;
     outline: 0 !important;
     box-shadow: none !important;
+    @media screen and (max-width: 480px) {
+      font-size: 12px;
+      line-height: 16px;
+    }
 
     &:focus {
       border: 0 !important;
