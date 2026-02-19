@@ -6,7 +6,7 @@ import IconArrowRight from '../../assets/svg/IconArrowRight.svg';
 import LogoJotformColor from '../../assets/svg/LogoJotformColor.svg';
 import { ALL_TEXTS } from '../../constants';
 import { useWizard } from '../../hooks';
-import { t, toCamelCase } from '../../utils';
+import { toCamelCase } from '../../utils';
 import NetworkError from '../NetworkError';
 import Button from '../UI/Button';
 import UnauthorizedApiKeyError from '../UnauthorizedApiKeyError';
@@ -40,8 +40,8 @@ const InitialStep = ({
         <div className='first-step--logo'>
           <LogoJotformColor width='148' height='28' />
         </div>
-        <h2>{t(customTexts.title || ALL_TEXTS.READ_TO_BUILD_YOUR_AI)}</h2>
-        <p>{t(customTexts.subtitle || ALL_TEXTS.CREATE_AND_CUSTOMIZE_YOUR_AI)}</p>
+        <h2>{customTexts.title || ALL_TEXTS.READ_TO_BUILD_YOUR_AI}</h2>
+        <p>{customTexts.subtitle || ALL_TEXTS.CREATE_AND_CUSTOMIZE_YOUR_AI}</p>
         <Button
           endIcon={<IconArrowRight />}
           onClick={handleStartClick}
@@ -49,7 +49,7 @@ const InitialStep = ({
           target='_self'
           href={loginUrl}
         >
-          {t(ALL_TEXTS.LETS_START)}
+          {ALL_TEXTS.LETS_START}
         </Button>
       </div>
       {showNetworkError && <NetworkError />}

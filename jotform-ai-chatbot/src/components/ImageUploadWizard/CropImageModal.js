@@ -8,7 +8,6 @@ import 'cropperjs/dist/cropper.css';
 
 import { saveInstallment } from '../../api';
 import { ALL_TEXTS } from '../../constants';
-import { t } from '../../utils';
 import Button from '../UI/Button';
 import {
   IconArrowLeftHalf, IconArrowRotateLeft, IconArrowRotateRight,
@@ -183,7 +182,7 @@ const CropImageModal = ({
           guides
         />
         <div className='jfModal--image-upload-adjust'>
-          {useImageEditor && (<span className='jfModal--image-upload-adjust-text'>{t('Adjust Image')}</span>)}
+          {useImageEditor && (<span className='jfModal--image-upload-adjust-text'>Adjust Image</span>)}
           <div className='jfModal--image-upload-adjust-buttons'>
             {useImageEditor && (
               <div className='jfModal--image-upload-adjust-buttons-option'>
@@ -226,7 +225,7 @@ const CropImageModal = ({
                 onClick={handleRemoveBackgroundBtn}
                 startIcon={removeBg ? <IconArrowLeftHalf /> : <IconEraserFilled />}
               >
-                {t(removeBg ? 'Reset' : 'Remove background')}
+                {removeBg ? 'Reset' : 'Remove background'}
               </Button>
             )}
           </div>
@@ -246,7 +245,7 @@ const CropImageModal = ({
           variant='filled'
           loader={uploadImageLoading}
         >
-          {t(ALL_TEXTS.SAVE)}
+          {ALL_TEXTS.SAVE}
         </Button>
       </div>
     </Modal>

@@ -12,7 +12,7 @@ import {
 } from '../../constants';
 import { useHideGreetingTooltip, useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
-import { t, toCamelCase } from '../../utils';
+import { toCamelCase } from '../../utils';
 import Avatar from '../Avatar';
 import { ChatGuidelines } from '../ChatGuidelines';
 import Button from '../UI/Button';
@@ -136,14 +136,14 @@ const AiPersonaStep = () => {
   return (
     <>
       <div className='jfpContent-wrapper--ai-persona'>
-        <h2 className='sr-only'>{t(ALL_TEXTS.AI_PERSONA)}</h2>
+        <h2 className='sr-only'>{ALL_TEXTS.AI_PERSONA}</h2>
         <Avatar />
         <hr className='jfpContent-wrapper--line line-2x' />
         {/* agent name */}
         <div className='jfpContent-wrapper--ai-persona-title'>
           <div>
-            <h3>{t(ALL_TEXTS.AGENT_NAME)}</h3>
-            <p>{t(ALL_TEXTS.GIVE_A_NAME_TO_YOUR_AGENT_THAT_WILL_BE_DISPLAYED_IN_THE_CONVERSATION)}</p>
+            <h3>{ALL_TEXTS.AGENT_NAME}</h3>
+            <p>{ALL_TEXTS.GIVE_A_NAME_TO_YOUR_AGENT_THAT_WILL_BE_DISPLAYED_IN_THE_CONVERSATION}</p>
           </div>
           <Input
             type='text'
@@ -155,8 +155,8 @@ const AiPersonaStep = () => {
         {/* agent role */}
         <div className='jfpContent-wrapper--ai-persona-title'>
           <div>
-            <h3>{t(ALL_TEXTS.AGENT_ROLE)}</h3>
-            <p>{t(ALL_TEXTS.DESCRIPTION_YOUR_AGENTS_JOB_TITLE)}</p>
+            <h3>{ALL_TEXTS.AGENT_ROLE}</h3>
+            <p>{ALL_TEXTS.DESCRIPTION_YOUR_AGENTS_JOB_TITLE}</p>
           </div>
           <Input
             type='text'
@@ -184,8 +184,8 @@ const AiPersonaStep = () => {
         {/* default language */}
         <div className='jfpContent-wrapper--ai-persona-title'>
           <div>
-            <h3>{t(ALL_TEXTS.DEFAULT_LANGUAGE)}</h3>
-            <p>{t(ALL_TEXTS.SELECT_THE_LANGUAGE)}</p>
+            <h3>{ALL_TEXTS.DEFAULT_LANGUAGE}</h3>
+            <p>{ALL_TEXTS.SELECT_THE_LANGUAGE}</p>
           </div>
           <Dropdown
             colorStyle='default'
@@ -199,7 +199,7 @@ const AiPersonaStep = () => {
                 key={value}
                 value={value}
               >
-                {`${icon} ${t(text)}`}
+                {`${icon} ${text}`}
               </option>
             ))}
           </Dropdown>
@@ -207,8 +207,8 @@ const AiPersonaStep = () => {
         {/* tone of voice */}
         <div className='jfpContent-wrapper--ai-persona-title'>
           <div>
-            <h3>{t(ALL_TEXTS.TONE_OF_VOICE)}</h3>
-            <p>{t(ALL_TEXTS.SELECT_HOW_TO_COMMUNICATE)}</p>
+            <h3>{ALL_TEXTS.TONE_OF_VOICE}</h3>
+            <p>{ALL_TEXTS.SELECT_HOW_TO_COMMUNICATE}</p>
           </div>
           <Dropdown
             colorStyle='default'
@@ -222,7 +222,7 @@ const AiPersonaStep = () => {
                 key={value}
                 value={value}
               >
-                {`${emoji} ${t(text)}`}
+                {`${emoji} ${text}`}
               </option>
             ))}
           </Dropdown>
@@ -234,15 +234,15 @@ const AiPersonaStep = () => {
           <div className='jfpContent-wrapper--ai-persona-title'>
             <div className='jfpContent-wrapper--ai-persona-greeting'>
               <div>
-                <h3>{t(ALL_TEXTS.GREETING_MESSAGE)}</h3>
-                <p>{t(ALL_TEXTS.SHOW_A_MESSAGE_TO_GREET_USERS)}</p>
+                <h3>{ALL_TEXTS.GREETING_MESSAGE}</h3>
+                <p>{ALL_TEXTS.SHOW_A_MESSAGE_TO_GREET_USERS}</p>
               </div>
               <Toggle checked={greetingBool} onChange={() => handleChangeGreeting(!greetingBool)} />
             </div>
             <Input
               maxLength={80}
               value={greetingMessageState}
-              placeholder={t(ALL_TEXTS.HOW_CAN_I_HELP_YOU)}
+              placeholder={ALL_TEXTS.HOW_CAN_I_HELP_YOU}
               onChange={e => handleChangeGreetingText(e.target.value)}
               disabled={!greetingBool}
             />
@@ -253,8 +253,8 @@ const AiPersonaStep = () => {
         {/* agent chattiness */}
         <div className='jfpContent-wrapper--ai-persona-title'>
           <div>
-            <h3>{t(ALL_TEXTS.CHATTINESS)}</h3>
-            <p>{t(ALL_TEXTS.SPECIFY_THE_DESIRED_LEVEL_OF_DETAIL_IN_THE_AGENTS_RESPONSES)}</p>
+            <h3>{ALL_TEXTS.CHATTINESS}</h3>
+            <p>{ALL_TEXTS.SPECIFY_THE_DESIRED_LEVEL_OF_DETAIL_IN_THE_AGENTS_RESPONSES}</p>
           </div>
           <input
             className='chattiness-slider'

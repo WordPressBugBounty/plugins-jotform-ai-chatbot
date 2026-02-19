@@ -9,7 +9,7 @@ import {
 import { useEffectIgnoreFirst, useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
 import {
-  generateTempId, isNumericString, t, toCamelCase
+  generateTempId, isNumericString, toCamelCase
 } from '../../utils';
 import Button from '../UI/Button';
 import Dropdown from '../UI/Dropdown';
@@ -93,8 +93,8 @@ const AdvancedVisibility = () => {
     <div className='customize-option visibility'>
       <div className='jfpContent-wrapper--customization-title'>
         <div>
-          <h3>{t(ALL_TEXTS.ADVANCED_VISIBILITY)}</h3>
-          <p>{t(ALL_TEXTS.CHOOSE_WHERE_CHATBOT_WILL_BE_SHOWN_OR_HIDDEN)}</p>
+          <h3>{ALL_TEXTS.ADVANCED_VISIBILITY}</h3>
+          <p>{ALL_TEXTS.CHOOSE_WHERE_CHATBOT_WILL_BE_SHOWN_OR_HIDDEN}</p>
         </div>
         <ul className='jfpContent-wrapper--visibility-selection'>
           <li>
@@ -102,7 +102,7 @@ const AdvancedVisibility = () => {
               size='small'
               name='visibility'
               value={POSITION.LEFT}
-              label={t(VISIBILITY_TOGGLE.SHOW_ON.label)}
+              label={VISIBILITY_TOGGLE.SHOW_ON.label}
               checked={activeMode === VISIBILITY_TOGGLE.SHOW_ON.value}
               onChange={() => handleRadioChange(VISIBILITY_TOGGLE.SHOW_ON.value)}
             />
@@ -112,7 +112,7 @@ const AdvancedVisibility = () => {
               size='small'
               name='visibility'
               value={POSITION.RIGHT}
-              label={t(VISIBILITY_TOGGLE.HIDE_ON.label)}
+              label={VISIBILITY_TOGGLE.HIDE_ON.label}
               checked={activeMode === VISIBILITY_TOGGLE.HIDE_ON.value}
               onChange={() => handleRadioChange(VISIBILITY_TOGGLE.HIDE_ON.value)}
             />
@@ -153,7 +153,7 @@ const AdvancedVisibility = () => {
                 </Dropdown>
                 <Input
                   type='text'
-                  placeholder={t(ALL_TEXTS.URL)}
+                  placeholder={ALL_TEXTS.URL}
                   value={inputValue}
                   onChange={e => setInputValue(e.target.value)}
                   style={{ flex: 1 }}
@@ -183,7 +183,7 @@ const AdvancedVisibility = () => {
             onClick={handleAdd}
             aria-label='Add Option to the visibility list'
           >
-            {`${t(ALL_TEXTS.ADD)}`}
+            {ALL_TEXTS.ADD}
           </Button>
         </div>
         {/* selected pages */}
@@ -198,17 +198,17 @@ const AdvancedVisibility = () => {
             >
               {item.type === SELECTION_TYPE_VALUES.URL ? (
                 <>
-                  <Chip>{t(SELECTION_TYPE_LABELS.URL)}</Chip>{' '}
+                  <Chip>{SELECTION_TYPE_LABELS.URL}</Chip>{' '}
                   {item.match === URL_MATCH_TYPE_VALUES.IS ? (
-                    <Chip>{t(URL_MATCH_TYPE_LABELS.IS)}</Chip>
+                    <Chip>{URL_MATCH_TYPE_LABELS.IS}</Chip>
                   ) : (
-                    <Chip>{t(URL_MATCH_TYPE_LABELS.STARTS_WITH)}</Chip>
+                    <Chip>{URL_MATCH_TYPE_LABELS.STARTS_WITH}</Chip>
                   )}{' '}
                   <span className='value'>{item.value}</span>
                 </>
               ) : (
                 <>
-                  <Chip>{t(SELECTION_TYPE_LABELS.PAGE)}</Chip>{' '}
+                  <Chip>{SELECTION_TYPE_LABELS.PAGE}</Chip>{' '}
                   <span className='value'>
                     {PLATFORM_PAGES.find(p => p.value === item.value)?.text || item.text}
                   </span>

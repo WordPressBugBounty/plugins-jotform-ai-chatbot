@@ -3,7 +3,6 @@ import { bool, func } from 'prop-types';
 
 import { saveInstallment } from '../api';
 import { ALL_TEXTS } from '../constants';
-import { t } from '../utils';
 import Button from './UI/Button';
 import { IconExclamationCircleFilled, IconXmarkCircle } from './UI/Icon';
 import Modal from './UI/Modal';
@@ -32,14 +31,14 @@ const UnpublishModal = ({
           <IconXmarkCircle />
         </div>
         <h2 id='unpublishDialogTitle'>
-          {t(ALL_TEXTS.UNPUBLISH_CHATBOT_FROM_WEBSITE)}
+          {ALL_TEXTS.UNPUBLISH_CHATBOT_FROM_WEBSITE}
         </h2>
         <p style={{ marginBottom: 0 }}>
-          {t(ALL_TEXTS.CLICK_UNPUBLISH_TO_REMOVE_THE_CHATBOT)}
+          {ALL_TEXTS.CLICK_UNPUBLISH_TO_REMOVE_THE_CHATBOT}
         </p>
         <div className='jfModal--title-info'>
           <IconExclamationCircleFilled className='jfModal--title-info-icon' aria-hidden='true' />
-          <p>{t(ALL_TEXTS.YOUR_CHATBOT_AND_ITS_TRANING_DATA_WILL_REMAIN_SAVED)}</p>
+          <p>{ALL_TEXTS.YOUR_CHATBOT_AND_ITS_TRANING_DATA_WILL_REMAIN_SAVED}</p>
         </div>
       </div>
       <div className='jfModal--actions'>
@@ -48,7 +47,7 @@ const UnpublishModal = ({
           variant='outline'
           onClick={onCloseClick}
         >
-          {t(ALL_TEXTS.CANCEL)}
+          {ALL_TEXTS.CANCEL}
         </Button>
         <Button
           colorStyle='error'
@@ -58,8 +57,8 @@ const UnpublishModal = ({
           aria-live='polite'
         >
           {isPublishLoading
-            ? t(ALL_TEXTS.UNPUBLISHING)
-            : t(ALL_TEXTS.UNPUBLISH)}
+            ? ALL_TEXTS.UNPUBLISHING
+            : ALL_TEXTS.UNPUBLISH}
         </Button>
       </div>
     </Modal>

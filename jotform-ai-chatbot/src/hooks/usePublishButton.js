@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 
 import { ALL_TEXTS } from '../constants';
-import { t } from '../utils';
 
 export const STAGES = {
   UNPUBLISHED: 'UNPUBLISHED',
@@ -12,28 +11,28 @@ export const STAGES = {
 
 const stageConfigs = {
   [STAGES.UNPUBLISHED]: {
-    text: t(ALL_TEXTS.PUBLISH),
+    text: ALL_TEXTS.PUBLISH,
     colorStyle: 'primary',
     variant: 'default',
     disabled: false,
     opacity: 1
   },
   [STAGES.LOADING1]: {
-    text: t(ALL_TEXTS.PUBLISHING),
+    text: ALL_TEXTS.PUBLISHING,
     colorStyle: 'primary',
     variant: 'default',
     disabled: true,
     opacity: 1
   },
   [STAGES.LOADING2]: {
-    text: t(ALL_TEXTS.PUBLISHED),
+    text: ALL_TEXTS.PUBLISHED,
     colorStyle: 'primary',
     variant: 'default',
     disabled: true,
     opacity: 0.5
   },
   [STAGES.PUBLISHED]: {
-    text: t(ALL_TEXTS.UNPUBLISH),
+    text: ALL_TEXTS.UNPUBLISH,
     colorStyle: 'error',
     variant: 'outline',
     disabled: false,

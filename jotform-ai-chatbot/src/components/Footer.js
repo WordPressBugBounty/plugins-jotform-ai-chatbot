@@ -3,7 +3,6 @@ import { string } from 'prop-types';
 
 import { saveInstallment } from '../api';
 import { ALL_TEXTS } from '../constants';
-import { t } from '../utils';
 import SupportModal from './SupportModal';
 import Button from './UI/Button';
 import { IconHeadset } from './UI/Icon';
@@ -41,7 +40,7 @@ const Footer = ({ platformDomain, platformPluginVersion }) => {
         onClick={handleHowToUseClick}
         aria-label='How to use Jotform AI Chatbot? (opens in new tab)'
       >
-        {(t(ALL_TEXTS.HOW_TO_USE_JOTFORM_AI_CHATBOT))}
+        {ALL_TEXTS.HOW_TO_USE_JOTFORM_AI_CHATBOT}
       </a>
       <Button
         startIcon={<IconHeadset />}
@@ -49,7 +48,7 @@ const Footer = ({ platformDomain, platformPluginVersion }) => {
         colorStyle='secondary'
         onClick={handleGetSupportClick}
       >
-        {(t(ALL_TEXTS.GET_SUPPORT))}
+        {ALL_TEXTS.GET_SUPPORT}
       </Button>
       <SupportModal
         isModalVisible={isSupportModalOpen}

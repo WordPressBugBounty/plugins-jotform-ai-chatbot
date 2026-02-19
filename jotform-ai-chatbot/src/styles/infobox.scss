@@ -22,20 +22,16 @@
       background-color: var(--jfv-green-400);
     }
     &.isKnowledge {
-      background-color: rgba(100, 178, 0, 0.2);
-      color: var(--jfv-green-500);
+      background-color: var(--jfv-green-500);
     }
     &.isDocument {
-      background-color: rgb(0, 153, 255, 0.2);
-      color: var(--jfv-blue-400);
+      background-color: var(--jfv-blue-400);
     }
     &.isURL {
-      background-color: rgba(255, 182, 41, 0.2);
-      color: var(--jfv-yellow-400);
+      background-color: var(--jfv-yellow-400);
     }
     &.isQA {
-      background-color: rgb(62, 98, 200, 0.2);
-      color: var(--jfv-pdf-default);
+      background-color: var(--jfv-pdf-default);
     }
   }
   &--content {

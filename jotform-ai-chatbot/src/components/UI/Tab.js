@@ -2,8 +2,6 @@ import React from 'react';
 import cx from 'classnames';
 import { bool, func, string } from 'prop-types';
 
-import { t } from '../../utils';
-
 const Tab = ({
   label, isActive, onClick, ariaSelected
 }) => (
@@ -14,7 +12,7 @@ const Tab = ({
     role='tab'
     aria-selected={ariaSelected}
   >
-    {t(label)}
+    {label}
   </button>
 );
 

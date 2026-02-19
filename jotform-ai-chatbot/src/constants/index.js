@@ -4,6 +4,9 @@ export { THEME_MAP, THEMES } from './themes';
 // Texts
 export { ALL_TEXTS } from './texts';
 
+// Dynamic Texts
+export { DYNAMIC_TEXTS } from './dynamicTexts';
+
 // Languages
 export { LANGUAGES } from './languages';
 

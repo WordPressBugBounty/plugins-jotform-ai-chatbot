@@ -6,7 +6,6 @@ import {
 import { getAgentAvatarAsBase64, saveInstallment } from '../api';
 import { ALL_TEXTS } from '../constants';
 import { useWizard } from '../hooks';
-import { t } from '../utils';
 import { CropImageModal } from './ImageUploadWizard';
 import { base64ToFile, formatFileSize, prepareFile } from './ImageUploadWizard/utils';
 import Button from './UI/Button';
@@ -86,8 +85,8 @@ const CustomAvatar = ({
           />
         </div>
         <div className='jfpContent-wrapper--avatar-custom-avatar-properties'>
-          <h4>{t(ALL_TEXTS.IMAGE_SIZE)}</h4>
-          <span>{imageSize || t(ALL_TEXTS.LOADING)}</span>
+          <h4>{ALL_TEXTS.IMAGE_SIZE}</h4>
+          <span>{imageSize || ALL_TEXTS.LOADING}</span>
         </div>
       </div>
       <div className='jfpContent-wrapper--avatar-custom-buttons'>
@@ -96,14 +95,14 @@ const CustomAvatar = ({
           colorStyle='neutral'
           onClick={onChangeAvatar}
         >
-          {t(ALL_TEXTS.CHANGE_AVATAR)}
+          {ALL_TEXTS.CHANGE_AVATAR}
         </Button>
         <Button
           loader={isEditLoading || isAgentPropertyLoading}
           disabled={isEditLoading || isAgentPropertyLoading}
           onClick={handleEditAvatar}
         >
-          {t(ALL_TEXTS.EDIT_AVATAR)}
+          {ALL_TEXTS.EDIT_AVATAR}
         </Button>
       </div>
       <CropImageModal

@@ -7,14 +7,14 @@ import {
 import '../../styles/material-summary-modal.scss';
 
 import { getMaterialById } from '../../api';
-import { platformSettings, t } from '../../utils';
+import { platformSettings } from '../../utils';
 import Button from '../UI/Button';
 import { IconAnnotationInfoFilled } from '../UI/Icon';
 import Modal from '../UI/Modal';
 
 const getTextBlock = (title, content, contentCustomClass) => (
   <div className='getTextBlock'>
-    <h3 className='getTextBlock--title'>{t(title)}</h3>
+    <h3 className='getTextBlock--title'>{title}</h3>
     <div className={`getTextBlock--content ${contentCustomClass}`}>
       {content}
     </div>
@@ -47,7 +47,7 @@ const MaterialSummaryModal = ({
     <Modal
       open={isOpen}
       onClose={closeModal}
-      ariaLabel={t('Material Summary Modal')}
+      ariaLabel='Material Summary Modal'
       size='large'
     >
       <div className='material-summary-modal--title'>
@@ -64,7 +64,7 @@ const MaterialSummaryModal = ({
         {getTextBlock('Content', trainedData || '', 'content')}
       </div>
       <div className='material-summary-modal--footer'>
-        <Button onClick={closeModal} colorStyle='primary' variant='filled'>{t('Done')}</Button>
+        <Button onClick={closeModal} colorStyle='primary' variant='filled'>Done</Button>
       </div>
     </Modal>
   );

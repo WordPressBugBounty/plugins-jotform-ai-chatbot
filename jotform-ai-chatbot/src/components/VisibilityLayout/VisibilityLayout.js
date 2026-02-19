@@ -6,7 +6,7 @@ import {
 } from '../../constants';
 import { useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
-import { t, toCamelCase } from '../../utils';
+import { toCamelCase } from '../../utils';
 import Dropdown from '../UI/Dropdown';
 import Radio from '../UI/Radio';
 import Toggle from '../UI/Toggle';
@@ -81,8 +81,8 @@ const VisibilityLayout = () => {
           <div className='customize-option layout-new'>
             <div className='jfpContent-wrapper--customization-title'>
               <div>
-                <h3>{t(ALL_TEXTS.LAYOUT)}</h3>
-                <p>{t(ALL_TEXTS.CHOOSE_HOW_CHATBOT_APPEARS)}</p>
+                <h3>{ALL_TEXTS.LAYOUT}</h3>
+                <p>{ALL_TEXTS.CHOOSE_HOW_CHATBOT_APPEARS}</p>
               </div>
             </div>
             <Dropdown
@@ -97,7 +97,7 @@ const VisibilityLayout = () => {
                   key={value}
                   value={value}
                 >
-                  {t(text)}
+                  {text}
                 </option>
               ))}
             </Dropdown>
@@ -107,14 +107,14 @@ const VisibilityLayout = () => {
         <div className='customize-option position'>
           <div className='jfpContent-wrapper--customization-title'>
             <div>
-              <h3>{t(ALL_TEXTS.POSITION)}</h3>
-              <p>{t(ALL_TEXTS.CHOOSE_THE_AI_AGENT)}</p>
+              <h3>{ALL_TEXTS.POSITION}</h3>
+              <p>{ALL_TEXTS.CHOOSE_THE_AI_AGENT}</p>
             </div>
           </div>
           <ul className='jfpContent-wrapper--customization-position'>
             <li>
               <Radio
-                label={t(ALL_TEXTS.LEFT)}
+                label={ALL_TEXTS.LEFT}
                 onChange={() => handleChangePosition(POSITION.LEFT)}
                 size='small'
                 value={POSITION.LEFT}
@@ -124,8 +124,8 @@ const VisibilityLayout = () => {
             </li>
             <li>
               <Radio
-                description={`(${t(ALL_TEXTS.RIGHT)})`}
-                label={t(ALL_TEXTS.RIGHT)}
+                description={`(${ALL_TEXTS.RIGHT})`}
+                label={ALL_TEXTS.RIGHT}
                 onChange={() => handleChangePosition(POSITION.RIGHT)}
                 size='small'
                 value={POSITION.RIGHT}
@@ -141,8 +141,8 @@ const VisibilityLayout = () => {
             <div className='customize-option pulse'>
               <div className='jfpContent-wrapper--customization-title'>
                 <div>
-                  <h3>{t(ALL_TEXTS.PULSING)}</h3>
-                  <p>{t(ALL_TEXTS.ADD_A_PULSE_EFFECT)}</p>
+                  <h3>{ALL_TEXTS.PULSING}</h3>
+                  <p>{ALL_TEXTS.ADD_A_PULSE_EFFECT}</p>
                 </div>
                 <Toggle checked={pulseBool} onChange={() => handleChangePulsing(!pulseBool)} />
               </div>
@@ -151,8 +151,8 @@ const VisibilityLayout = () => {
             <div className='customize-option open'>
               <div className='jfpContent-wrapper--customization-title'>
                 <div>
-                  <h3>{t(ALL_TEXTS.OPEN_BY_DEFAULT)}</h3>
-                  <p>{t(ALL_TEXTS.CHOOSE_WHEN_CHATBOT_WILL_APPEAR)}</p>
+                  <h3>{ALL_TEXTS.OPEN_BY_DEFAULT}</h3>
+                  <p>{ALL_TEXTS.CHOOSE_WHEN_CHATBOT_WILL_APPEAR}</p>
                 </div>
               </div>
               <Dropdown
@@ -167,7 +167,7 @@ const VisibilityLayout = () => {
                     key={value}
                     value={value}
                   >
-                    {t(text)}
+                    {text}
                   </option>
                 ))}
               </Dropdown>

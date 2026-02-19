@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 
 import { ALL_TEXTS } from '../../../constants';
 import { useWizard } from '../../../hooks';
-import { t } from '../../../utils';
 import Button from '../../UI/Button';
 
 const ConnectedChatbot = () => {
@@ -18,7 +17,7 @@ const ConnectedChatbot = () => {
 
   return (
     <div className='jfpContent-wrapper--settings-options-wrapper-connected'>
-      <h3 className='jfpContent-wrapper--settings-options-wrapper-connected-title'>{t(ALL_TEXTS.CONNECTED_CHATBOT.toUpperCase())}</h3>
+      <h3 className='jfpContent-wrapper--settings-options-wrapper-connected-title'>{ALL_TEXTS.CONNECTED_CHATBOT.toUpperCase()}</h3>
       <div className='jfpContent-wrapper--settings-options-wrapper-connected-wrapper'>
         <div className='jfpContent-wrapper--settings-options-wrapper-connected-content-wrapper'>
           <img
@@ -41,7 +40,7 @@ const ConnectedChatbot = () => {
           onClick={handleRemoveChatbotClick}
           className='jfpContent-wrapper--settings-options-wrapper-connected-btn'
         >
-          {t(ALL_TEXTS.REMOVE_FROM_WEBSITE_2)}
+          {ALL_TEXTS.REMOVE_FROM_WEBSITE_2}
         </Button>
       </div>
     </div>

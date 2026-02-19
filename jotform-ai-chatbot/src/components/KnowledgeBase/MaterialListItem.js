@@ -5,9 +5,9 @@ import { func, object, string } from 'prop-types';
 
 import '../../styles/material-list.scss';
 
-import { MATERIAL_STATUS, TRAIN_TYPES } from '../../constants';
+import { ALL_TEXTS, MATERIAL_STATUS, TRAIN_TYPES } from '../../constants';
 import {
-  convertServerDateToUserTimezone, safeJSONParse, t
+  convertServerDateToUserTimezone, safeJSONParse
 } from '../../utils';
 import Button from '../UI/Button';
 import { IconAnnotationInfoFilled, IconArrowsFromCenter, IconExclamationCircleFilled } from '../UI/Icon';
@@ -22,7 +22,7 @@ const MaterialStatus = ({ status, materialStatus }) => (
     <LineLoader {...{ status }} />
     <div className='jfMaterialStatus--text'>
       <div className='jfMaterialStatus--text-loader loader' />
-      {t(materialStatus)}
+      {materialStatus}
     </div>
   </div>
 );
@@ -175,7 +175,7 @@ const MaterialListItem = ({
               ? (
                 <div className='jfMaterialList--item-error'>
                   <IconExclamationCircleFilled />
-                  <span>{t('Answer needed.')}</span>
+                  <span>{ALL_TEXTS.ANSWER_NEEDED}</span>
                 </div>
               )
               : materialContent}
@@ -185,7 +185,7 @@ const MaterialListItem = ({
       {['PROCESSED', 'FAILED', 'ACTION_REQUIRED'].includes(status) ? (
         <div className='jfMaterialList--item-footer'>
           <div className='jfMaterialList--item-footer-text'>
-            {materialStatus ? t(`${materialStatus} on `) : ''}
+            {materialStatus ? `${materialStatus} on ` : ''}
             {convertedDate}
           </div>
           <div>

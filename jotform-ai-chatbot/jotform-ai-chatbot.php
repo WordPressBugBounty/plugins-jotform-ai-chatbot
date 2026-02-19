@@ -7,8 +7,10 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.6.4
+* Version: 3.7.0
 * Author URI: https://www.jotform.com/
+* Text Domain: jotform-ai-chatbot
+* Domain Path: /languages
 */
 
 // Exit if accessed directly
@@ -17,7 +19,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants for main file, directory path, and URL
-define('JAIC_PLUGIN_VERSION', '3.6.4');
+define('JAIC_PLUGIN_VERSION', '3.7.0');
 define('JAIC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('JAIC_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -42,13 +44,21 @@ function jotform_ai_chatbot_admin_enqueue($hook) {
     wp_enqueue_script('wp-date');
 
     // Main plugin assets
-    wp_enqueue_script(
-        "plugin-script",
+    wp_register_script(
+        'plugin-script',
         JAIC_PLUGIN_URL . "{$buildDir}/app/app.js",
-        [],
+        ['wp-i18n'],
         JAIC_PLUGIN_VERSION,
         true
     );
+
+    wp_set_script_translations(
+        'plugin-script',
+        'jotform-ai-chatbot',
+        plugin_dir_path(__FILE__) . 'languages'
+    );
+
+    wp_enqueue_script('plugin-script');
 
     // Main plugin css
     $css_path = plugin_dir_path(__FILE__) . "{$buildDir}/app/app.css";
@@ -60,13 +70,21 @@ function jotform_ai_chatbot_admin_enqueue($hook) {
     }
 
     // Preloader script
-    wp_enqueue_script(
+    wp_register_script(
         "plugin-preloader-script",
         JAIC_PLUGIN_URL . "lib/admin.js",
-        [],
+        ['wp-i18n'],
         JAIC_PLUGIN_VERSION,
         true
     );
+
+    wp_set_script_translations(
+        'plugin-preloader-script',
+        'jotform-ai-chatbot',
+        plugin_dir_path(__FILE__) . 'languages'
+    );
+
+    wp_enqueue_script('plugin-preloader-script');
 }
 add_action("admin_enqueue_scripts", "jotform_ai_chatbot_admin_enqueue");
 
@@ -86,7 +104,7 @@ function jotform_ai_chatbot_developers_callback($args) {
     <div id="jfpChatbot-app">
         <div class="jfLoader-wrapper">
             <div class="jfLoader"></div>
-            <strong>Jotform AI Chatbot wizard is loading...</strong>
+            <strong><?php echo esc_html__("Jotform AI Chatbot wizard is loading...", "jotform-ai-chatbot"); ?></strong>
         </div>
     </div>
     <?php
@@ -111,7 +129,7 @@ function jotform_ai_chatbot_plugin_options_page() {
     $options = !empty($options) ? json_decode($options, true) : [];
 
     // Determine link text based on the presence of ai chatbot
-    $link_text = (!empty($options["agentId"])) ? 'My AI Chatbot' : 'Create AI Chatbot';
+    $link_text = (!empty($options["agentId"])) ? __('My AI Chatbot', "jotform-ai-chatbot") : __('Create AI Chatbot', "jotform-ai-chatbot");
 
     add_submenu_page(
         'jotform_ai_chatbot',
@@ -124,8 +142,8 @@ function jotform_ai_chatbot_plugin_options_page() {
 
     add_submenu_page(
         'jotform_ai_chatbot',
-        'Conversations',
-        'Conversations',
+        __('Conversations', "jotform-ai-chatbot"),
+        __('Conversations', "jotform-ai-chatbot"),
         'manage_options',
         'jotform_ai_chatbot_conversations',
         'jotform_ai_chatbot_conversations_callback'
@@ -133,8 +151,8 @@ function jotform_ai_chatbot_plugin_options_page() {
 
     add_submenu_page(
         'jotform_ai_chatbot',
-        'Settings',
-        'Settings',
+        __('Settings', "jotform-ai-chatbot"),
+        __('Settings', "jotform-ai-chatbot"),
         'manage_options',
         'jotform_ai_chatbot_settings',
         'jotform_ai_chatbot_settings_callback'
@@ -290,7 +308,22 @@ function jaic_deactivate_modal_scripts($hook) {
     }
 
     wp_enqueue_style('jaic-deactivate-modal', JAIC_PLUGIN_URL . 'lib/css/jaic-deactivate-modal.css', [], JAIC_PLUGIN_VERSION);
-    wp_enqueue_script('jaic-deactivate-modal', JAIC_PLUGIN_URL . 'lib/jaic-deactivate-modal.js', [], JAIC_PLUGIN_VERSION, true);
+
+    wp_register_script(
+        'jaic-deactivate-modal',
+        plugins_url('lib/jaic-deactivate-modal.js', __FILE__),
+        ['wp-i18n'],
+        JAIC_PLUGIN_VERSION,
+        true
+    );
+
+    wp_set_script_translations(
+        'jaic-deactivate-modal',
+        'jotform-ai-chatbot',
+        plugin_dir_path(__FILE__) . 'languages'
+    );
+
+    wp_enqueue_script('jaic-deactivate-modal');
 
     // Localize script to pass plugin slug
     wp_localize_script('jaic-deactivate-modal', 'jaicPluginData', [
@@ -318,56 +351,100 @@ function jaic_deactivate_modal() {
     <div class="jaic_modal_inner">
         <div class="jaic_modal_content">
             <iframe name="jaic_hidden_iframe" style="display:none;" id="jaic_hidden_iframe"></iframe>
-            <h2 class="jaic_title">😞 We’re sorry to see you go</h2>
-            <p class="jaic_subtext">Help us understand why you’re deactivating. Your feedback makes us better.</p>
+            <h2 class="jaic_title">
+                <?php echo esc_html__("😞 We’re sorry to see you go", "jotform-ai-chatbot" ); ?>
+            </h2>
+            <p class="jaic_subtext">
+                <?php echo esc_html__("Help us understand why you’re deactivating. Your feedback makes us better.", "jotform-ai-chatbot"); ?>
+            </p>
             <form id="jaic_deactivate_form" action="<?php echo esc_url($formURL); ?>" method="post" target="jaic_hidden_iframe">
                 <input type="hidden" name="q3_domain" value="<?php echo esc_attr(wp_parse_url(home_url(), PHP_URL_HOST)); ?>">
                 <input type="hidden" name="q7_version" value="<?php echo esc_attr($current_version); ?>">
                 <label for="jaic_email" class="jaic_input_label">
-                    Email
-                    <span>(optional)</span>
+                    <?php echo esc_html__("Email", "jotform-ai-chatbot"); ?>
+                    <span>(<?php echo esc_html__("optional", "jotform-ai-chatbot"); ?>)</span>
                 </label>
                 <p class="jaic_input_subtext">
-                    Please provide your email address so we may contact you if needed.
+                    <?php echo esc_html__("Please provide your email address so we may contact you if needed.", "jotform-ai-chatbot"); ?>
                 </p>
                 <div id='jaic_email_wrapper'>
-                    <input type='text' id='jaic_email' class='jaic-text-input' name='q10_email' placeholder='Email' value="<?php echo esc_attr($current_user_email); ?>" />
+                    <input type='text' id='jaic_email' class='jaic-text-input' name='q10_email' placeholder='<?php echo esc_attr__("Email", "jotform-ai-chatbot"); ?>' value="<?php echo esc_attr($current_user_email); ?>" />
                 </div>
-                <h3 class="jaic_subtitle">Why are you leaving?</h3>
+                <h3 class="jaic_subtitle">
+                    <?php echo esc_html__("Why are you leaving?", "jotform-ai-chatbot"); ?>
+                </h3>
+
                 <?php
                 $reasons = [
-                    "only_testing" => "I was only testing the plugin",
-                    "no_longer_needed" => "I no longer need the plugin",
-                    "temporarily_deactivated" => "I temporarily deactivated it",
-                    "not_working" => "I couldn’t get it to work",
-                    "published_not_visible" => "I published it, but it didn’t appear on my site",
-                    "sign_up_issue" => "I couldn’t sign up / log in",
-                    "woocommerce_issue" => "I have an issue with WooCommerce integration",
-                    "performance" => "It affected my site’s performance",
-                    "missing_features" => "It doesn’t have the features I need",
-                    "better_alternative" => "I found a better alternative",
-                    "other" => "Other"
+                    "only_testing" => [
+                        "label" => __("I was only testing the plugin", "jotform-ai-chatbot"),
+                        "value" => "I was only testing the plugin"
+                    ],
+                    "no_longer_needed" => [
+                        "label" => __("I no longer need the plugin", "jotform-ai-chatbot"),
+                        "value" => "I no longer need the plugin"
+                    ],
+                    "temporarily_deactivated" => [
+                        "label" => __("I temporarily deactivated it", "jotform-ai-chatbot"),
+                        "value" => "I temporarily deactivated it"
+                    ],
+                    "not_working" => [
+                        "label" => __("I couldn’t get it to work", "jotform-ai-chatbot"),
+                        "value" => "I couldn’t get it to work"
+                    ],
+                    "published_not_visible" => [
+                        "label" => __("I published it, but it didn’t appear on my site", "jotform-ai-chatbot"),
+                        "value" => "I published it, but it didn’t appear on my site"
+                    ],
+                    "sign_up_issue" => [
+                        "label" => __("I couldn’t sign up / log in", "jotform-ai-chatbot"),
+                        "value" => "I couldn’t sign up / log in"
+                    ],
+                    "woocommerce_issue" => [
+                        "label" => __("I have an issue with WooCommerce integration", "jotform-ai-chatbot"),
+                        "value" => "I have an issue with WooCommerce integration"
+                    ],
+                    "performance" => [
+                        "label" => __("It affected my site’s performance", "jotform-ai-chatbot"),
+                        "value" => "It affected my site’s performance"
+                    ],
+                    "missing_features" => [
+                        "label" => __("It doesn’t have the features I need", "jotform-ai-chatbot"),
+                        "value" => "It doesn’t have the features I need"
+                    ],
+                    "better_alternative" => [
+                        "label" => __("I found a better alternative", "jotform-ai-chatbot"),
+                        "value" => "I found a better alternative"
+                    ],
+                    "other" => [
+                        "label" => __("Other", "jotform-ai-chatbot"),
+                        "value" => "Other"
+                    ]
                 ];
-                foreach ($reasons as $value => $label) {
-                    $escaped_label = htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
-                    echo "<div class='jaic_option' data-id='" . esc_attr($value) . "'>
-                            <div class='checkmark'>
-                                <input type='radio' name='q4_feedback' value='" . esc_attr($escaped_label) . "' id='jaic_" . esc_attr($value) . "'>
-                                <div class='checkmark-inner'></div>
-                            </div>
-                            <label for='jaic_" . esc_attr($value) . "'>" . esc_html($escaped_label) . "</label>
-                        </div>";
-                }
                 ?>
+
+                <?php foreach ($reasons as $value => $reason): ?>
+                    <div class='jaic_option' data-id='<?php echo esc_attr($value); ?>'>
+                        <div class='checkmark'>
+                            <input type='radio' name='q4_feedback' value='<?php echo esc_attr($reason["value"]); ?>' id='jaic_<?php echo esc_attr($value); ?>'>
+                            <div class='checkmark-inner'></div>
+                        </div>
+                        <label for='jaic_<?php echo esc_attr($value); ?>'><?php echo esc_html($reason["label"]); ?></label>
+                    </div>
+                <?php endforeach; ?>
 
                 <div id="jaic_detail_text_wrapper" style="display:none;">
                     <input type="text" name="q5_detail" id="jaic_detail_text" class="jaic-text-input" placeholder="" aria-required="false">
                 </div>
 
                 <div class="jaic_buttons">
-                    <button type="button" class="jaic secondary">Continue to use</button>
+                    <button type="button" class="jaic secondary">
+                        <?php echo esc_html__("Continue to use", "jotform-ai-chatbot"); ?>
+                    </button>
                     <button type="submit" class="jaic primary disabled">
-                        <span class="jaic_text">Submit & Deactivate</span>
+                        <span class="jaic_text">
+                            <?php echo esc_html__("Submit & Deactivate", "jotform-ai-chatbot"); ?>
+                        </span>
                         <div class="jaic_loader"></div>
                     </button>
                 </div>
@@ -495,7 +572,7 @@ add_action('upgrader_process_complete', 'jaic_jotform_ai_plugin_updating', 10, 2
 function jotform_ai_chatbot_plugin_settings_init() {
     add_action("wp_loaded", function () {
         if (!current_user_can("manage_options")) {
-            wp_die(esc_html(__("You do not have sufficient permissions to access this page.", "jotform-ai-chatbot")));
+            wp_die(esc_html__("You do not have sufficient permissions to access this page.", "jotform-ai-chatbot"));
         }
     });
 
@@ -508,8 +585,8 @@ function jotform_ai_chatbot_plugin_settings_init() {
         ]
     );
     add_settings_section(
-        "",
-        esc_html(__("Jotform AI Chatbot", "jotform-ai-chatbot")),
+        "jotform_ai_chatbot_main_section",
+        esc_html__("Jotform AI Chatbot", "jotform-ai-chatbot"),
         "jotform_ai_chatbot_developers_callback",
         "jotform_ai_chatbot",
         [
@@ -573,7 +650,7 @@ function jotform_ai_chatbot_show_preview_indicator() {
         );
 
         echo "<div class=\"plugin_preview_indicator_container\">";
-        echo esc_html(__("You are in Jotform AI Chatbot Preview Mode.", "jotform-ai-chatbot"));
+        echo esc_html__("You are in Jotform AI Chatbot Preview Mode.", "jotform-ai-chatbot");
         echo "</div>";
     }
 }
@@ -605,6 +682,13 @@ function jotform_ai_chatbot_register_plugin() {
         $jaic_core = new JAIC\Classes\JAIC_Core([
             "checkUserRegion" => true
         ]);
+
+        // Load plugin textdomain
+        load_plugin_textdomain(
+            'jotform-ai-chatbot',
+            false,
+            dirname(plugin_basename(__FILE__)) . '/languages'
+        );
     } catch (\Exception $e) {
     }
 }
@@ -612,9 +696,9 @@ add_action("plugins_loaded", "jotform_ai_chatbot_register_plugin");
 
 // Hook the function to add custom links.
 function jaic_my_plugin_action_links($links) {
-    $learnMoreLink = '<a href="https://link.jotform.com/utP7pEtJfP" target="_blank">Learn More</a>';
-    $helpLink  = '<a href="https://link.jotform.com/gKacs8I9pG" target="_blank">Help</a>';
-    $giveFeedbackLink = '<a href="https://link.jotform.com/ElmhVHf4uh?domainField=' . rawurlencode(wp_parse_url(home_url(), PHP_URL_HOST)) . '&versionField=' . JAIC_PLUGIN_VERSION . '" target="_blank">Give Feedback</a>';
+    $learnMoreLink = '<a href="https://link.jotform.com/utP7pEtJfP" target="_blank">' . esc_html__("Learn More", "jotform-ai-chatbot") . '</a>';
+    $helpLink  = '<a href="https://link.jotform.com/gKacs8I9pG" target="_blank">' . esc_html__("Help", "jotform-ai-chatbot") . '</a>';
+    $giveFeedbackLink = '<a href="https://link.jotform.com/ElmhVHf4uh?domainField=' . rawurlencode(wp_parse_url(home_url(), PHP_URL_HOST)) . '&versionField=' . JAIC_PLUGIN_VERSION . '" target="_blank">' . esc_html__("Give Feedback", "jotform-ai-chatbot") . '</a>';
     array_unshift($links, $helpLink, $learnMoreLink, $giveFeedbackLink);
 
     // Check if plugin is active
@@ -624,10 +708,14 @@ function jaic_my_plugin_action_links($links) {
         $options = !empty($options) ? json_decode($options, true) : [];
 
         // Determine link text based on the presence of ai chatbot
-        $link_text = (!empty($options["agentId"])) ? 'My AI Chatbot' : 'Create AI Chatbot';
+        $link_text = (!empty($options["agentId"])) ? __('My AI Chatbot', "jotform-ai-chatbot") : __('Create AI Chatbot', "jotform-ai-chatbot");
 
         // Build the new link with custom color and URL
-        $dashboard_link = '<a href="' . admin_url("admin.php?page=jotform_ai_chatbot") . '" style="color: #FF6100; font-weight: bold;">' . esc_html($link_text) . '</a>';
+        $dashboard_link = sprintf(
+            '<a href="%s" style="color: #FF6100; font-weight: bold;">%s</a>',
+            esc_url(admin_url('admin.php?page=jotform_ai_chatbot')),
+            esc_html($link_text)
+        );
 
         // Add the new link to the beginning of the links array
         array_unshift($links, $dashboard_link);

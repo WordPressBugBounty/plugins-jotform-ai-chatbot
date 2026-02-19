@@ -8,7 +8,7 @@ import IconArrowRight from '../../assets/svg/IconArrowRight.svg';
 import { ALL_TEXTS, PROMPTS } from '../../constants';
 import { useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
-import { isMobile, t, toCamelCase } from '../../utils';
+import { isMobile, toCamelCase } from '../../utils';
 import PromptSuggestion from '../PromptSuggestion';
 import AgentRadio from '../UI/AgentRadio';
 import Button from '../UI/Button';
@@ -109,9 +109,9 @@ const UseCaseStep = () => {
   }, [tab]);
 
   const getCtaText = () => {
-    if (tab === 'select') return t(ALL_TEXTS.CONTINUE);
-    if (isMobile()) return t(ALL_TEXTS.CREATE);
-    return t(ALL_TEXTS.CREATE_AI_CHATBOT);
+    if (tab === 'select') return ALL_TEXTS.CONTINUE;
+    if (isMobile()) return ALL_TEXTS.CREATE;
+    return ALL_TEXTS.CREATE_AI_CHATBOT;
   };
 
   const getAgentDescription = agentData => {
@@ -147,8 +147,8 @@ const UseCaseStep = () => {
   return (
     <>
       <div className='jfpContent-wrapper--title'>
-        <h2 id='setupYourAIChatbot'>{t(ALL_TEXTS.SETUP_YOUR_AI_CHATBOT)}</h2>
-        <p>{t(ALL_TEXTS.USE_TEMPLATE_READY_OR_START_FROM_SCRATCH)}</p>
+        <h2 id='setupYourAIChatbot'>{ALL_TEXTS.SETUP_YOUR_AI_CHATBOT}</h2>
+        <p>{ALL_TEXTS.USE_TEMPLATE_READY_OR_START_FROM_SCRATCH}</p>
       </div>
       {!isEmpty(existingAgents) && (
         <div className='jfpContent-wrapper--tabs' role='tablist' aria-labelledby='setupYourAIChatbot'>
@@ -186,7 +186,7 @@ const UseCaseStep = () => {
         {tab === 'create' && (
           <>
             <div className='jfpContent-wrapper--customization-title'>
-              <h3 id='describeAgentTitle'>{t(ALL_TEXTS.DESCRIBE_THE_AGENT_YOU_WANT_TO_CREATE)}</h3>
+              <h3 id='describeAgentTitle'>{ALL_TEXTS.DESCRIBE_THE_AGENT_YOU_WANT_TO_CREATE}</h3>
             </div>
             <div className='jfpContent-wrapper--input'>
               <label
@@ -194,7 +194,7 @@ const UseCaseStep = () => {
                 id='promptLabel'
                 className={`jfpContent-wrapper--input-label ${!isEmpty(prompt) ? 'hidden' : ''}`}
               >
-                {t(ALL_TEXTS.EXAMPLE_PROVIDE_CUSTOMER_SUPPORT_BY_ANSWERING_FAQS_AND_GUIDING_USERS_THROUGH)}
+                {ALL_TEXTS.EXAMPLE_PROVIDE_CUSTOMER_SUPPORT_BY_ANSWERING_FAQS_AND_GUIDING_USERS_THROUGH}
               </label>
               <Textarea
                 id='promptArea'
@@ -223,7 +223,7 @@ const UseCaseStep = () => {
                   aria-label={`${data.buttonText} Example`}
                   aria-pressed={selectedPrompt === data}
                 >
-                  {t(data.buttonText)}
+                  {data.buttonText}
                 </Button>
               ))}
             </div>

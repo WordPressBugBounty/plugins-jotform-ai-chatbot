@@ -10,7 +10,7 @@ import { useAvatarFocus, useWizard } from '../hooks';
 import { ACTION_CREATORS } from '../store';
 import {
   generateTempId,
-  prepareAvatarPayload, swapItem, t
+  prepareAvatarPayload, swapItem
 } from '../utils';
 import CustomAvatar from './CustomAvatar';
 import { ImageUploadWizard } from './ImageUploadWizard';
@@ -198,7 +198,7 @@ const Avatar = () => {
                   onClick={handleShowMoreClick}
                   disabled={areAvatarsLoading}
                 >
-                  {areAvatarsLoading ? t(ALL_TEXTS.LOADING) : t(ALL_TEXTS.SHOW_MORE)}
+                  {areAvatarsLoading ? ALL_TEXTS.LOADING : ALL_TEXTS.SHOW_MORE}
                 </Button>
               )}
             </div>

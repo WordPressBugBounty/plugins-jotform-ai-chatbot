@@ -7,7 +7,7 @@ import { ALL_TEXTS, STEP_TO_BUILDER_PATH, STEPS } from '../constants';
 import { usePublishButton, useWizard } from '../hooks';
 import { STAGES } from '../hooks/usePublishButton';
 import {
-  awaitFor, platformSettings, t
+  awaitFor, platformSettings
 } from '../utils';
 import Button from './UI/Button';
 import { IconArrowUpRight, IconEyeFilled } from './UI/Icon';
@@ -83,7 +83,7 @@ const Header = ({ publishAgent, unpublishAgent }) => {
           href={goToJotformUrl}
           target='_blank'
         >
-          {t(ALL_TEXTS.GO_TO_JOTFORM)}
+          {ALL_TEXTS.GO_TO_JOTFORM}
           <span className='sr-only'>(opens in a new tab)</span>
         </Button>
       )}
@@ -96,7 +96,7 @@ const Header = ({ publishAgent, unpublishAgent }) => {
           loader={isLivePreviewLoading}
           onClick={handleLivePreviewClick}
         >
-          {t(ALL_TEXTS.PREVIEW)}
+          {ALL_TEXTS.PREVIEW}
           <span className='sr-only'>(opens in a new tab)</span>
         </Button>
         {/* publish button */}

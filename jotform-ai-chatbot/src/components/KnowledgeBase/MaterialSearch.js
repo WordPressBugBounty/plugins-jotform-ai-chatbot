@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import { func, string } from 'prop-types';
 
-import { t } from '../../utils';
+import { ALL_TEXTS } from '../../constants';
 import Dropdown from '../UI/Dropdown';
 import { IconMagnifyingGlass } from '../UI/Icon';
 import Input from '../UI/Input';
@@ -21,7 +21,7 @@ const MaterialSearch = ({
   return (
     <div className='knowledge-filter-container'>
       <Input
-        placeholder={t('Search')}
+        placeholder={ALL_TEXTS.SEARCH}
         className='knowledge-filter-search'
         onChange={typingDebounce}
         prefix={{
@@ -79,7 +79,7 @@ const MaterialSearch = ({
               key={value}
               value={value}
             >
-              {`${t(text)}`}
+              {text}
             </option>
           ))}
         </Dropdown>

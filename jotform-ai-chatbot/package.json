@@ -39,6 +39,7 @@
   "license": "GPL-2.0-only",
   "dependencies": {
     "@headlessui/react": "^2.2.0",
+    "@wordpress/element": "^6.37.0",
     "axios": "^1.7.9",
     "classnames": "^2.5.1",
     "clipboard": "2.0.11",

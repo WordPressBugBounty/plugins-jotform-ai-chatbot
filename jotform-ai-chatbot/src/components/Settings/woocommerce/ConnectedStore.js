@@ -4,7 +4,6 @@ import { func } from 'prop-types';
 import WooLogo from '../../../assets/svg/woo-logo.svg';
 import { ALL_TEXTS } from '../../../constants';
 import { useWizard } from '../../../hooks';
-import { t } from '../../../utils';
 import Button from '../../UI/Button';
 
 const ConnectedStore = ({ disconnectStore }) => {
@@ -19,7 +18,7 @@ const ConnectedStore = ({ disconnectStore }) => {
       <div className='jfpContent-wrapper--settings-options-wrapper-connected-content-wrapper'>
         <WooLogo className='jfpContent-wrapper--settings-options-wrapper-connected-icon' />
         <div className='jfpContent-wrapper--settings-options-wrapper-connected-content'>
-          <strong>{t(ALL_TEXTS.CONNECTED_STORE)}</strong>
+          <strong>{ALL_TEXTS.CONNECTED_STORE}</strong>
           <p style={{ fontFamily: 'monospace' }}>{consumerKey}</p>
         </div>
       </div>
@@ -31,7 +30,7 @@ const ConnectedStore = ({ disconnectStore }) => {
         className='jfpContent-wrapper--settings-options-wrapper-connected-btn'
         onClick={disconnectStore}
       >
-        {t(ALL_TEXTS.DISCONNECT_STORE)}
+        {ALL_TEXTS.DISCONNECT_STORE}
       </Button>
     </div>
   );

@@ -2,8 +2,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { getOr } from 'lodash/fp';
 import { bool, func, object } from 'prop-types';
 
-import { TRAIN_TYPES } from '../../../constants';
-import { t } from '../../../utils';
+import { ALL_TEXTS, TRAIN_TYPES } from '../../../constants';
 import Button from '../../UI/Button.js';
 import {
   IconCloudArrowUp, IconDocumentDocFilled, IconDocumentPdfFilled, IconXmark
@@ -72,7 +71,7 @@ const UploadDocument = ({
       setActualFile(file);
       handleMaterialDataChange({ target: { id: 'file', value: file } });
     } else {
-      setErrorMsg(t('Please upload a PDF or DOCX file'));
+      setErrorMsg(ALL_TEXTS.UPLOAD_A_PDF);
     }
   };
 
@@ -108,10 +107,10 @@ const UploadDocument = ({
       className='upload-area-container'
     >
       <IconCloudArrowUp className='cloud-icon' />
-      <span className='upload-area-title'>{t('Upload a Document')}</span>
+      <span className='upload-area-title'>{ALL_TEXTS.UPLOAD_A_DOCUMENT}</span>
       <p className='upload-area-desc'>
         <span>
-          Drag and drop your files here or
+          {ALL_TEXTS.DRAG_AND_DROP_YOUR_FILE}
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions,jsx-a11y/click-events-have-key-events */}
           <span className='upload-area-link' onClick={() => fileInputRef.current?.click()}> upload a file</span>
         </span>
@@ -145,8 +144,8 @@ const UploadDocument = ({
             )}
 
             <LabelWrapperItem
-              heading='Upload Document'
-              desc='Train the AI based on content from the document'
+              heading='Upload Files'
+              desc={ALL_TEXTS.TRAIN_YOUR_CHATBOT}
               customClass='label'
             />
             {selectedFile
@@ -164,7 +163,7 @@ const UploadDocument = ({
             onClick={handleUploadButtonClick}
             disabled={!selectedFile}
           >
-            {t('Save')}
+            {ALL_TEXTS.SAVE}
           </Button>
         </div>
       </div>

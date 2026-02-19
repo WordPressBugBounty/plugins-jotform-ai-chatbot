@@ -1,7 +1,6 @@
 import React from 'react';
 import { string } from 'prop-types';
 
-import { t } from '../utils';
 import { IconExclamationTriangle } from './UI/Icon';
 
 const GenericError = ({ message }) => (
@@ -10,7 +9,7 @@ const GenericError = ({ message }) => (
       <IconExclamationTriangle />
     </div>
     <div className='generic-error--content'>
-      <p>{t(message)}</p>
+      <p>{message}</p>
     </div>
   </div>
 );

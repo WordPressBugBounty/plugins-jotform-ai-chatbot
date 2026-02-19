@@ -9,7 +9,7 @@ import { updateAgentProperty } from '../../api';
 import { ALL_TEXTS, DELETE_INSTRUCTION_DEBOUNCE_TIMEOUT } from '../../constants';
 import { useEffectIgnoreFirst, useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
-import { generateTempId, scrollToBottom, t } from '../../utils';
+import { generateTempId, scrollToBottom } from '../../utils';
 import DeleteInstructionModal from '../DeleteInstructionModal';
 import Button from '../UI/Button';
 import { IconPlusSquareFilled, IconTrashFilled } from '../UI/Icon';
@@ -100,8 +100,8 @@ const ChatGuidelines = () => {
   return (
     <div className='jfpContent-wrapper--ai-persona-title'>
       <div>
-        <h3>{t(ALL_TEXTS.CHAT_GUIDELINES)}</h3>
-        <p>{t(ALL_TEXTS.SET_CLEAR_RULES)}</p>
+        <h3>{ALL_TEXTS.CHAT_GUIDELINES}</h3>
+        <p>{ALL_TEXTS.SET_CLEAR_RULES}</p>
       </div>
       {instructions.map(({ id, text }) => (
         <div key={id} className='chat-guidelines'>
@@ -123,7 +123,7 @@ const ChatGuidelines = () => {
         startIcon={<IconPlusSquareFilled />}
         disabled={lastInputRef.current?.value === ''}
         onClick={handleAddClick}
-      >{t(ALL_TEXTS.ADD_NEW)}
+      >{ALL_TEXTS.ADD_NEW}
       </Button>
       <DeleteInstructionModal
         isOpen={isDeleteModalOpen}

@@ -4,7 +4,6 @@ import { saveInstallment } from '../api';
 import WhatsNewImg from '../assets/images/whats-new-img-ca.png';
 import { ALL_TEXTS, WHATS_NEW_MODAL_LCST_FLAG } from '../constants';
 import { useLocalStorageModal } from '../hooks';
-import { t } from '../utils';
 import Button from './UI/Button';
 import Modal from './UI/Modal';
 
@@ -21,7 +20,7 @@ const WhatsNewModal = () => {
     <Modal
       open={isModalVisible}
       onClose={closeModal}
-      ariaLabel={t(ALL_TEXTS.WHATS_NEW)}
+      ariaLabel={ALL_TEXTS.WHATS_NEW}
       size='medium'
       className='jfModal--whats-new'
       aria-labelledby='whatsNewTitle'
@@ -31,8 +30,8 @@ const WhatsNewModal = () => {
     >
       <div className='jfModal--header'>
         <div className='jfModal--header-title'>
-          <h3 id='whatsNewTitle'>{t(ALL_TEXTS.WHATS_NEW)}</h3>
-          <p id='whatsNewTescription'>{t(ALL_TEXTS.GET_THE_LATEST_CHANGES_AND_UPDATES)}</p>
+          <h3 id='whatsNewTitle'>{ALL_TEXTS.WHATS_NEW}</h3>
+          <p id='whatsNewTescription'>{ALL_TEXTS.GET_THE_LATEST_CHANGES_AND_UPDATES}</p>
         </div>
       </div>
       <div className='jfModal--body'>
@@ -49,7 +48,7 @@ const WhatsNewModal = () => {
           // variant='outline'
           onClick={closeModal}
         >
-          {t(ALL_TEXTS.TRY_IT_NOW)}
+          {ALL_TEXTS.TRY_IT_NOW}
         </Button>
       </div>
     </Modal>

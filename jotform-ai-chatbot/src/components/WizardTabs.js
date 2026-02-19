@@ -4,7 +4,7 @@ import cx from 'classnames';
 import { TAB_STEPS } from '../constants';
 import { useWizard } from '../hooks';
 import { ACTION_CREATORS } from '../store';
-import { setStepAsQueryParam, t } from '../utils';
+import { setStepAsQueryParam } from '../utils';
 
 const WizardTabs = () => {
   const { state, dispatch } = useWizard();
@@ -50,7 +50,7 @@ const WizardTabs = () => {
             role='tab'
             aria-selected={step === name}
           >
-            {t(label)}
+            {label}
           </button>
         ))}
       </div>

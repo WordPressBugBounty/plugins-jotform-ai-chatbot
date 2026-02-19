@@ -1,5 +1,9 @@
 *** Jotform AI Chatbot Changelog ***
 
+2026-02-19 - version 3.7.0
+* Updated - All plugin labels are now translation-ready
+* Updated - Minor UI improvements
+
 2026-02-05 - version 3.6.4
 * Fixed - Issues with WooCommerce integration options
 

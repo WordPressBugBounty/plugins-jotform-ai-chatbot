@@ -3,7 +3,7 @@ import { func, string } from 'prop-types';
 
 import { saveInstallment } from '../api';
 import { ALL_TEXTS } from '../constants';
-import { awaitFor, t } from '../utils';
+import { awaitFor } from '../utils';
 import Button from './UI/Button';
 import { IconInfoSquareFilled } from './UI/Icon';
 import Modal from './UI/Modal';
@@ -28,7 +28,7 @@ const LimitDialog = ({
     <Modal
       open
       onClose={onCloseClick}
-      ariaLabel={t(ALL_TEXTS.YOU_HAVE_REACHED_YOUR_LIMIT)}
+      ariaLabel={ALL_TEXTS.YOU_HAVE_REACHED_YOUR_LIMIT}
       size='small'
     >
       <div className='jfModal--title'>
@@ -36,10 +36,10 @@ const LimitDialog = ({
           <IconInfoSquareFilled />
         </div>
         <h3>
-          {t(ALL_TEXTS.YOU_HAVE_REACHED_YOUR_LIMIT)}
+          {ALL_TEXTS.YOU_HAVE_REACHED_YOUR_LIMIT}
         </h3>
         <p>
-          {t(ALL_TEXTS.DELETE_EXISTING_AGENT)}
+          {ALL_TEXTS.DELETE_EXISTING_AGENT}
         </p>
       </div>
       <div className='jfModal--actions'>
@@ -47,7 +47,7 @@ const LimitDialog = ({
           colorStyle='error'
           onClick={handleGoToPricing}
         >
-          {t(ALL_TEXTS.GO_TO_PRICING)}
+          {ALL_TEXTS.GO_TO_PRICING}
         </Button>
       </div>
     </Modal>

@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { bool, func, string } from 'prop-types';
 
 import { ALL_TEXTS } from '../../../constants';
-import { t } from '../../../utils';
 import Button from '../../UI/Button';
 import { IconPlus } from '../../UI/Icon';
 import Input from '../../UI/Input';
@@ -50,28 +49,28 @@ const StoreConnection = ({
       <div className='jfpContent-wrapper--settings-options-wrapper-input-wrapper'>
         <div className='jfpContent-wrapper--settings-options-wrapper-input'>
           <div className='jfpContent-wrapper--settings-options-wrapper-input-title'>
-            <h3 id='consumerKeyTitle'>{t(ALL_TEXTS.CONSUMER_KEY)}</h3>
-            <p>{t(ALL_TEXTS.YOUR_WOO_COMMERCE_API_KEY)}</p>
+            <h3 id='consumerKeyTitle'>{ALL_TEXTS.CONSUMER_KEY}</h3>
+            <p>{ALL_TEXTS.YOUR_WOO_COMMERCE_API_KEY}</p>
           </div>
           {/* todo: add show/hide key */}
           <Input
             type='input'
             ref={consumerKeyRef}
-            placeholder={t(ALL_TEXTS.KEY_PLACEHOLDER)}
+            placeholder={ALL_TEXTS.KEY_PLACEHOLDER}
             onChange={handleChange}
             aria-labelledby='consumerKeyTitle'
           />
         </div>
         <div className='jfpContent-wrapper--settings-options-wrapper-input'>
           <div className='jfpContent-wrapper--settings-options-wrapper-input-title'>
-            <h3 id='consumerSecretTitle'>{t(ALL_TEXTS.CONSUMER_SECRET)}</h3>
-            <p>{t(ALL_TEXTS.YOUR_WOO_COMMERCE_API_SECRET)}</p>
+            <h3 id='consumerSecretTitle'>{ALL_TEXTS.CONSUMER_SECRET}</h3>
+            <p>{ALL_TEXTS.YOUR_WOO_COMMERCE_API_SECRET}</p>
           </div>
           {/* todo: add show/hide key */}
           <Input
             type='password'
             ref={consumerSecrefRef}
-            placeholder={t(ALL_TEXTS.SECRET_PLACEHOLDER)}
+            placeholder={ALL_TEXTS.SECRET_PLACEHOLDER}
             onChange={handleChange}
             aria-labelledby='consumerSecretTitle'
           />
@@ -92,7 +91,7 @@ const StoreConnection = ({
           onClick={handleConnectClick}
           disabled={!previewAgentId || isDisabled}
         >
-          {t(ALL_TEXTS.CONNECT)}
+          {ALL_TEXTS.CONNECT}
         </Button>
       </div>
     </>

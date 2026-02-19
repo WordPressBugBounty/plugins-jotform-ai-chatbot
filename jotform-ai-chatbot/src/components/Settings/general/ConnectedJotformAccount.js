@@ -4,7 +4,7 @@ import { interactWithPlatform, saveInstallment } from '../../../api';
 import { ALL_TEXTS } from '../../../constants';
 import { useWizard } from '../../../hooks';
 import { ACTION_CREATORS } from '../../../store';
-import { t, toggleSettingsItems } from '../../../utils';
+import { toggleSettingsItems } from '../../../utils';
 import LogoutModal from '../../LogoutModal';
 import Button from '../../UI/Button';
 
@@ -33,7 +33,7 @@ const ConnectedJotformAccount = () => {
 
   return (
     <div className='jfpContent-wrapper--settings-options-wrapper-connected'>
-      <h3 className='jfpContent-wrapper--settings-options-wrapper-connected-title'>{t(ALL_TEXTS.CONNECTED_JOTFORM_ACCOUNT.toUpperCase())}</h3>
+      <h3 className='jfpContent-wrapper--settings-options-wrapper-connected-title'>{ALL_TEXTS.CONNECTED_JOTFORM_ACCOUNT.toUpperCase()}</h3>
       <div className='jfpContent-wrapper--settings-options-wrapper-connected-wrapper'>
         <div className='jfpContent-wrapper--settings-options-wrapper-connected-content-wrapper'>
           <img
@@ -55,7 +55,7 @@ const ConnectedJotformAccount = () => {
           aria-expanded={isLogoutModalOpen}
           className='jfpContent-wrapper--settings-options-wrapper-connected-btn'
         >
-          {t(ALL_TEXTS.LOGOUT)}
+          {ALL_TEXTS.LOGOUT}
         </Button>
       </div>
       <LogoutModal

@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { bool, func, object } from 'prop-types';
 
-import { TRAIN_TYPES } from '../../../constants';
-import { getNonValidInputs, t } from '../../../utils';
+import { ALL_TEXTS, TRAIN_TYPES } from '../../../constants';
+import { getNonValidInputs } from '../../../utils';
 import Button from '../../UI/Button.js';
 import Input from '../../UI/Input.js';
 import Textarea from '../../UI/Textarea.js';
@@ -54,15 +54,15 @@ const TrainText = ({
         )}
 
         <LabelWrapperItem
-          heading='Information for Your Agent'
-          desc='Enter accurate info your AI can use as answers'
+          heading={ALL_TEXTS.INFORMATION_FOR_YOUR_CHATBOT}
+          desc={ALL_TEXTS.ENTER_ACCURATE_INFO_YOUR_AI_CAN_USE_AS_ANSWERS}
         >
           <Textarea
             id='data'
             onChange={handleMaterialDataChange}
             size='medium'
             defaultValue={editingMaterial?.data}
-            placeholder={t('Company overview, product features, customer FAQs, service guidelines...')}
+            placeholder={ALL_TEXTS.COMPANY_OVERVIEW}
             style={{ height: '140px' }}
             // colorStyle={inputValidation.includes('text') ? 'error' : 'default'}
             maxLength={inputMaxLength}
@@ -78,7 +78,7 @@ const TrainText = ({
           loader={isLoading}
           onClick={validateAndSend}
         >
-          {t('Save')}
+          {ALL_TEXTS.SAVE}
         </Button>
       </div>
     </div>

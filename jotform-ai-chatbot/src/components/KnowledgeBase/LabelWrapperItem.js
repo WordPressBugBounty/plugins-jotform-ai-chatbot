@@ -2,8 +2,6 @@ import React from 'react';
 import classnames from 'classnames';
 import { node, string } from 'prop-types';
 
-import { t } from '../../utils';
-
 const LabelWrapperItem = ({
   children,
   heading,
@@ -16,8 +14,8 @@ const LabelWrapperItem = ({
   )}
   >
     <div>
-      <h3>{t(heading)}</h3>
-      <p>{t(desc)}</p>
+      <h3>{heading}</h3>
+      <p>{desc}</p>
     </div>
     {children}
   </div>

@@ -3,10 +3,10 @@ import React, {
 } from 'react';
 
 import { fetchChats, fetchConversations, saveInstallment } from '../../api';
-import { ALL_TEXTS } from '../../constants';
+import { ALL_TEXTS, DYNAMIC_TEXTS } from '../../constants';
 import { useInfiniteScroll, useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
-import { awaitFor, t, toCamelCase } from '../../utils';
+import { awaitFor, toCamelCase } from '../../utils';
 import { ChatHistory, Conversations } from '../Conversations';
 import { IconExclamationCircleFilled } from '../UI/Icon';
 
@@ -127,8 +127,8 @@ const ConversationsStep = () => {
     <div className='jfpContent-wrapper--conversations'>
       <div className='jfpContent-wrapper--conversations-users'>
         <div className='jfpContent-wrapper--conversations-users-title'>
-          <h2 className='jfpContent-wrapper--conversations-users-title-content' aria-hidden='true'>{t(ALL_TEXTS.CONVERSATIONS)}</h2>
-          <span className='jfpContent-wrapper--conversations-users-title-counter'>Showing <span>{conversationItems.length}</span> of <span>{conversationCount}</span> conversation</span>
+          <h2 className='jfpContent-wrapper--conversations-users-title-content' aria-hidden='true'>{ALL_TEXTS.CONVERSATIONS}</h2>
+          <span className='jfpContent-wrapper--conversations-users-title-counter'>{DYNAMIC_TEXTS.SHOWING_OF_CONVERSATIONS(conversationItems.length, conversationCount)}</span>
         </div>
         <Conversations
           ref={containerRef}
@@ -142,7 +142,7 @@ const ConversationsStep = () => {
           && (
             <div className='jfpContent-wrapper--conversations-users-empty'>
               <IconExclamationCircleFilled />
-              <span>{t(ALL_TEXTS.CONVERSATIONS_WILL_BE_LISTED_HERE)}</span>
+              <span>{ALL_TEXTS.CONVERSATIONS_WILL_BE_LISTED_HERE}</span>
             </div>
           )}
       </div>
@@ -160,7 +160,7 @@ const ConversationsStep = () => {
                     className='jfpContent-wrapper--conversations-chats-title-right-see-link'
                     onClick={handleSeeConversationClick}
                   >
-                    {t(ALL_TEXTS.SEE_CONVERSATIONS_ON_JOTFORM)}
+                    {ALL_TEXTS.SEE_CONVERSATIONS_ON_JOTFORM}
                   </a>
                 </div>
               </>

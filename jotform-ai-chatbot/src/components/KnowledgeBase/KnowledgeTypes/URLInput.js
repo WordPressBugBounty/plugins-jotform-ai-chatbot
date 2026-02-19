@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { bool, func, object } from 'prop-types';
 
-import { TRAIN_TYPES } from '../../../constants';
-import { addHttpsPrefix, getNonValidInputs, t } from '../../../utils';
+import { ALL_TEXTS, TRAIN_TYPES } from '../../../constants';
+import { addHttpsPrefix, getNonValidInputs } from '../../../utils';
 import Button from '../../UI/Button.js';
 import Input from '../../UI/Input.js';
 import LabelWrapperItem from '../LabelWrapperItem.js';
@@ -64,8 +64,8 @@ const URLInput = ({
             )}
 
             <LabelWrapperItem
-              heading='Enter a URL'
-              desc='Provide a URL for your agent to analyze'
+              heading={ALL_TEXTS.ENTER_A_URL}
+              desc={ALL_TEXTS.PROVIDE_A_URL_FOR_YOUR_CHATBOT_TO_ANALYZE}
             >
               <div className='crawl-url-input-container'>
                 <Input
@@ -96,7 +96,7 @@ const URLInput = ({
           loader={isLoading}
           onClick={validateAndSend}
         >
-          {t('Crawl')}
+          {ALL_TEXTS.CRAWL}
         </Button>
       </div>
     </div>

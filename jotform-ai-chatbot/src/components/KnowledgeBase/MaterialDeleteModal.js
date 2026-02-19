@@ -2,7 +2,7 @@ import React from 'react';
 import { bool, func } from 'prop-types';
 
 import IconTrashExclamationFilled from '../../assets/svg/IconTrashExclamationFilled.svg';
-import { t } from '../../utils';
+import { ALL_TEXTS } from '../../constants';
 import Button from '../UI/Button';
 import Modal from '../UI/Modal';
 
@@ -10,7 +10,7 @@ const MaterialDeleteModal = ({ isOpen, onDeleteClick, onCloseClick }) => (
   <Modal
     open={isOpen}
     onClose={onCloseClick}
-    ariaLabel={t('Material Confirmation Modal')}
+    ariaLabel={ALL_TEXTS.MATERIAL_CONFIRMATION_MODAL}
     size='small'
   >
     <div className='jfModal--title'>
@@ -18,10 +18,10 @@ const MaterialDeleteModal = ({ isOpen, onDeleteClick, onCloseClick }) => (
         <IconTrashExclamationFilled />
       </div>
       <h3>
-        {t('Do you want to delete knowledge?')}
+        {ALL_TEXTS.DO_YOU_WANT_TO_DELETE_THIS_MATERIAL}
       </h3>
       <p>
-        {t('Once removed, the AI Agent will no longer have access to it.')}
+        {ALL_TEXTS.ONCE_REMOVED_THE_AI_AGENT_WILL_NO_LONGER_HAVE_ACCESS_TO_IT}
       </p>
     </div>
     <div className='jfModal--actions'>
@@ -30,13 +30,13 @@ const MaterialDeleteModal = ({ isOpen, onDeleteClick, onCloseClick }) => (
         variant='outline'
         onClick={onCloseClick}
       >
-        {t('No, Keep')}
+        {ALL_TEXTS.NO_KEEP}
       </Button>
       <Button
         colorStyle='error'
         onClick={onDeleteClick}
       >
-        {t('Yes, Delete')}
+        {ALL_TEXTS.YES_DELETE}
       </Button>
     </div>
   </Modal>

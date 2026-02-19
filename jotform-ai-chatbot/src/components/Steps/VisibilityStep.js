@@ -7,7 +7,7 @@ import {
 } from '../../constants';
 import { useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
-import { t, toCamelCase } from '../../utils';
+import { toCamelCase } from '../../utils';
 import { AdvancedVisibility } from '../AdvancedVisibility';
 import DeleteModal from '../DeleteModal';
 import Button from '../UI/Button';
@@ -68,15 +68,15 @@ const VisibilityStep = ({ unpublishAgent }) => {
   return (
     <>
       <div className='jfpContent-wrapper--customization'>
-        <h2 className='sr-only'>{t(ALL_TEXTS.VISIBILITY)}</h2>
+        <h2 className='sr-only'>{ALL_TEXTS.VISIBILITY}</h2>
         {/* layout */}
         <VisibilityLayout />
         {/* visible on */}
         <div className='customize-option visibility'>
           <div className='jfpContent-wrapper--customization-title'>
             <div>
-              <h3>{t(ALL_TEXTS.VISIBLE_ON)}</h3>
-              <p>{t(ALL_TEXTS.CHOOSE_WHERE_THE_CHATBOT_SHOULD_APPEAR)}</p>
+              <h3>{ALL_TEXTS.VISIBLE_ON}</h3>
+              <p>{ALL_TEXTS.CHOOSE_WHERE_THE_CHATBOT_SHOULD_APPEAR}</p>
             </div>
           </div>
           <Dropdown
@@ -91,7 +91,7 @@ const VisibilityStep = ({ unpublishAgent }) => {
                 key={value}
                 value={value}
               >
-                {t(text)}
+                {text}
               </option>
             ))}
           </Dropdown>
@@ -107,7 +107,7 @@ const VisibilityStep = ({ unpublishAgent }) => {
             aria-haspopup='dialog'
             aria-expanded={isDeleteModalOpen}
           >
-            {t(ALL_TEXTS.REMOVE_AI_CHATBOT_FROM_MY_WEBSITE)}
+            {ALL_TEXTS.REMOVE_AI_CHATBOT_FROM_MY_WEBSITE}
           </Button>
         </div>
       </div>

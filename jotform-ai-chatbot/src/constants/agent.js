@@ -42,21 +42,21 @@ export const TONE_OF_VOICES = [
 
 export const TRAIN_TYPES = {
   TEXT: {
-    name: 'Add Knowledge',
+    name: 'Knowledge',
     desc: 'Add text-based information to train your chatbot.',
     icon: <IconAnnotationInfoFilled />,
     isPublic: true,
     iconClassName: 'isKnowledge'
   },
   DOCUMENT: {
-    name: 'Upload Documents',
+    name: 'File',
     desc: 'Upload files to train your chatbot.',
     icon: <IconArrowUpFromBracket />,
     isPublic: true,
     iconClassName: 'isDocument'
   },
   URL: {
-    name: 'Crawl URL',
+    name: 'Link',
     desc: 'Add website URLs train your chatbot with dynamic information.',
     icon: <IconLinkDiagonal />,
     isPublic: true,

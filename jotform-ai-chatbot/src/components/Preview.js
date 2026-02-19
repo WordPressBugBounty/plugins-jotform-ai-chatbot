@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import introVideo from '../assets/videos/intro.mp4';
 import { ALL_TEXTS, STEPS } from '../constants';
 import { useWizard } from '../hooks';
-import { initAgent, t } from '../utils';
+import { initAgent } from '../utils';
 
 const Preview = () => {
   const { state } = useWizard();
@@ -60,7 +60,7 @@ const Preview = () => {
             muted
             playsInline
             src={introVideo}
-            title={t(ALL_TEXTS.ANIMATION_TITLE)}
+            title={ALL_TEXTS.ANIMATION_TITLE}
           />
         </div>
       ) : (

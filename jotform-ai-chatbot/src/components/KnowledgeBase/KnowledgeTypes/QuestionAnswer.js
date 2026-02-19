@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { bool, func, object } from 'prop-types';
 
-import { getNonValidInputs, safeJSONParse, t } from '../../../utils/index.js';
+import { ALL_TEXTS } from '../../../constants/texts.js';
+import { getNonValidInputs, safeJSONParse } from '../../../utils/index.js';
 import Button from '../../UI/Button.js';
 import Input from '../../UI/Input.js';
 import Textarea from '../../UI/Textarea.js';
@@ -44,26 +45,26 @@ const QuestionAnswer = ({
     <div className='jfMaterialEditor--container'>
       <div className='jfMaterialEditor--inner'>
         <LabelWrapperItem
-          heading='Question'
-          desc='Train the AI based on your questions & answers'
+          heading={ALL_TEXTS.QUESTION}
+          desc={ALL_TEXTS.TRAIN_THE_AI}
         >
           <div className='question-wrapper'>
             <Input
               className='w-full'
               size='medium'
-              placeholder={t('Enter a brief, clear question that you\'d like the Agent to answer.')}
+              placeholder={ALL_TEXTS.ENTER_QUESTION}
               colorStyle={inputValidation.includes('question') ? 'error' : 'default'}
               onKeyDown={handleKeyDown}
               defaultValue={editingQA?.question}
               ref={questionRef}
             />
             <div className='answer-wrapper'>
-              <span className='answer-title'>{t('Answer')}</span>
+              <span className='answer-title'>ALL_TEXTS.ANSWER</span>
               <Textarea
                 className='w-full h-52 border border-navy-100 radius'
                 size='medium'
                 defaultValue={editingQA?.answer}
-                placeholder={t('Provide a detailed and informative answer that will help the Agent respond accurately to the question.')}
+                placeholder={ALL_TEXTS.PROVIDE_ANSWER}
                 colorStyle={inputValidation.includes('answer') ? 'error' : 'default'}
                 ref={answerRef}
               />
@@ -79,7 +80,7 @@ const QuestionAnswer = ({
           loader={isLoading}
           onClick={validateAndSend}
         >
-          {t('Save')}
+          Save
         </Button>
       </div>
     </div>

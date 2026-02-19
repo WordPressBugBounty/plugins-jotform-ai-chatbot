@@ -9,7 +9,6 @@ import {
 import { ALL_TEXTS } from '../../constants';
 import { useEffectIgnoreFirst, useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
-import { t } from '../../utils';
 import Loading from './Loading';
 import Abilities from './woocommerce/Abilities';
 import ActivationInfoBox from './woocommerce/ActivationInfoBox';
@@ -114,7 +113,7 @@ const Woocommerce = () => {
   return (
     <div className='jfpContent-wrapper--settings-options-wrapper'>
       <h2 className='jfpContent-wrapper--settings-options-wrapper-title'>
-        {t(ALL_TEXTS.WOOCOMMERCE_STORE_SETTINGS)}
+        {ALL_TEXTS.WOOCOMMERCE_STORE_SETTINGS}
       </h2>
       {isLocalhost && <LocalhostError />}
       {!isLocalhost && !PLATFORM_WOOCOMMERCE_AVAILABLE && <ActivationInfoBox />}

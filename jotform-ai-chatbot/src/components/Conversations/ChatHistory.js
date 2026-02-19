@@ -7,7 +7,7 @@ import ConversationEmpty from '../../assets/svg/conversation-empty.svg';
 import AvatarPlaceholder from '../../assets/svg/user-no-avatar.svg';
 import { ALL_TEXTS, THEME_CUSTOMIZATION_KEYS } from '../../constants';
 import { useWizard } from '../../hooks';
-import { formatDate, t } from '../../utils';
+import { formatDate } from '../../utils';
 
 const ChatHistory = ({ chat }) => {
   const { state } = useWizard();
@@ -54,8 +54,8 @@ const ChatHistory = ({ chat }) => {
         && (
           <div className='jfpContent-wrapper--conversations-chats-noresult'>
             <ConversationEmpty className='jfpContent-wrapper--conversations-chats-noresult-icon' />
-            <h3 className='jfpContent-wrapper--conversations-chats-noresult-title'>{t(ALL_TEXTS.YOU_DONT_HAVE_ANY_CONVERSATIONS)}</h3>
-            <p className='jfpContent-wrapper--conversations-chats-noresult-desc'>{t(ALL_TEXTS.CONVERSATIONS_WILL_BE_LISTED_HERE)}</p>
+            <h3 className='jfpContent-wrapper--conversations-chats-noresult-title'>{ALL_TEXTS.YOU_DONT_HAVE_ANY_CONVERSATIONS}</h3>
+            <p className='jfpContent-wrapper--conversations-chats-noresult-desc'>{ALL_TEXTS.CONVERSATIONS_WILL_BE_LISTED_HERE}</p>
           </div>
         )}
     </div>

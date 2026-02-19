@@ -1,6 +1,7 @@
 /* eslint-disable prefer-destructuring */
 // eslint-disable-next-line no-undef
 const pluginSlug = jaicPluginData.pluginSlug;
+const { __ } = window.wp.i18n;
 // const pluginSlug = 'jotform-ai-chatbot';
 document.addEventListener('DOMContentLoaded', () => {
   const deactivateRow = document.querySelector(`tr[data-slug="${pluginSlug}"]`);
@@ -8,19 +9,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('jaic_deactivate_form');
   const submitButton = document.querySelector('.jaic.primary');
   const cancelButton = document.querySelector('.jaic.secondary');
-  const hiddenIframe = document.getElementById('jaic_hidden_iframe');
   const allRadioInputs = document.querySelectorAll('input[name="q4_feedback"]');
   const detailWrapper = document.getElementById('jaic_detail_text_wrapper');
   const detailInput = document.getElementById('jaic_detail_text');
 
   const placeholders = {
-    "jaic_not_working": "Please describe where it failed",
-    "jaic_missing_features": "Which features are missing for you?",
-    "jaic_better_alternative": "Which alternative did you switch to?",
-    "jaic_other": "Tell us more…"
+    not_working: __('Please describe where it failed', 'jotform-ai-chatbot'),
+    missing_features: __('Which features are missing for you?', 'jotform-ai-chatbot'),
+    better_alternative: __('Which alternative did you switch to?', 'jotform-ai-chatbot'),
+    other: __('Tell us more…', 'jotform-ai-chatbot')
   };
 
-  const triggerReasons = ["not_working", "missing_features", "better_alternative", "other"];
+  const triggerReasons = ['not_working', 'missing_features', 'better_alternative', 'other'];
 
   let deactivateUrl = '';
 
@@ -48,30 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
     detailInput.setAttribute('aria-required', 'false');
   }
 
-  allRadioInputs.forEach(radio => {
-    radio.addEventListener('change', () => {
-      hideDetailInput();
-
-      const reasonId = radio.id.replace("jaic_", "");
-      if (triggerReasons.includes(reasonId)) {
-        detailWrapper.style.display = 'flex';
-        detailInput.placeholder = placeholders[radio.id];
-        const optionElement = radio.closest('.jaic_option');
-        optionElement.insertAdjacentElement('afterend', detailWrapper);
-
-        const ph = placeholders[radio.id] || '';
-        detailInput.placeholder = ph;
-        detailWrapper.style.display = 'flex';
-
-        const shouldRequire = (reasonId === 'other');
-        detailInput.required = shouldRequire;
-        detailInput.setAttribute('aria-required', shouldRequire ? 'true' : 'false');
-      }
-
-      updateRequirementError();
-    });
-  });
-
   function updateRequirementError() {
     const selectedRadio = Array.from(allRadioInputs).find(i => i.checked);
     const isRadioSelected = !!selectedRadio;
@@ -91,6 +67,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     submitButton.classList.remove('disabled');
   }
+
+  allRadioInputs.forEach(radio => {
+    radio.addEventListener('change', () => {
+      hideDetailInput();
+
+      const reasonId = radio.id.replace('jaic_', '');
+      if (triggerReasons.includes(reasonId)) {
+        detailWrapper.style.display = 'flex';
+        detailInput.placeholder = placeholders[radio.id];
+        const optionElement = radio.closest('.jaic_option');
+        optionElement.insertAdjacentElement('afterend', detailWrapper);
+
+        const ph = placeholders[reasonId] || '';
+        detailInput.placeholder = ph;
+        detailWrapper.style.display = 'flex';
+
+        const shouldRequire = (reasonId === 'other');
+        detailInput.required = shouldRequire;
+        detailInput.setAttribute('aria-required', shouldRequire ? 'true' : 'false');
+      }
+
+      updateRequirementError();
+    });
+  });
 
   detailInput.addEventListener('input', updateRequirementError);
 

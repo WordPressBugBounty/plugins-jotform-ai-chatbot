@@ -13,7 +13,7 @@ import { useWizard } from '../../hooks';
 import { ACTION_CREATORS } from '../../store';
 import {
   getThemeColor,
-  isValidHex, isValidRgba, t,
+  isValidHex, isValidRgba,
   toCamelCase
 } from '../../utils';
 import Dropdown from '../UI/Dropdown';
@@ -73,9 +73,9 @@ const StyleStep = () => {
   return (
     <>
       <div className='jfpContent-wrapper--style'>
-        <h2 className='sr-only'>{t(ALL_TEXTS.AGENT_STYLE)}</h2>
+        <h2 className='sr-only'>{ALL_TEXTS.AGENT_STYLE}</h2>
         <div className='jfpContent-wrapper--style-color-select'>
-          <h3>{t(ALL_TEXTS.COLOR_SCHEME)}</h3>
+          <h3>{ALL_TEXTS.COLOR_SCHEME}</h3>
           <ul className='jfpContent-wrapper--style-colors'>
             {THEMES.map(theme => (
               <li
@@ -94,16 +94,16 @@ const StyleStep = () => {
         </div>
         <hr className='jfpContent-wrapper--line' />
         <div className='jfpContent-wrapper--style-color-select'>
-          <h3>{t(ALL_TEXTS.AGENT_BACKGROUND_STYLE)}</h3>
+          <h3>{ALL_TEXTS.AGENT_BACKGROUND_STYLE}</h3>
           <div className='jfpContent-wrapper--style-color-select-col'>
-            <h4>{t(ALL_TEXTS.START_COLOR)}</h4>
+            <h4>{ALL_TEXTS.START_COLOR}</h4>
             <InputColor
               defaultValue={themeCustomizations[THEME_CUSTOMIZATION_KEYS.AGENT_BG_START_COLOR]}
               onChange={handleInputChange(THEME_CUSTOMIZATION_KEYS.AGENT_BG_START_COLOR)}
             />
           </div>
           <div className='jfpContent-wrapper--style-color-select-col'>
-            <h4>{t(ALL_TEXTS.END_COLOR)}</h4>
+            <h4>{ALL_TEXTS.END_COLOR}</h4>
             <InputColor
               defaultValue={themeCustomizations[THEME_CUSTOMIZATION_KEYS.AGENT_BG_END_COLOR]}
               onChange={handleInputChange(THEME_CUSTOMIZATION_KEYS.AGENT_BG_END_COLOR)}
@@ -112,16 +112,16 @@ const StyleStep = () => {
         </div>
         <hr className='jfpContent-wrapper--line' />
         <div className='jfpContent-wrapper--style-color-select'>
-          <h3>{t(ALL_TEXTS.CHAT_STYLE)}</h3>
+          <h3>{ALL_TEXTS.CHAT_STYLE}</h3>
           <div className='jfpContent-wrapper--style-color-select-full'>
-            <h4>{t(ALL_TEXTS.CHAT_BACKGROUND_COLOR)}</h4>
+            <h4>{ALL_TEXTS.CHAT_BACKGROUND_COLOR}</h4>
             <InputColor
               defaultValue={themeCustomizations[THEME_CUSTOMIZATION_KEYS.CHAT_BG_COLOR]}
               onChange={handleInputChange(THEME_CUSTOMIZATION_KEYS.CHAT_BG_COLOR)}
             />
           </div>
           <div className='jfpContent-wrapper--style-color-select-col'>
-            <h4>{t(ALL_TEXTS.FONT_FAMILY)}</h4>
+            <h4>{ALL_TEXTS.FONT_FAMILY}</h4>
             <Dropdown
               value={themeCustomizations.fontFamily}
               onChange={value => handleChangeThemeProperty(THEME_CUSTOMIZATION_KEYS.FONT_FAMILY, value)}
@@ -137,7 +137,7 @@ const StyleStep = () => {
             </Dropdown>
           </div>
           <div className='jfpContent-wrapper--style-color-select-col'>
-            <h4>{t(ALL_TEXTS.CHAT_THEME_COLOR)}</h4>
+            <h4>{ALL_TEXTS.CHAT_THEME_COLOR}</h4>
             <InputColor
               defaultValue={themeCustomizations[THEME_CUSTOMIZATION_KEYS.FONT_COLOR]}
               onChange={handleInputChange(THEME_CUSTOMIZATION_KEYS.FONT_COLOR)}
@@ -146,16 +146,16 @@ const StyleStep = () => {
         </div>
         <hr className='jfpContent-wrapper--line' />
         <div className='jfpContent-wrapper--style-color-select'>
-          <h3>{t(ALL_TEXTS.BUTTON_STYLE)}</h3>
+          <h3>{ALL_TEXTS.BUTTON_STYLE}</h3>
           <div className='jfpContent-wrapper--style-color-select-col'>
-            <h4>{t(ALL_TEXTS.BUTTON_COLOR)}</h4>
+            <h4>{ALL_TEXTS.BUTTON_COLOR}</h4>
             <InputColor
               defaultValue={themeCustomizations[THEME_CUSTOMIZATION_KEYS.BUTTON_BG_COLOR]}
               onChange={handleInputChange(THEME_CUSTOMIZATION_KEYS.BUTTON_BG_COLOR)}
             />
           </div>
           <div className='jfpContent-wrapper--style-color-select-col'>
-            <h4>{t(ALL_TEXTS.ICON_COLOR)}</h4>
+            <h4>{ALL_TEXTS.ICON_COLOR}</h4>
             <InputColor
               defaultValue={themeCustomizations[THEME_CUSTOMIZATION_KEYS.BUTTON_ICON_BG_COLOR]}
               onChange={handleInputChange(THEME_CUSTOMIZATION_KEYS.BUTTON_ICON_BG_COLOR)}

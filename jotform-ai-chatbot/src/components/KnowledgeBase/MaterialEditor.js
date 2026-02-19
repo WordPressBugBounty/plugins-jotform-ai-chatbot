@@ -5,7 +5,7 @@ import { func, object, string } from 'prop-types';
 
 import '../../styles/material-editor.scss';
 
-import { t } from '../../utils/index.js';
+import { ALL_TEXTS } from '../../constants';
 import {
   QuestionAnswer, TrainText, UploadDocument, URLInput
 } from './KnowledgeTypes/index.js';
@@ -49,7 +49,7 @@ const MaterialEditor = ({
       handleAdd?.(payload)
     )
       .then(resetView)
-      .catch(() => { setErrorMsg(t('An error occured.')); })
+      .catch(() => { setErrorMsg(ALL_TEXTS.AN_ERROR_OCCURED); })
       .finally(() => { setIsSaving(false); });
   };
 
@@ -65,7 +65,7 @@ const MaterialEditor = ({
       handleEdit?.(editingMaterialID, payload)
     )
       .then(resetView)
-      .catch(() => { setErrorMsg(t('An error occured.')); })
+      .catch(() => { setErrorMsg(ALL_TEXTS.AN_ERROR_OCCURED); })
       .finally(() => { setIsSaving(true); });
   };
 
@@ -106,7 +106,7 @@ const MaterialEditor = ({
     <div className='jfMaterialEditor'>
       {component}
       {!!errorMsg && (
-        <p className='jfMaterialEditor--error-message'>{t(errorMsg)}</p>
+        <p className='jfMaterialEditor--error-message'>{errorMsg}</p>
       )}
     </div>
   );

@@ -9,7 +9,7 @@ import AlertSvg from '../../assets/svg/alert-badge.svg';
 import WarningSvg from '../../assets/svg/warning-badge.svg';
 import { ALL_TEXTS } from '../../constants';
 import { useWizard } from '../../hooks';
-import { t, translationRenderer } from '../../utils';
+import { translationRenderer } from '../../utils';
 import Button from '../UI/Button';
 
 const AI_WORDPRESS_AGENT_LIMITS_MAPPING = {
@@ -74,12 +74,12 @@ const LimitWarning = () => {
         <p>{translationRenderer(isOverLimit
           ? ALL_TEXTS.OVERLIMIT_LIMIT_WARNING_TEXT
           : ALL_TEXTS.ALMOST_FULL_LIMIT_WARNING_TEXT)({
-          renderer1: () => <strong>{t(AI_WORDPRESS_AGENT_LIMITS_MAPPING[limitKey])}</strong>,
+          renderer1: () => <strong>{AI_WORDPRESS_AGENT_LIMITS_MAPPING[limitKey]}</strong>,
           renderer2: (txt) => <strong>{txt}</strong>
         })}
         </p>
       </div>
-      <Button colorStyle={isOverLimit ? 'error' : 'primary'} onClick={handleUpgradeNowClick}>{t(ALL_TEXTS.UPGRADE_NOW)} </Button>
+      <Button colorStyle={isOverLimit ? 'error' : 'primary'} onClick={handleUpgradeNowClick}>{ALL_TEXTS.UPGRADE_NOW} </Button>
     </div>
   );
 };
