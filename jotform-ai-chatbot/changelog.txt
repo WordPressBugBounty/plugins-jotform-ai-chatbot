@@ -1,5 +1,8 @@
 *** Jotform AI Chatbot Changelog ***
 
+2026-03-12 - version 3.7.1
+* Fixed - Minor fix on cache issues
+
 2026-02-19 - version 3.7.0
 * Updated - All plugin labels are now translation-ready
 * Updated - Minor UI improvements

@@ -1244,7 +1244,7 @@ class JAIC_Core {
                 sg_cachepress_purge_cache();
             }
 
-            if (function_exists('rocket_clean_domain')) {
+            if (function_exists('rocket_clean_domain') && function_exists('rocket_is_importing')) {
                 rocket_clean_domain();
             }
 
