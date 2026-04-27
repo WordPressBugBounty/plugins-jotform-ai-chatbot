@@ -19,6 +19,7 @@ export const woocommerceInitialState = {
     isSettingsLoading: false,
     isDisconnectLoading: false,
     invalidCredentialsError: false,
+    errorCode: null,
     abilities: {
       [WOO_COMMERCE_PROPERTIES.PRODUCT_FILTER]: true,
       [WOO_COMMERCE_PROPERTIES.PRODUCT_RECOMMENDATION]: true,
@@ -115,7 +116,8 @@ export const woocommerceReducer = (state, action) => {
         woocommerce: {
           ...state.woocommerce,
           isConnectLoading: false,
-          invalidCredentialsError: action.payload.result?.data?.responseCode === 401
+          invalidCredentialsError: action.payload.result?.data?.responseCode === 401,
+          errorCode: action.payload.result?.data?.error_code
         }
       };
 

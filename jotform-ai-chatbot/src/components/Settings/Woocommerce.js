@@ -30,7 +30,7 @@ const Woocommerce = () => {
       PLATFORM_DOMAIN
     },
     woocommerce: {
-      consumerKey, abilities, isConnected, isSettingsLoading, isConnectLoading, invalidCredentialsError
+      consumerKey, abilities, isConnected, isSettingsLoading, isConnectLoading, invalidCredentialsError, errorCode
     }
   } = state;
 
@@ -122,6 +122,7 @@ const Woocommerce = () => {
         <>
           {!isConnected && (
             <StoreConnection
+              errorCode={errorCode}
               previewAgentId={previewAgentId}
               platformUrl={PLATFORM_URL}
               isConnectLoading={isConnectLoading}

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const { __ = f => f } = window.wp?.i18n || {};
 
 export const ALL_TEXTS = {
@@ -187,7 +188,6 @@ export const ALL_TEXTS = {
   WOOCOMMERCE_PLUGIN_NOT_INSTALLED: __('To use this feature, please make sure the [1[WooCommerce plugin is installed and active]] on your site.', 'jotform-ai-chatbot'),
   WOOCOMMERCE_CONSUMER_SECRET_AND_KEY: __('You can create your Consumer Secret and Key in [1[WooCommerce > Settings > Advanced > REST API.]]', 'jotform-ai-chatbot'),
   WOOCOMMERCE_PERMALINK_ERROR: __('Your site is using [1[Plain permalinks]], which prevents the integration from working. Please update your permalink settings [2[here.]]', 'jotform-ai-chatbot'),
-  INVALID_CREDENTIALS: __('Connection failed - Invalid consumer key or secret.', 'jotform-ai-chatbot'),
   NO_AGENT_ERROR: __('Please [1[create an agent]] first to connect your store.', 'jotform-ai-chatbot'),
   NETWORK_ERROR_TITLE: __('Connection issue', 'jotform-ai-chatbot'),
   NETWORK_ERROR_DESC_NETWORK: __('Can’t connect to the server. Please check your internet connection or try again.', 'jotform-ai-chatbot'),
@@ -226,5 +226,21 @@ export const ALL_TEXTS = {
   ONCE_REMOVED_THE_AI_AGENT_WILL_NO_LONGER_HAVE_ACCESS_TO_IT: __('Once removed, the AI Agent will no longer have access to it.', 'jotform-ai-chatbot'),
   AN_ERROR_OCCURED: __('An error occured.', 'jotform-ai-chatbot'),
   ANSWER_NEEDED: __('Answer needed.', 'jotform-ai-chatbot'),
-  SEARCH: __('Search', 'jotform-ai-chatbot')
+  SEARCH: __('Search', 'jotform-ai-chatbot'),
+
+  // WooCommerce connection error related texts - rendered dynamically based on error code (woocommerce: { errorCode })
+  WOO_MISSING_CREDENTIALS: __('Store URL, consumer key and consumer secret are all required.', 'jotform-ai-chatbot'),
+  WOO_INVALID_CREDENTIAL_FORMAT: __('Consumer key must start with "ck_" and consumer secret must start with "cs_".', 'jotform-ai-chatbot'),
+  WOO_STORE_UNREACHABLE: __('Could not connect to the store. Please verify the store URL is correct and the store is online.', 'jotform-ai-chatbot'),
+  WOO_STORE_BLOCKING_REQUEST: __('The store appears to be blocking external API requests. The store owner should whitelist server-to-server requests in their firewall or security plugin (e.g. Wordfence).', 'jotform-ai-chatbot'),
+  WOO_STORE_REDIRECT: __('The store URL is redirecting to another address. Please use the final destination URL (e.g. ensure HTTP/HTTPS and www/non-www match the store\'s canonical URL).', 'jotform-ai-chatbot'),
+  WOO_STORE_SERVER_ERROR: __('The store\'s server is experiencing issues. This is usually temporary — please try again in a few minutes.', 'jotform-ai-chatbot'),
+  WOO_CLOUDFLARE_ORIGIN_ERROR: __('The store\'s server is experiencing issues behind Cloudflare. This is usually temporary — please try again in a few minutes.', 'jotform-ai-chatbot'),
+  WOO_INVALID_CREDENTIALS: __('The consumer key or secret was rejected by the store. Please double-check your WooCommerce API credentials.', 'jotform-ai-chatbot'),
+  WOO_ACCESS_FORBIDDEN: __('Access to the store API was forbidden. This may be caused by an IP block, a security plugin or insufficient API key permissions.', 'jotform-ai-chatbot'),
+  WOO_CLOUDFLARE_BOT_PROTECTION: __('This store\'s Cloudflare bot protection is blocking API access. The store owner needs to whitelist server-to-server requests or disable Bot Fight Mode for the WooCommerce API path (/wp-json/wc/).', 'jotform-ai-chatbot'),
+  WOO_REST_API_NOT_FOUND: __('The WooCommerce REST API endpoint was not found. Please ensure WooCommerce is installed and active, and that WordPress permalinks are not set to "Plain" (Settings → Permalinks).', 'jotform-ai-chatbot'),
+  WOO_RATE_LIMITED: __('The store is rate-limiting requests. Please wait a moment and try again.', 'jotform-ai-chatbot'),
+  WOO_UNEXPECTED_RESPONSE: __('An unexpected error occurred while trying to reach the store. Please try again.', 'jotform-ai-chatbot'),
+  WOO_UNEXPECTED_HTTP_CODE: __('Received an unexpected response from the store. Please verify the store URL and try again.', 'jotform-ai-chatbot')
 };

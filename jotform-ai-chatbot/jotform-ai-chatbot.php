@@ -1,13 +1,13 @@
 <?php
 
 /**
-* Plugin Name: AI Chatbot - Jotform
+* Plugin Name: Jotform AI Chatbot
 * Plugin URI: http://wordpress.org/plugins/jotform-ai-chatbot/
 * Description: AI chatbot that automates support, answers FAQs, drives WooCommerce sales, generates leads, and boosts engagement — easy setup, no coding!
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.7.1
+* Version: 3.7.2
 * Author URI: https://www.jotform.com/
 * Text Domain: jotform-ai-chatbot
 * Domain Path: /languages
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants for main file, directory path, and URL
-define('JAIC_PLUGIN_VERSION', '3.7.1');
+define('JAIC_PLUGIN_VERSION', '3.7.2');
 define('JAIC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('JAIC_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -606,14 +606,78 @@ add_action("admin_init", "jotform_ai_chatbot_plugin_settings_init");
  * @return array|string The sanitized input value.
  */
 function jotform_ai_chatbot_sanitize_options($input) {
-    if (is_array($input)) {
-        foreach ($input as $key => $value) {
-            $input[$key] = sanitize_text_field($value);
-        }
-    } else {
-        $input = sanitize_text_field($input);
+    $input = is_array($input) ? wp_unslash($input) : [];
+
+    $sanitized = [];
+
+    if (isset($input['apiKey'])) {
+        $sanitized['apiKey'] = sanitize_text_field($input['apiKey']);
     }
-    return $input;
+
+    if (isset($input['agentId'])) {
+        $sanitized['agentId'] = sanitize_text_field($input['agentId']);
+    }
+
+    if (isset($input['preview'])) {
+        $sanitized['preview'] = sanitize_text_field($input['preview']);
+    }
+
+    if (isset($input['embed'])) {
+        $sanitized['embed'] = sanitize_text_field($input['embed']);
+    }
+
+    if (isset($input['enterpriseDomain'])) {
+        $sanitized['enterpriseDomain'] = sanitize_text_field($input['enterpriseDomain']);
+    }
+
+    if (isset($input['unpublish'])) {
+        $sanitized['unpublish'] = sanitize_text_field($input['unpublish']);
+    }
+
+    if (isset($input['region'])) {
+        $sanitized['region'] = sanitize_key($input['region']);
+    }
+
+    if (isset($input['device'])) {
+        $sanitized['device'] = sanitize_key($input['device']);
+    }
+
+    if (isset($input['pages'])) {
+        $pages = json_decode($input['pages'], true);
+
+        $sanitized_pages = [
+            'showOn' => [],
+            'hideOn' => [],
+            'active' => '',
+        ];
+
+        if (is_array($pages)) {
+            foreach (['showOn', 'hideOn'] as $rule_group) {
+                if (!empty($pages[$rule_group]) && is_array($pages[$rule_group])) {
+                    foreach ($pages[$rule_group] as $rule) {
+                        if (!is_array($rule)) {
+                            continue;
+                        }
+
+                        $sanitized_pages[$rule_group][] = [
+                            'id'    => isset($rule['id']) ? sanitize_text_field($rule['id']) : '',
+                            'type'  => isset($rule['type']) ? sanitize_key($rule['type']) : '',
+                            'match' => isset($rule['match']) ? sanitize_key($rule['match']) : '',
+                            'value' => isset($rule['value']) ? sanitize_text_field($rule['value']) : '',
+                        ];
+                    }
+                }
+            }
+
+            if (isset($pages['active']) && in_array($pages['active'], ['showOn', 'hideOn'], true)) {
+                $sanitized_pages['active'] = $pages['active'];
+            }
+        }
+
+        $sanitized['pages'] = wp_json_encode($sanitized_pages);
+    }
+
+    return $sanitized;
 }
 
 /**

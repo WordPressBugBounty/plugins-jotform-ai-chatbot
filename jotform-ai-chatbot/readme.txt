@@ -1,17 +1,17 @@
-=== AI Chatbot - Jotform ===
+=== Jotform AI Chatbot ===
 
 Contributors: Jotform
 Tags: AI, chatbot, chatGPT, helpdesk, live chat
 Tested up to: 6.9
 Requires PHP: 7.0
-Stable tag: 3.7.1
+Stable tag: 3.7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 AI chatbot that automates support, answers FAQs, drives WooCommerce sales, generates leads, and boosts engagement — easy setup, no coding!
 
 == Description ==
-Jotform AI Chatbot, the best **AI Chatbot** that automates support, answers FAQs, drives **WooCommerce** sales, generates leads, and boosts engagement — easy setup, no coding!
+Jotform AI Chatbot for WordPress automates support, answers FAQs, drives WooCommerce sales, generates leads and boosts engagement with easy setup and no coding required.
 
 🟪 Jotform AI Chatbot allows businesses to engage visitors, guide them through forms, and streamline communication effortlessly. By providing seamless, real-time assistance, it helps convert passive visitors into active users.
 
@@ -73,7 +73,7 @@ Jotform AI Chatbot is designed to meet the needs of various users and industries
 == 🛠️ External Services ==
 This plugin connects to external services to provide functionality and improve user experience. Below are the details of the external services used:
 
-🌟 **Jotform AI platform**
+🌟 **Jotform AI Platform**
 
    - The plugin connects to Jotform’s servers to enable chatbot creation, training, and deployment. This includes accessing your Jotform account data to retrieve chatbot configurations and training data.
    - [Privacy Policy](https://www.jotform.com/privacy/?utm_source=wordpress&utm_medium=plugin_directory&utm_campaign=chatbot_plugin_content&utm_content=privacy)
@@ -178,6 +178,12 @@ See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org
 5. How It Works
 
 == Changelog ==
+= 3.7.2 (2026-04-27) =
+* Update: Codebase refactor
+* Update: Plugin title updated
+* Update: readme.txt file updated
+* Fix: Fixes on WooCommerce integration
+
 = 3.7.1 (2026-03-12) =
 * Fix: Minor fix on cache issues
 

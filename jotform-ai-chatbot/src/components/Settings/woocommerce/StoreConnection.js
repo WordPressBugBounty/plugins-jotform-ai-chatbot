@@ -11,6 +11,7 @@ import NoAgentError from './NoAgentError';
 import PermalinkError from './PermalinkError';
 
 const StoreConnection = ({
+  errorCode,
   platformUrl,
   isConnectLoading,
   permalinkStructure,
@@ -81,7 +82,7 @@ const StoreConnection = ({
       {showPermalinkError && <PermalinkError platformUrl={platformUrl} />}
       {/* connect btn */}
       <div className='jfpContent-wrapper--settings-options-connect-btn-wrapper'>
-        {invalidCredentialsError && <InvalidCredentialsError />}
+        {invalidCredentialsError && <InvalidCredentialsError errorCode={errorCode} />}
         {!previewAgentId && <NoAgentError />}
         <Button
           loader={isConnectLoading}
@@ -99,6 +100,7 @@ const StoreConnection = ({
 };
 
 StoreConnection.propTypes = {
+  errorCode: string.isRequired,
   setWoocommerceSettings: func.isRequired,
   platformUrl: string.isRequired,
   permalinkStructure: string.isRequired,
