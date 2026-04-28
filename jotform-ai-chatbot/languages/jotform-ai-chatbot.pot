@@ -2,23 +2,21 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Jotform AI Chatbot 3.7.2\n"
+"Project-Id-Version: Jotform - AI Chatbot 3.7.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wordpress-ai-chatbot-plugin\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-27T12:03:14+00:00\n"
+"POT-Creation-Date: 2026-04-28T14:15:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: jotform-ai-chatbot\n"
 
 #. Plugin Name of the plugin
 #: jotform-ai-chatbot.php
-#: jotform-ai-chatbot.php:211
-#: jotform-ai-chatbot.php:589
-msgid "Jotform AI Chatbot"
+msgid "Jotform - AI Chatbot"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -76,6 +74,11 @@ msgstr ""
 #: lib/app/app.js:1
 #: src/constants/texts.js:148
 msgid "Settings"
+msgstr ""
+
+#: jotform-ai-chatbot.php:211
+#: jotform-ai-chatbot.php:589
+msgid "Jotform AI Chatbot"
 msgstr ""
 
 #: jotform-ai-chatbot.php:355

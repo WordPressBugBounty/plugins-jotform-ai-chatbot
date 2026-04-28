@@ -1,13 +1,13 @@
 <?php
 
 /**
-* Plugin Name: Jotform AI Chatbot
+* Plugin Name: Jotform - AI Chatbot
 * Plugin URI: http://wordpress.org/plugins/jotform-ai-chatbot/
 * Description: AI chatbot that automates support, answers FAQs, drives WooCommerce sales, generates leads, and boosts engagement — easy setup, no coding!
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.7.2
+* Version: 3.7.4
 * Author URI: https://www.jotform.com/
 * Text Domain: jotform-ai-chatbot
 * Domain Path: /languages
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants for main file, directory path, and URL
-define('JAIC_PLUGIN_VERSION', '3.7.2');
+define('JAIC_PLUGIN_VERSION', '3.7.4');
 define('JAIC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('JAIC_PLUGIN_URL', plugin_dir_url(__FILE__));
 

@@ -204,6 +204,12 @@ class JAIC_Core {
                         $url = "https://" . $url;
                     }
 
+                    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+                    $currentUrl = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                    if ($currentUrl === $url) {
+                        $pluginDisabledForVisitedURL = true;
+                    }
+
                     $parsedURL = wp_parse_url($url);
                     if (!empty($parsedURL['path'])) {
                         return $parsedURL['path'];

@@ -1,5 +1,13 @@
 *** Jotform AI Chatbot Changelog ***
 
+2026-04-28 - version 3.7.4
+* Fixed - Visibility options of chatbot
+
+2026-04-28 - version 3.7.3
+* Fixed - Visibility options of chatbot
+* Updated - Plugin title
+* Updated - readme.txt file
+
 2026-04-27 - version 3.7.2
 * Updated - Codebase refactor
 * Updated - Plugin title

@@ -1,10 +1,10 @@
-=== Jotform AI Chatbot ===
+=== Jotform - AI Chatbot ===
 
 Contributors: Jotform
 Tags: AI, chatbot, chatGPT, helpdesk, live chat
 Tested up to: 6.9
 Requires PHP: 7.0
-Stable tag: 3.7.2
+Stable tag: 3.7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ Jotform AI Chatbot for WordPress automates support, answers FAQs, drives WooComm
 [youtube https://www.youtube.com/watch?v=WUFl9IVWqNg&ab_channel=JotformAIChatbotPlugin]
 
 = 💬 What does the Jotform AI Chatbot do? =
-The Jotform AI Chatbot plugin allows you to **easily create and train custom chatbots** to **handle queries, guide users, and share information**. It offers **seamless publish** on any WordPress site without coding and enhances user engagement through **interactive conversations**. You can **customize** chatbot personas, tones, and styles to align with your brand identity. With **WooCommerce integration**, the plugin supports online stores with product Q&A, order tracking, and cart recovery.
+The Jotform AI Chatbot plugin allows you to **easily create and train custom chatbots** to **handle queries, guide users, and share information**. It offers **seamless publishing** on any WordPress site without coding and enhances user engagement through **interactive conversations**. You can **customize** chatbot personas, tones, and styles to align with your brand identity. With **WooCommerce integration**, the plugin supports online stores with product Q&A, order tracking, and cart recovery.
 
 = 🎥 Product demo videos: =
 ▶️ [How to Use Jotform AI Chatbot on WordPress](https://link.jotform.com/gKw5OEf1Kq)
@@ -38,7 +38,7 @@ The Jotform AI Chatbot plugin allows you to **easily create and train custom cha
 🟣 **Auto train**: The plugin automatically crawls your website content and trains the chatbot without any manual setup. Whenever you update your pages or add a new page, blog post, or FAQ, the chatbot stays in sync and instantly learns from the latest information. This ensures visitors always receive accurate, up-to-date answers, saving you hours of maintenance while delivering a smarter, more reliable customer experience.
 🟣 **Chatbot visibility**: Decide where the chatbot should appear on your website. You can choose which pages or typed URLs the chatbot will be shıwn or hidden. 
 🟣 **Form assistance**: Guide users through form completion with a conversational flow to reduce errors and improve submission success.
-🟣 **Chatbot Conversations**: View and manage all user chats directly from your WordPress dashboard. Track interactions, review messages, and respond in real time—without leaving your  site.
+🟣 **Chatbot Conversations**: View and manage all user chats directly from your WordPress dashboard. Track interactions, review messages, and respond in real time—without leaving your site.
 
 = 🌍 Multi-language AI Chatbot for global support =
 The Jotform AI Chatbot automatically adapts to your visitors’ preferred language, supporting seamless conversations in dozens of languages worldwide. Deliver personalized, AI-powered assistance in your users’ native language—no manual setup required.
@@ -54,7 +54,7 @@ The Jotform AI Chatbot automatically adapts to your visitors’ preferred langua
 
 💡*Tip: Want to get started even faster? Explore our ready-made [AI Chatbot templates](https://link.jotform.com/71R2XHz9A7) for various industries. Choose a template, customize it, and publish it on your website in minutes.*
 
-ℹ️ If you have any questions or concerns regarding your online forms, chatbots, or our Agent Builder, feel free to contact our friendly 24-7 [support team](https://link.jotform.com/xNCqA3ySkh).
+ℹ️ If you have any questions or concerns regarding your online forms, chatbots, or our Agent Builder, feel free to contact our friendly 24/7 [support team](https://link.jotform.com/xNCqA3ySkh).
 
 🔍 Discover all the features and capabilities of the Jotform AI Chatbot Plugin in our detailed [user guide](https://link.jotform.com/Yfrmv3z1JH).
 
@@ -88,7 +88,7 @@ This plugin connects to external services to provide functionality and improve u
 ☁️ **CDN usage**
 - The plugin makes external CDN requests on the following domain to enable chatbot-related functionalities:
    `**https://cdn.jotfor.ms**`
-- The plugin uses the domain [**https://cdn.jotfor.ms**] as a CDN service to deliver and render the embedded AI Chatbot.
+- The plugin uses an API to create real-time conversions with chatbot agents.
 
 🔑 **API Key usage**
 - The plugin uses an API key, which is sent to the domain [**https://api.jotform.com**] to authenticate with the Jotform API service.
@@ -111,11 +111,11 @@ The Jotform AI Chatbot WordPress plugin lets users easily create, train, and pub
 
 **How does the plugin simplify chatbot embedding on WordPress?**
 
-Traditionally, embedding a chatbot required you to copy and paste embed codes or use shortcodes, which could be cumbersome for non-technical users. Jotform AI Chatbot WordPress Plugin simplifies the process to just a few clicks. Once you’ve created and customized your chatbot in the **WordPress admin dashboard**, you can directly publish it to your site without additional steps. The plugin **automatically integrates the chatbot into your website**, ensuring seamless setup and a consistent user experience across all pages.
+Traditionally, embedding a chatbot required copying and pasting embed codes or using shortcodes, which could be cumbersome for non-technical users. Jotform AI Chatbot WordPress Plugin simplifies the process to just a few clicks. Once you’ve created and customized your chatbot in the **WordPress admin dashboard**, you can directly publish it to your site without additional steps. The plugin **automatically integrates the chatbot into your website**, ensuring seamless setup and a consistent user experience across all pages.
 
 **Can I customize the chatbot through the plugin?**
 
-Yes, the plugin offers extensive customization options to ensure your chatbot aligns with your brand. You can adjust its appearance by changing the colors, fonts, and avatars to match your website’s design. Beyond appearance, you can customize the chatbot’s tone and conversational style to reflect your brand’s voice, whether formal, casual, friendly, or professional. The plugin **automatically crawls your site content** and also **allows you to train the chatbot with specific data**, such as FAQs, product details, and business policies, enabling it to deliver highly relevant responses tailored to your audience’s needs.
+Yes, the plugin offers extensive customization options to ensure your chatbot aligns with your brand. You can adjust its appearance by changing the colors, fonts, and avatars to match your website’s design. Beyond appearance, you can customize the chatbot’s tone and conversational style to reflect your brand’s voice, whether formal, casual, friendly, or professional. The plugin **automatically crawls your site content** and lets you **train the chatbot with specific data**, such as FAQs, product details, and business policies, enabling it to deliver highly relevant responses tailored to your audience’s needs.
 
 **What types of questions can the chatbot answer?**
 
@@ -123,11 +123,11 @@ The chatbot can handle everything from basic FAQs to complex, business-specific 
 
 **Do I need coding skills to use the plugin?**
 
-Nope! The Jotform AI Chatbot WordPress plugin is user-friendly, requiring no coding knowledge. Its intuitive dashboard lets users create, train, and manage chatbots effortlessly. Whether you’re a small business owner or a developer, you can customize and deploy a chatbot quickly with minimal effort.
+Nope! The Jotform AI Chatbot WordPress plugin is user-friendly and requires no coding knowledge. Its intuitive dashboard lets users create, train, and manage chatbots effortlessly. Whether you’re a small business owner or a developer, you can customize and deploy a chatbot quickly with minimal effort.
 
 **Can the chatbot be trained with my business data?**
 
-Yes! The plugin offers robust training tools, allowing you to upload FAQs, documents, and product catalogs to train the chatbot. This ensures it provides accurate, relevant responses about your services, policies, and operations. You can also retrain it anytime to keep information up-to-date for consistent, helpful interactions.
+Yes! The plugin offers robust training tools that let you upload FAQs, documents, and product catalogs to train the chatbot. This ensures it provides accurate, relevant responses about your services, policies, and operations. You can also retrain it at any time to keep information up to date for consistent, helpful interactions.
 
 **How does the chatbot improve form submissions?**
 
@@ -166,7 +166,7 @@ After activating the plugin, you can create your chatbot on the admin panel, or 
 3. **Activate** the plugin under the Plugins section.
 4. The **Jotform icon** will appear on the left sidebar of your WordPress admin panel.
 
-After activating the plugin, you can create your chatbot on the admin panel, or you can create or edit your chatbot from the **Jotform chatbot builder**. Voila! Your AI Chatbot is embedded on your website. 🙂
+After activating the plugin, you can create your chatbot in the admin panel or in the **Jotform chatbot builder**. Voila! Your AI Chatbot is published on your website. 🙂
 
 See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org/support/plugin/jotform-ai-chatbot/) to troubleshoot any issues.
 
@@ -178,6 +178,14 @@ See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org
 5. How It Works
 
 == Changelog ==
+= 3.7.4 (2026-04-28) =
+* Fix: Fixes on visibility options of chatbot
+
+= 3.7.3 (2026-04-28) =
+* Fix: Fixes on visibility options of chatbot
+* Update: Plugin title updated
+* Update: readme.txt file updated
+
 = 3.7.2 (2026-04-27) =
 * Update: Codebase refactor
 * Update: Plugin title updated
