@@ -15,6 +15,10 @@ export function createAxiosInstance(baseURL, withCredentials = true) {
         return Promise.reject(response);
       }
 
+      if (data && data.content && typeof data.content.error_code === 'string') {
+        return Promise.reject(data.content || data);
+      }
+
       return data?.content || data;
     },
     (error) => Promise.reject(error)
