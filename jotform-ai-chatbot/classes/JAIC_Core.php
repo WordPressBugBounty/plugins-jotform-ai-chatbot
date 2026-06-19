@@ -1226,7 +1226,7 @@ class JAIC_Core {
             }
 
             if (class_exists('WP_Optimize')) {
-                WP_Optimize::clear_cache();
+                \WP_Optimize::clear_cache();
             }
 
             if (function_exists('flying_press_clear_cache')) {
@@ -1239,11 +1239,11 @@ class JAIC_Core {
             }
 
             if (class_exists('W3_Plugin_TotalCacheAdmin') && method_exists('W3_Plugin_TotalCacheAdmin', 'flush_all')) {
-                W3_Plugin_TotalCacheAdmin::flush_all();
+                \W3_Plugin_TotalCacheAdmin::flush_all();
             }
 
             if (class_exists('LiteSpeed_Cache_API')) {
-                LiteSpeed_Cache_API::purge_all();
+                \LiteSpeed_Cache_API::purge_all();
             }
 
             if (function_exists('sg_cachepress_purge_cache')) {
@@ -1255,7 +1255,7 @@ class JAIC_Core {
             }
 
             if (class_exists('autoptimizeCache')) {
-                autoptimizeCache::clearall();
+                \autoptimizeCache::clearall();
             }
 
             if (function_exists('wphb_clear_page_cache')) {
@@ -1267,7 +1267,7 @@ class JAIC_Core {
             }
 
             if (class_exists('FastVelocityMinifyCache')) {
-                FastVelocityMinifyCache::clear();
+                \FastVelocityMinifyCache::clear();
             }
 
             if (function_exists('kinsta_flush_cache')) {
@@ -1275,11 +1275,11 @@ class JAIC_Core {
             }
 
             if (class_exists('Docket_Cache')) {
-                Docket_Cache::flush_all();
+                \Docket_Cache::flush_all();
             }
 
             if (class_exists('SpeedyCache')) {
-                SpeedyCache::clear_cache();
+                \SpeedyCache::clear_cache();
             }
 
             if (class_exists('Cloudflare\Plugin')) {
@@ -1287,7 +1287,7 @@ class JAIC_Core {
             }
 
             if (class_exists('Swift_Performance')) {
-                $swift = new Swift_Performance();
+                $swift = new \Swift_Performance();
                 $swift->cache->clear_all();
             }
 
@@ -1300,7 +1300,7 @@ class JAIC_Core {
             }
 
             if (class_exists('WpFastestCache')) {
-                WpFastestCache::deleteCache();
+                \WpFastestCache::deleteCache();
             }
 
             if (function_exists('super_page_cache_clear_cache')) {

@@ -1,5 +1,8 @@
 *** Jotform AI Chatbot Changelog ***
 
+2026-06-19 - version 3.7.6
+* Fixed - Minor fix on cache issues
+
 2026-04-29 - version 3.7.5
 * Fixed - Issues with WooCommerce integration
 
