@@ -1225,7 +1225,7 @@ class JAIC_Core {
                 wpengine_flush_cache();
             }
 
-            if (class_exists('WP_Optimize')) {
+            if (class_exists('WP_Optimize') && method_exists('WP_Optimize', 'clear_cache')) {
                 \WP_Optimize::clear_cache();
             }
 
@@ -1242,7 +1242,7 @@ class JAIC_Core {
                 \W3_Plugin_TotalCacheAdmin::flush_all();
             }
 
-            if (class_exists('LiteSpeed_Cache_API')) {
+            if (class_exists('LiteSpeed_Cache_API') && method_exists('LiteSpeed_Cache_API', 'purge_all')) {
                 \LiteSpeed_Cache_API::purge_all();
             }
 
@@ -1254,7 +1254,7 @@ class JAIC_Core {
                 rocket_clean_domain();
             }
 
-            if (class_exists('autoptimizeCache')) {
+            if (class_exists('autoptimizeCache') && method_exists('autoptimizeCache', 'clearall')) {
                 \autoptimizeCache::clearall();
             }
 
@@ -1266,7 +1266,7 @@ class JAIC_Core {
                 breeze_clear_cache();
             }
 
-            if (class_exists('FastVelocityMinifyCache')) {
+            if (class_exists('FastVelocityMinifyCache') && method_exists('FastVelocityMinifyCache', 'clear')) {
                 \FastVelocityMinifyCache::clear();
             }
 
@@ -1274,15 +1274,15 @@ class JAIC_Core {
                 kinsta_flush_cache();
             }
 
-            if (class_exists('Docket_Cache')) {
+            if (class_exists('Docket_Cache') && method_exists('Docket_Cache', 'flush_all')) {
                 \Docket_Cache::flush_all();
             }
 
-            if (class_exists('SpeedyCache')) {
+            if (class_exists('SpeedyCache') && method_exists('SpeedyCache', 'clear_cache')) {
                 \SpeedyCache::clear_cache();
             }
 
-            if (class_exists('Cloudflare\Plugin')) {
+            if (class_exists('Cloudflare\Plugin') && method_exists('Cloudflare\Plugin', 'purge_cache')) {
                 \Cloudflare\Plugin::purge_cache();
             }
 
@@ -1299,7 +1299,7 @@ class JAIC_Core {
                 hyper_cache_clear_cache();
             }
 
-            if (class_exists('WpFastestCache')) {
+            if (class_exists('WpFastestCache') && method_exists('WpFastestCache', 'deleteCache')) {
                 \WpFastestCache::deleteCache();
             }
 
