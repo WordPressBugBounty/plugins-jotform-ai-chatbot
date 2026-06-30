@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.7.7
+* Version: 3.7.8
 * Author URI: https://www.jotform.com/
 * Text Domain: jotform-ai-chatbot
 * Domain Path: /languages
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants for main file, directory path, and URL
-define('JAIC_PLUGIN_VERSION', '3.7.7');
+define('JAIC_PLUGIN_VERSION', '3.7.8');
 define('JAIC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('JAIC_PLUGIN_URL', plugin_dir_url(__FILE__));
 
