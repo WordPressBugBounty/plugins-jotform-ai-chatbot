@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.7.8
+* Version: 3.7.9
 * Author URI: https://www.jotform.com/
 * Text Domain: jotform-ai-chatbot
 * Domain Path: /languages
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants for main file, directory path, and URL
-define('JAIC_PLUGIN_VERSION', '3.7.8');
+define('JAIC_PLUGIN_VERSION', '3.7.9');
 define('JAIC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('JAIC_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -173,6 +173,7 @@ function jotform_ai_chatbot_settings_callback($args) {
     ?>
     <div class="wrap">
         <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+        <hr class="wp-header-end">
     </div>
     <?php
     jotform_ai_chatbot_developers_callback($args);
@@ -190,6 +191,7 @@ function jotform_ai_chatbot_conversations_callback($args) {
     ?>
     <div class="wrap">
         <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+        <hr class="wp-header-end">
     </div>
     <?php
     jotform_ai_chatbot_developers_callback($args);
@@ -238,14 +240,14 @@ function jaic_hide_notices() {
     $screen = get_current_screen();
     if ($screen && ($screen->id === 'toplevel_page_jotform_ai_chatbot' || $screen->id === 'jotform-ai-chatbot_page_jotform_ai_chatbot_conversations' || $screen->id === 'jotform-ai-chatbot_page_jotform_ai_chatbot_settings')) {
         echo '<style>
-            .notice-success,
-            .notice-error,
-            .notice-warning,
-            .notice-info,
-            .notice.notice-success,
-            .notice.notice-error,
-            .notice.notice-warning,
-            .notice.notice-info {
+            #wpbody-content > .notice:not(.jaic-website-widgets-banner),
+            #wpbody-content > .updated:not(.jaic-website-widgets-banner),
+            #wpbody-content > .error:not(.jaic-website-widgets-banner),
+            #wpbody-content > .update-nag:not(.jaic-website-widgets-banner),
+            #wpbody-content > .wrap > .notice:not(.jaic-website-widgets-banner),
+            #wpbody-content > .wrap > .updated:not(.jaic-website-widgets-banner),
+            #wpbody-content > .wrap > .error:not(.jaic-website-widgets-banner),
+            #wpbody-content > .wrap > .update-nag:not(.jaic-website-widgets-banner) {
                 display: none !important;
             }
         </style>';
@@ -691,6 +693,7 @@ function jotform_ai_chatbot_render_plugin() {
     ?>
     <div class="wrap">
         <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+        <hr class="wp-header-end">
         <div><?php do_settings_sections("jotform_ai_chatbot"); ?></div>
     </div>
     <?php
@@ -865,3 +868,41 @@ function jotform_ai_chatbot_schedule_cron() {
 }
 add_action('wp', 'jotform_ai_chatbot_schedule_cron');
 add_action('jotform_ai_chatbot_cron_hook', 'jotform_ai_chatbot_cron_sync_pages');
+
+function jaic_enqueue_banner_styles() {
+    wp_enqueue_style(
+        'jaic-website-widgets-banner',
+        JAIC_PLUGIN_URL . 'lib/css/jaic-banner.css',
+        [],
+        JAIC_PLUGIN_VERSION
+    );
+}
+add_action('admin_enqueue_scripts', 'jaic_enqueue_banner_styles');
+
+add_action('admin_notices', 'jaic_show_banner');
+
+function jaic_show_banner() {
+    ?>
+    <div class="jaic-website-widgets-banner notice notice-info is-dismissible">
+        <div class="jaic-website-widgets-banner--content-container">
+            <h3 class="jaic-website-widgets-banner--title">Enhance Your WordPress Website with <span>Website Widgets</span></h3>
+            <p class="jaic-website-widgets-banner--description">Add interactive widgets that capture attention, build trust, and help visitors take action.</p>
+            <a
+                class="jaic-website-widgets-banner--button"
+                href="<?php echo esc_url('https://www.jotform.com/website-widgets/?utm_source=jotform-ai-chatbot&utm_medium=website&utm_content=website-widgets&utm_campaign=wp-website-widgets-banner'); ?>"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <?php echo esc_html__('Explore Jotform’s Website Widgets', 'jotform-ai-chatbot'); ?>
+            </a>
+        </div>
+        <div class="jaic-website-widgets-banner--image-container">
+            <img
+                src="<?php echo esc_url(JAIC_PLUGIN_URL . 'src/assets/images/ww-banner-image.png'); ?>"
+                alt="<?php echo esc_attr__('Jotform Website Widgets', 'jotform-ai-chatbot'); ?>"
+                class="jaic-website-widgets-banner--image"
+            >
+        </div>
+    </div>
+    <?php
+}

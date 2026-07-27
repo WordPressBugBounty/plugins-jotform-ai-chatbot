@@ -1,5 +1,8 @@
 *** Jotform AI Chatbot Changelog ***
 
+2026-07-27 - version 3.7.9
+* Updated - Minor asset update
+
 2026-06-30 - version 3.7.8
 * Updated - Tested up to WordPress 7.0 and readme.txt file
 

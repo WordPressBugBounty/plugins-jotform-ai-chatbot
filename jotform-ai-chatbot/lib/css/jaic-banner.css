@@ -1,0 +1,91 @@
+.jaic-website-widgets-banner.notice {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1240px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: linear-gradient(90deg, #fffbef -0.54%, #f3e5f9 11.53%, #d6e5ff 47.72%, #c5dcf5 100%);
+  border-radius: 16px;
+  box-shadow:
+    0 8px 16px 0 rgba(84, 95, 111, 0.16),
+    0 2px 4px 0 rgba(37, 45, 91, 0.04);
+  border: unset;
+  padding: 8px;
+  margin-right: 24px;
+}
+.jaic-website-widgets-banner .jaic-website-widgets-banner--content-container {
+  padding: 32px;
+}
+.jaic-website-widgets-banner .jaic-website-widgets-banner--title {
+  color: #0a1551;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+.jaic-website-widgets-banner .jaic-website-widgets-banner--title span {
+  background: var(--Launch-Gradient, linear-gradient(98deg, #ff3a82 32.8%, #fea16e 181.47%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.jaic-website-widgets-banner .jaic-website-widgets-banner--description {
+  color: #343c6a;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0 0 20px;
+  padding: 0;
+}
+.jaic-website-widgets-banner .jaic-website-widgets-banner--image-container {
+  flex-shrink: 0;
+}
+.jaic-website-widgets-banner .jaic-website-widgets-banner--image {
+  width: 100%;
+  height: auto;
+  max-width: 380px;
+}
+.jaic-website-widgets-banner .jaic-website-widgets-banner--button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: max-content;
+  height: 32px;
+  min-width: 80px;
+  padding: 0 12px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 12px;
+  color: #fff;
+  background: #ff2977;
+  text-decoration: none;
+  transition: 0.15s all;
+}
+.jaic-website-widgets-banner .jaic-website-widgets-banner--button:hover {
+  background: #f41252;
+}
+@media screen and (max-width: 1024px) {
+  .jaic-website-widgets-banner .jaic-website-widgets-banner--image {
+    max-width: 320px;
+  }
+}
+@media screen and (max-width: 782px) {
+  .jaic-website-widgets-banner.notice.is-dismissible {
+    background: linear-gradient(180deg, #fffbef -0.67%, #f3e5f9 31.54%, #d6e5ff 63.76%, #c5dcf5 100%);
+    padding-right: 8px;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  .jaic-website-widgets-banner .jaic-website-widgets-banner--content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+  }
+  .jaic-website-widgets-banner .jaic-website-widgets-banner--image {
+    max-width: 480px;
+  }
+}
