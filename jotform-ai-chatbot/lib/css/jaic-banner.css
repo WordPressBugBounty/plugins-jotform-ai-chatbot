@@ -61,9 +61,12 @@
   background: #ff2977;
   text-decoration: none;
   transition: 0.15s all;
+  border: none;
 }
 .jaic-website-widgets-banner .jaic-website-widgets-banner--button:hover {
   background: #f41252;
+  color: #fff;
+  border: none;
 }
 @media screen and (max-width: 1024px) {
   .jaic-website-widgets-banner .jaic-website-widgets-banner--image {

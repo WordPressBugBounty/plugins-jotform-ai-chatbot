@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.7.9
+* Version: 3.8.0
 * Author URI: https://www.jotform.com/
 * Text Domain: jotform-ai-chatbot
 * Domain Path: /languages
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants for main file, directory path, and URL
-define('JAIC_PLUGIN_VERSION', '3.7.9');
+define('JAIC_PLUGIN_VERSION', '3.8.0');
 define('JAIC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('JAIC_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -869,21 +869,76 @@ function jotform_ai_chatbot_schedule_cron() {
 add_action('wp', 'jotform_ai_chatbot_schedule_cron');
 add_action('jotform_ai_chatbot_cron_hook', 'jotform_ai_chatbot_cron_sync_pages');
 
-function jaic_enqueue_banner_styles() {
+/**
+ * Check whether the current user has dismissed the website widgets banner.
+ *
+ * @return bool
+ */
+function jaic_is_website_widgets_banner_dismissed() {
+    $user_id = get_current_user_id();
+
+    if (!$user_id) {
+        return false;
+    }
+
+    $is_dismissed = get_user_meta($user_id, '_jotform_website_widgets_banner_dismissed', true);
+    $is_legacy_dismissed = get_user_meta($user_id, '_jaic_website_widgets_banner_dismissed', true);
+
+    return (bool) ($is_dismissed || $is_legacy_dismissed);
+}
+
+/**
+ * Enqueue assets for the website widgets banner.
+ *
+ * @return void
+ */
+function jaic_enqueue_banner_assets() {
+    if (!current_user_can('manage_options') || jaic_is_website_widgets_banner_dismissed()) {
+        return;
+    }
+
     wp_enqueue_style(
-        'jaic-website-widgets-banner',
+        'jotform-website-widgets-banner',
         JAIC_PLUGIN_URL . 'lib/css/jaic-banner.css',
         [],
         JAIC_PLUGIN_VERSION
     );
+
+    wp_enqueue_script(
+        'jotform-website-widgets-banner',
+        JAIC_PLUGIN_URL . 'lib/jaic-banner.js',
+        [],
+        JAIC_PLUGIN_VERSION,
+        true
+    );
+
+    wp_localize_script('jotform-website-widgets-banner', 'jotformWebsiteWidgetsBanner', [
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('jotform_dismiss_website_widgets_banner'),
+    ]);
 }
-add_action('admin_enqueue_scripts', 'jaic_enqueue_banner_styles');
+add_action('admin_enqueue_scripts', 'jaic_enqueue_banner_assets');
 
 add_action('admin_notices', 'jaic_show_banner');
 
+/**
+ * Display the website widgets banner.
+ *
+ * @return void
+ */
 function jaic_show_banner() {
+    if (
+        !current_user_can('manage_options')
+        || jaic_is_website_widgets_banner_dismissed()
+        || did_action('jotform_website_widgets_banner_rendered')
+    ) {
+        return;
+    }
+
+    do_action('jotform_website_widgets_banner_rendered');
+
     ?>
-    <div class="jaic-website-widgets-banner notice notice-info is-dismissible">
+    <div class="jotform-website-widgets-banner jaic-website-widgets-banner notice notice-info is-dismissible">
         <div class="jaic-website-widgets-banner--content-container">
             <h3 class="jaic-website-widgets-banner--title">Enhance Your WordPress Website with <span>Website Widgets</span></h3>
             <p class="jaic-website-widgets-banner--description">Add interactive widgets that capture attention, build trust, and help visitors take action.</p>
@@ -906,3 +961,23 @@ function jaic_show_banner() {
     </div>
     <?php
 }
+
+/**
+ * Persist the website widgets banner dismissal for the current user.
+ *
+ * @return void
+ */
+function jaic_dismiss_website_widgets_banner() {
+    check_ajax_referer('jotform_dismiss_website_widgets_banner', 'nonce');
+
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error([
+            'message' => esc_html__('You are not allowed to dismiss this notice.', 'jotform-ai-chatbot'),
+        ], 403);
+    }
+
+    update_user_meta(get_current_user_id(), '_jotform_website_widgets_banner_dismissed', 1);
+
+    wp_send_json_success();
+}
+add_action('wp_ajax_jotform_dismiss_website_widgets_banner', 'jaic_dismiss_website_widgets_banner');

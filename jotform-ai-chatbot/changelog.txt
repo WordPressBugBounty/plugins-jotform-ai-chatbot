@@ -1,5 +1,8 @@
 *** Jotform AI Chatbot Changelog ***
 
+2026-07-28 - version 3.8.0
+* Fixed - Minor fix on banner dismiss
+
 2026-07-27 - version 3.7.9
 * Updated - Minor asset update
 
