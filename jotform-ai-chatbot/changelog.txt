@@ -1,5 +1,8 @@
 *** Jotform AI Chatbot Changelog ***
 
+2026-08-13 - version 3.8.1
+* Updated - Tested up to WordPress 7.1 and readme.txt file
+
 2026-07-28 - version 3.8.0
 * Fixed - Minor fix on banner dismiss
 
