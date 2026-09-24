@@ -1300,7 +1300,8 @@ class JAIC_Core {
             }
 
             if (class_exists('WpFastestCache') && method_exists('WpFastestCache', 'deleteCache')) {
-                \WpFastestCache::deleteCache();
+                $wpFastestCache = new \WpFastestCache();
+                $wpFastestCache->deleteCache();
             }
 
             if (function_exists('super_page_cache_clear_cache')) {
@@ -1310,7 +1311,7 @@ class JAIC_Core {
             if (function_exists('flush_rewrite_rules')) {
                 flush_rewrite_rules();
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
         }
     }
 
