@@ -1,5 +1,8 @@
 *** Jotform AI Chatbot Changelog ***
 
+2026-10-16 - version 3.8.3
+* Updated - Action buttons
+
 2026-09-24 - version 3.8.2
 * Fixed - Minor fix on cache issues
 

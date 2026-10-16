@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.8.2
+* Version: 3.8.3
 * Author URI: https://www.jotform.com/
 * Text Domain: jotform-ai-chatbot
 * Domain Path: /languages
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants for main file, directory path, and URL
-define('JAIC_PLUGIN_VERSION', '3.8.2');
+define('JAIC_PLUGIN_VERSION', '3.8.3');
 define('JAIC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('JAIC_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -777,9 +777,9 @@ function jaic_my_plugin_action_links($links) {
         // Determine link text based on the presence of ai chatbot
         $link_text = (!empty($options["agentId"])) ? __('My AI Chatbot', "jotform-ai-chatbot") : __('Create AI Chatbot', "jotform-ai-chatbot");
 
-        // Build the new link with custom color and URL
+        // Style the primary action as a green button for either chatbot state.
         $dashboard_link = sprintf(
-            '<a href="%s" style="color: #FF6100; font-weight: bold;">%s</a>',
+            '<a href="%s" style="display: inline-block; padding: 2px 8px; border-radius: 4px; background-color: #159b77; color: #fff; font-weight: bold; text-decoration: none;">%s</a>',
             esc_url(admin_url('admin.php?page=jotform_ai_chatbot')),
             esc_html($link_text)
         );
