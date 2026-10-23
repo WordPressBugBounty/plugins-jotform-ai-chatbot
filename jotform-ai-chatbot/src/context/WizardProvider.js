@@ -14,6 +14,7 @@ import {
   awaitFor, cleanParams, createAsyncDispatch, platformSettings as platformSettingsSingleton,
   toggleSettingsItems
 } from '../utils';
+import { consumeLoginState, LOGIN_STATE_PARAM } from '../utils/loginState';
 import { WizardContext } from './WizardContext';
 
 export const WizardProvider = ({
@@ -63,7 +64,14 @@ export const WizardProvider = ({
       const queryString = window.location.search;
       const params = new URLSearchParams(queryString);
       const apiKeyParam = params.get('code');
+      if (apiKeyParam && !consumeLoginState(params.get(LOGIN_STATE_PARAM))) {
+        cleanParams(['code', 'domain', LOGIN_STATE_PARAM]);
+        dispatch(ACTION_CREATORS.setUnauthorizedApiKey(true));
+        setCredentialsSaved(true);
+        return;
+      }
       if (apiKeyParam === '0') {
+        cleanParams(['code', 'domain', LOGIN_STATE_PARAM]);
         dispatch(ACTION_CREATORS.setUnauthorizedApiKey(true)); // some users are not able obtain api key on enterprise server
         setCredentialsSaved(true);
         return;
@@ -73,9 +81,18 @@ export const WizardProvider = ({
         return;
       }
       let payload = { key: 'apiKey', value: apiKeyParam };
-      if (params.get('domain')) {
-        const domain = new URL(params.get('domain')).hostname;
-        payload = { key: 'apiKey|enterpriseDomain', value: `${apiKeyParam}|${domain}` };
+      try {
+        if (apiKeyParam.includes('|')) throw new Error('Invalid API key');
+        if (params.get('domain')) {
+          const domainURL = new URL(params.get('domain'));
+          if (domainURL.protocol !== 'https:' || domainURL.username || domainURL.password) throw new Error('Invalid domain');
+          payload = { key: 'apiKey|enterpriseDomain', value: `${apiKeyParam}|${domainURL.hostname}` };
+        }
+      } catch {
+        cleanParams(['code', 'domain', LOGIN_STATE_PARAM]);
+        dispatch(ACTION_CREATORS.setUnauthorizedApiKey(true));
+        setCredentialsSaved(true);
+        return;
       }
       const dataApiKey = { action: 'update', ...payload };
       await asyncDispatch(
@@ -87,7 +104,7 @@ export const WizardProvider = ({
       await awaitFor(1000);
       toggleSettingsItems({ action: 'show' });
       setCredentialsSaved(true);
-      cleanParams(['code', 'domain']);
+      cleanParams(['code', 'domain', LOGIN_STATE_PARAM]);
     };
     saveCredentials();
   }, [isInitialPlatformSettingsReady]);

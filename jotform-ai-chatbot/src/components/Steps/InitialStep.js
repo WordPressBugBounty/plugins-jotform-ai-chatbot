@@ -7,6 +7,7 @@ import LogoJotformColor from '../../assets/svg/LogoJotformColor.svg';
 import { ALL_TEXTS } from '../../constants';
 import { useWizard } from '../../hooks';
 import { toCamelCase } from '../../utils';
+import { createLoginReturnURL } from '../../utils/loginState';
 import NetworkError from '../NetworkError';
 import Button from '../UI/Button';
 import UnauthorizedApiKeyError from '../UnauthorizedApiKeyError';
@@ -30,7 +31,10 @@ const InitialStep = ({
     saveInstallment(`${toCamelCase(step)}Step`);
   }, []);
 
-  const handleStartClick = () => {
+  const handleStartClick = (event) => {
+    const url = new URL(loginUrl);
+    url.searchParams.set('ref', createLoginReturnURL());
+    event.currentTarget.setAttribute('href', url.toString());
     saveInstallment('letsStartButton');
   };
 

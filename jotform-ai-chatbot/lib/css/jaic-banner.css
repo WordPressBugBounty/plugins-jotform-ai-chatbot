@@ -1,7 +1,12 @@
+.toplevel_page_jotform_ai_chatbot {
+  .jaic-website-widgets-banner.notice {
+    max-width: 1240px;
+  }
+}
+
 .jaic-website-widgets-banner.notice {
   box-sizing: border-box;
   width: 100%;
-  max-width: 1240px;
   display: flex;
   align-items: center;
   justify-content: space-between;

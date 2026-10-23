@@ -92,11 +92,10 @@ class JAIC_Core {
                     /**
                     * Check user authorization
                     */
-                    add_action("wp_loaded", function () {
-                        if (!current_user_can("manage_options")) {
-                            wp_die(esc_html(__("You do not have sufficient permissions to access this page.", "jotform-ai-chatbot")));
-                        }
-                    });
+                    if (!current_user_can("manage_options")) {
+                        wp_die(esc_html(__("You do not have sufficient permissions to access this page.", "jotform-ai-chatbot")));
+                        return;
+                    }
 
                     // Call the method dynamically
                     $this->{$action}();
@@ -194,7 +193,7 @@ class JAIC_Core {
                 }
             }, $pluginPageList["hideOn"]);
 
-            $pluginDisabledURLList = array_map(function ($pluginPageOption) {
+            $pluginDisabledURLList = array_map(function ($pluginPageOption) use ($requestedURI, &$pluginDisabledForVisitedURL) {
                 if (
                     (!empty($pluginPageOption["type"]) && ($pluginPageOption["type"] === "url")) &&
                     (!empty($pluginPageOption["match"]) && ($pluginPageOption["match"] === "is"))
@@ -204,8 +203,9 @@ class JAIC_Core {
                         $url = "https://" . $url;
                     }
 
-                    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-                    $currentUrl = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                    $protocol = is_ssl() ? "https://" : "http://";
+                    $host = isset($_SERVER['HTTP_HOST']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_HOST'])) : '';
+                    $currentUrl = $protocol . $host . $requestedURI;
                     if ($currentUrl === $url) {
                         $pluginDisabledForVisitedURL = true;
                     }
@@ -1400,7 +1400,7 @@ class JAIC_Core {
                 }
             }
 
-            return $embedCode;
+            return '';
         }
 
         // New Version Embed Code
@@ -1420,6 +1420,10 @@ class JAIC_Core {
     private function generateEmbedJSCode(string $url): string {
         $parts = wp_parse_url($url);
         $path = $parts['path'] ?? '';
+        // Only load the agent embed endpoint, never arbitrary stored scripts.
+        if (!preg_match('~^/agent/embedjs/[a-zA-Z0-9_-]+/embed\.js$~D', $path)) {
+            return '';
+        }
         $query = isset($parts['query']) ? '?' . $parts['query'] : '';
 
         $url = self::$siteEmbedURL . $path . $query;
@@ -1428,7 +1432,7 @@ class JAIC_Core {
             document.addEventListener("DOMContentLoaded", function () {
                 setTimeout(function () {
                     var s = document.createElement("script");
-                    s.src = "' . esc_url($url) . '";
+                    s.src = ' . wp_json_encode($url, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ';
                     s.defer = true;
                     document.head.appendChild(s);
                 }, 2000);
