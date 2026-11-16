@@ -8,6 +8,8 @@ class PlatformSingleton {
     this.PLATFORM_URL = '';
     this.PLATFORM_API_URL = '';
     this.PLATFORM_DOMAIN = '';
+    this.PLATFORM_AGENT_ID = '';
+    this.PLATFORM_AGENT_DISCONNECTED = false;
     this.PLATFORM_PAGES = [];
     this.PLATFORM_CHATBOT_PAGES = [];
     this.PLATFORM_PAGE_CONTENTS = [];

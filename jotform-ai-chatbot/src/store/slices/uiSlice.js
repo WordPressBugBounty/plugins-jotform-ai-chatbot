@@ -4,7 +4,7 @@ import { SETTINGS_TABS } from '../../constants/wizard';
 import { isSettingsPage, platformSettings as platformSettingsSingleton, removeStepFromQueryParams } from '../../utils';
 import { generatePromiseActionType } from '../actionTypes';
 import {
-  DELETE_PLATFORM_AGENT, FETCH_USER, GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT
+  DELETE_PLATFORM_AGENT, DISCONNECT_PLATFORM_AGENT, FETCH_USER, GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT
 } from './commonActions';
 
 // Internal action types (only used within this slice)
@@ -27,7 +27,8 @@ export const uiInitialState = {
   tryGetPlatformAgentOnce: false,
   errorMessage: '',
   activeSettingsTab: SETTINGS_TABS.GENERAL,
-  showUnauthorizedUserError: false
+  showUnauthorizedUserError: false,
+  platformAgentError: null
 };
 
 // UI slice reducer
@@ -48,6 +49,18 @@ export const uiReducer = (state, action) => {
     case SET_GET_PLATFORM_AGENT_ONCE:
       return { ...state, tryGetPlatformAgentOnce: action.payload.tryOnce };
 
+    case GET_PLATFORM_AGENT.REQUEST:
+      return { ...state, isInitialLoading: true, platformAgentError: null };
+
+    case GET_PLATFORM_AGENT.ERROR:
+      const lookupError = action.payload.result;
+      return {
+        ...state,
+        isInitialLoading: false,
+        step: isSettingsPage() ? STEPS.SETTINGS : state.step,
+        platformAgentError: lookupError?.response?.status || lookupError?.data?.responseCode || 503
+      };
+
     case USE_PLATFORM_AGENT.REQUEST:
       return { ...state, isUseAgentLoading: true };
 
@@ -63,7 +76,8 @@ export const uiReducer = (state, action) => {
           ...state,
           step: isSettingsPage() ? STEPS.SETTINGS : STEPS.USECASE_SELECTION,
           isUseAgentLoading: false,
-          isInitialLoading: false
+          isInitialLoading: false,
+          platformAgentError: null
         };
       }
 
@@ -72,11 +86,11 @@ export const uiReducer = (state, action) => {
         step: step || STEPS.AI_PERSONA,
         isLimitDialogVisible: false,
         isUseAgentLoading: false,
-        isInitialLoading: false
+        isInitialLoading: false,
+        platformAgentError: null
       };
 
     case USE_PLATFORM_AGENT.ERROR:
-    case GET_PLATFORM_AGENT.ERROR:
       const { tryOnce = false, result } = action.payload;
 
       // for enterprise teams data user
@@ -121,11 +135,16 @@ export const uiReducer = (state, action) => {
       return state;
 
     case DELETE_PLATFORM_AGENT.SUCCESS:
+    case DISCONNECT_PLATFORM_AGENT:
       removeStepFromQueryParams();
       return {
         ...state,
         step: STEPS.USECASE_SELECTION,
-        prompt: ''
+        prompt: '',
+        platformAgentError: null,
+        isInitialLoading: false,
+        tryGetPlatformAgentOnce: false,
+        showUnauthorizedUserError: false
       };
 
     case SET_ACTIVE_SETTINGS_TAB:
@@ -137,7 +156,8 @@ export const uiReducer = (state, action) => {
     case LOGOUT_FROM_JOTFORM.SUCCESS:
       return {
         ...state,
-        step: STEPS.INITIAL
+        step: STEPS.INITIAL,
+        platformAgentError: null
       };
 
     default:
@@ -147,6 +167,7 @@ export const uiReducer = (state, action) => {
 
 // UI action creators
 export const uiActionCreators = {
+  disconnectPlatformAgent: () => ({ type: DISCONNECT_PLATFORM_AGENT }),
   setStep: (step, initialScreen) => ({
     type: SET_STEP,
     payload: { step, initialScreen }

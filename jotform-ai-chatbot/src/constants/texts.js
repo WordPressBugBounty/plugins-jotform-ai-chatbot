@@ -38,6 +38,15 @@ export const ALL_TEXTS = {
   CREATE: __('Create', 'jotform-ai-chatbot'),
 
   DESCRIBE_THE_AGENT_YOU_WANT_TO_CREATE: __('Describe the agent you want to create', 'jotform-ai-chatbot'),
+  CONNECTED_AGENT_ACCESS_ERROR: __('You no longer have access to this chatbot. If it belongs to a team, ask a team admin to restore your access, then retry.', 'jotform-ai-chatbot'),
+  CONNECTED_AGENT_UNAVAILABLE: __('This chatbot is unavailable or its website connection has changed. Check it in Jotform and retry, or set up another chatbot.', 'jotform-ai-chatbot'),
+  CONNECTED_AGENT_LOAD_ERROR: __('Unable to load your connected agent. Your saved connection has been kept. Please retry.', 'jotform-ai-chatbot'),
+  CONNECTED_AGENT_UNAVAILABLE_TITLE: __('Your chatbot is unavailable', 'jotform-ai-chatbot'),
+  SET_UP_ANOTHER_CHATBOT: __('Set up another chatbot', 'jotform-ai-chatbot'),
+  REPLACE_CHATBOT_DESCRIPTION: __('You can also select or create another chatbot. This removes the current chatbot from your website and keeps it saved in Jotform.', 'jotform-ai-chatbot'),
+  DISCONNECT_CHATBOT_ERROR: __('We couldn’t clear the website connection. Please try again.', 'jotform-ai-chatbot'),
+  MANAGE_CONNECTED_ACCOUNT: __('Manage connected account', 'jotform-ai-chatbot'),
+  RETRY_CONNECTION: __('Retry', 'jotform-ai-chatbot'),
   // eslint-disable-next-line max-len
   EXAMPLE_PROVIDE_CUSTOMER_SUPPORT_BY_ANSWERING_FAQS_AND_GUIDING_USERS_THROUGH: __('Example: Provide customer support by answering FAQs and guiding users through troubleshooting steps.', 'jotform-ai-chatbot'),
   FEEDBACK: __('Feedback', 'jotform-ai-chatbot'),

@@ -297,11 +297,15 @@ class JAIC_Core {
      */
     public function delete(bool $isWPHook = false): void {
         $apiKey = $this->getAPIKey();
+        $options = json_decode(get_option(self::$pluginOptionKey), true) ?: [];
 
         try {
-            if (!empty($apiKey)) {
+            if (!empty($apiKey) && empty($options['agentDisconnected'])) {
                 // Construct the API endpoint URL for deleting the platform agent
                 $url = $this->getSiteAPIURL() . "/ai-chatbot/delete-platform-agent/wordpress/" . urlencode($this->getDomain());
+
+                // Target the saved connection even after its owner changes.
+                $url = add_query_arg("agentID", $this->getAgentID(), $url);
 
                 // Request params
                 $args = [
@@ -498,6 +502,9 @@ class JAIC_Core {
 
             // Add new option
             $options[$optionKey] = $optionValue;
+            if ($optionKey === 'agentId' && $optionValue !== '') {
+                unset($options['agentDisconnected']);
+            }
 
             // Save updated options back to the database
             update_option(self::$pluginOptionKey, wp_json_encode($options));
@@ -518,6 +525,24 @@ class JAIC_Core {
                 "message" => self::$pluginName . " successfully updated!"
             ]
         );
+    }
+
+    /** Clears only this website's connection, including agents the user can no longer manage. */
+    private function disconnectAgent(): void {
+        $options = json_decode(get_option(self::$pluginOptionKey), true) ?: [];
+        unset($options['agentId'], $options['embed'], $options['preview'], $options['pages']);
+        $options['agentDisconnected'] = true;
+        $savedOptions = wp_json_encode($options);
+        if (!update_option(self::$pluginOptionKey, $savedOptions) && get_option(self::$pluginOptionKey) !== $savedOptions) {
+            JAIC_Request::responseJSON(500, ['message' => 'Unable to clear the website connection.']);
+            return;
+        }
+        delete_option(self::$pluginPendingSyncKey);
+        delete_option(self::$pluginSyncedPagesKey);
+        delete_option(self::$pluginAgentUnavailableKey);
+        delete_option(self::$pluginPagesSyncBlockedUntilKey);
+        $this->clearWPCaches();
+        JAIC_Request::responseJSON(200, ['message' => 'Website connection cleared.']);
     }
 
     /**
@@ -569,6 +594,8 @@ class JAIC_Core {
             "PLATFORM_PAGES"                 => $platformPages,
             "PLATFORM_CHATBOT_PAGES"         => $pluginPageList,
             "PLATFORM_CHATBOT_PUBLISHED"     => $isAgentPublished,
+            "PLATFORM_AGENT_ID"              => $this->getAgentID(),
+            "PLATFORM_AGENT_DISCONNECTED"    => !empty($options['agentDisconnected']),
             "PLATFORM_DEVICE"                => $this->getDevice(),
             "PLATFORM_KNOWLEDGE_BASE"        => $this->getKnowledgeBase(),
             "PLATFORM_URL"                   => $this->getPlatformURL(),

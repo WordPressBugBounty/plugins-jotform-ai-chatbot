@@ -1,5 +1,11 @@
 *** Jotform AI Chatbot Changelog ***
 
+2026-11-16 - version 3.8.5
+* Fixed - Use WordPress-provided React libraries instead of bundling a separate copy
+* Updated - Require WordPress 6.6 or later for the shared JSX runtime
+* Fixed - Preserve chatbot connections when agents move to a team workspace
+* Updated - Improve recovery when chatbot access is lost, with options to retry, select another chatbot, or create a new one
+
 2026-10-23 - version 3.8.4
 * Updated - Validate login callbacks, restrict embed rendering, and enforce permissions before actions
 

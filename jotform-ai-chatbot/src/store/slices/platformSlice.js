@@ -3,7 +3,7 @@ import { DEVICES, VISIBILITY_TOGGLE } from '../../constants';
 import { platformSettings as platformSettingsSingleton, removeStepFromQueryParams } from '../../utils';
 import { generatePromiseActionType } from '../actionTypes';
 import {
-  DELETE_PLATFORM_AGENT, GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT
+  DELETE_PLATFORM_AGENT, DISCONNECT_PLATFORM_AGENT, GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT
 } from './commonActions';
 
 // Internal action types (only used within this slice)
@@ -56,6 +56,8 @@ export const platformReducer = (state, action) => {
       platformSettingsSingleton.PLATFORM = data.PLATFORM;
       platformSettingsSingleton.PLATFORM_URL = data.PLATFORM_URL;
       platformSettingsSingleton.PLATFORM_DOMAIN = data.PLATFORM_DOMAIN;
+      platformSettingsSingleton.PLATFORM_AGENT_ID = data.PLATFORM_AGENT_ID || '';
+      platformSettingsSingleton.PLATFORM_AGENT_DISCONNECTED = data.PLATFORM_AGENT_DISCONNECTED || false;
       platformSettingsSingleton.PLATFORM_PAGES = data.PLATFORM_PAGES;
       platformSettingsSingleton.PLATFORM_CHATBOT_PAGES = data.PLATFORM_CHATBOT_PAGES;
       platformSettingsSingleton.PLATFORM_PAGE_CONTENTS = data.PLATFORM_PAGE_CONTENTS;
@@ -130,9 +132,12 @@ export const platformReducer = (state, action) => {
       return { ...state, isDeletePlatformAgentLoading: true };
 
     case DELETE_PLATFORM_AGENT.SUCCESS:
+    case DISCONNECT_PLATFORM_AGENT:
       removeStepFromQueryParams();
       platformSettingsSingleton.PLATFORM_CHATBOT_PAGES = defaultSelectedPages;
       platformSettingsSingleton.PLATFORM_CHATBOT_PUBLISHED = false;
+      platformSettingsSingleton.PLATFORM_AGENT_ID = '';
+      platformSettingsSingleton.PLATFORM_AGENT_DISCONNECTED = action.type === DISCONNECT_PLATFORM_AGENT;
 
       return {
         ...state,
@@ -140,7 +145,9 @@ export const platformReducer = (state, action) => {
         platformSettings: {
           ...state.platformSettings,
           PLATFORM_CHATBOT_PAGES: defaultSelectedPages,
-          PLATFORM_CHATBOT_PUBLISHED: false
+          PLATFORM_CHATBOT_PUBLISHED: false,
+          PLATFORM_AGENT_ID: '',
+          PLATFORM_AGENT_DISCONNECTED: platformSettingsSingleton.PLATFORM_AGENT_DISCONNECTED
         },
         selectedPages: defaultSelectedPages,
         isPublished: false
@@ -170,13 +177,18 @@ export const platformReducer = (state, action) => {
     case USE_PLATFORM_AGENT.SUCCESS:
     case GET_PLATFORM_AGENT.SUCCESS:
       const {
-        result: { chatbotEmbedSrc }
+        result: { chatbotEmbedSrc, agentID }
       } = action.payload;
 
       if (chatbotEmbedSrc) {
         platformSettingsSingleton.PROVIDER_CHATBOT_EMBED_SRC = chatbotEmbedSrc;
       }
 
+      if (agentID) {
+        platformSettingsSingleton.PLATFORM_AGENT_ID = agentID;
+        platformSettingsSingleton.PLATFORM_AGENT_DISCONNECTED = false;
+        return { ...state, platformSettings: { ...state.platformSettings, PLATFORM_AGENT_ID: agentID, PLATFORM_AGENT_DISCONNECTED: false } };
+      }
       return state;
 
     case LOGOUT_FROM_JOTFORM.REQUEST:
@@ -184,9 +196,13 @@ export const platformReducer = (state, action) => {
 
     case LOGOUT_FROM_JOTFORM.SUCCESS:
       platformSettingsSingleton.PROVIDER_API_KEY = '';
+      platformSettingsSingleton.PLATFORM_AGENT_ID = '';
+      platformSettingsSingleton.PLATFORM_AGENT_DISCONNECTED = false;
       return {
         ...state,
-        platformSettings: { ...state.platformSettings, PROVIDER_API_KEY: '' },
+        platformSettings: {
+          ...state.platformSettings, PROVIDER_API_KEY: '', PLATFORM_AGENT_ID: '', PLATFORM_AGENT_DISCONNECTED: false
+        },
         isLogoutLoading: false
       };
 

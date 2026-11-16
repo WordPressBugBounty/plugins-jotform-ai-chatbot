@@ -11,6 +11,7 @@ import {
   awaitFor, createEmbed, getRootElement, isConversationsPage, isGuest, isSettingsPage, resetAgentPreviewRoot,
   toggleConversationItems
 } from '../utils';
+import ConnectionRecovery from './ConnectionRecovery';
 import Footer from './Footer';
 import Header from './Header';
 import { LimitWarningBanner } from './LimitWarningBanner';
@@ -32,6 +33,7 @@ const Wizard = props => {
     user,
     step,
     previewAgentId,
+    platformAgentError,
     customizations,
     themeCustomizations,
     isInitialLoading,
@@ -45,6 +47,8 @@ const Wizard = props => {
     },
     platformSettings: {
       PLATFORM_DOMAIN,
+      PLATFORM_AGENT_ID,
+      PLATFORM_AGENT_DISCONNECTED,
       PROVIDER_URL,
       PROVIDER_API_KEY,
       PLATFORM_PLUGIN_VERSION
@@ -101,15 +105,23 @@ const Wizard = props => {
     if (isSettingsPage()) {
       nextStep = STEPS.SETTINGS;
     }
-    const data = { domain: PLATFORM_DOMAIN, platform: PLATFORMS.WORDPRESS };
+    const data = { domain: PLATFORM_DOMAIN, platform: PLATFORMS.WORDPRESS, agentID: PLATFORM_AGENT_ID || '' };
     await asyncDispatch(
-      () => getPlatformAgent(data, PROVIDER_API_KEY),
+      async () => {
+        if (PLATFORM_AGENT_DISCONNECTED && !tryGetPlatformAgentOnce) return { content: false };
+        const result = await getPlatformAgent(data, PROVIDER_API_KEY);
+        // Older servers report a missing connection as a successful false response.
+        if (PLATFORM_AGENT_ID && (result === false || result?.content === false)) {
+          throw Object.assign(new Error('Connected agent unavailable'), { response: { status: 404 } });
+        }
+        return result;
+      },
       ACTION_CREATORS.getPlatformAgentRequest,
       ACTION_CREATORS.getPlatformAgentSuccess,
       ACTION_CREATORS.getPlatformAgentError,
       nextStep
     );
-  }, [PROVIDER_API_KEY, PLATFORM_DOMAIN]);
+  }, [PROVIDER_API_KEY, PLATFORM_DOMAIN, PLATFORM_AGENT_ID, PLATFORM_AGENT_DISCONNECTED, tryGetPlatformAgentOnce]);
 
   // fetch existing agents
   const fetchExistingAgents = useCallback(async () => {
@@ -208,18 +220,31 @@ const Wizard = props => {
   };
 
   const CurrentStep = stepMap[step];
+  const disconnectAgent = async () => {
+    const result = await interactWithPlatform({ action: 'disconnectAgent' });
+    if (Number(result?.status) !== 200) throw new Error('Website connection was not cleared');
+    resetAgentPreviewRoot();
+    dispatch(ACTION_CREATORS.disconnectPlatformAgent());
+    fetchExistingAgents();
+    if (isSettingsPage() || isConversationsPage()) {
+      window.location.assign('admin.php?page=jotform_ai_chatbot');
+    }
+  };
 
   return (
     <>
       <LimitWarningBanner />
-      {[STEPS.AI_PERSONA, STEPS.STYLE, STEPS.VISIBILITY, STEPS.KNOWLEDGE, STEPS.CONVERSATIONS, STEPS.SETTINGS].includes(step)
+      {!platformAgentError && [STEPS.AI_PERSONA, STEPS.STYLE, STEPS.VISIBILITY, STEPS.KNOWLEDGE, STEPS.CONVERSATIONS, STEPS.SETTINGS].includes(step)
         && <Header publishAgent={publishAgent} unpublishAgent={unpublishAgent} />}
       <div
         data-step={step}
-        className={`jfpChatbot-container jfpChatbot-container--platformmode${isLoaderVisible ? ' wizard-loading' : ''}`}
+        className={`jfpChatbot-container jfpChatbot-container--platformmode${isLoaderVisible ? ' wizard-loading' : ''}${platformAgentError ? ' jfpChatbot-container--connection-error' : ''}`}
       >
         {isLoaderVisible && <LoadingStep key='loading-step' type={isAgentLoaderVisible ? 'text' : 'default'} />}
-        {!isLoaderVisible && (
+        {!isLoaderVisible && platformAgentError && (
+          <ConnectionRecovery error={platformAgentError} onRetry={fetchAgent} onDisconnect={disconnectAgent} />
+        )}
+        {!isLoaderVisible && (!platformAgentError || isSettingsPage()) && (
           <>
             <div className='jfpContent-wrapper' data-step={step}>
               {![STEPS.INITIAL, STEPS.USECASE_SELECTION, STEPS.CONVERSATIONS, STEPS.SETTINGS].includes(step) && <WizardTabs />}

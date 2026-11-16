@@ -1,6 +1,6 @@
 import { generatePromiseActionType } from '../actionTypes';
 import {
-  DELETE_PLATFORM_AGENT, GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT
+  DELETE_PLATFORM_AGENT, DISCONNECT_PLATFORM_AGENT, GET_PLATFORM_AGENT, LOGOUT_FROM_JOTFORM, USE_PLATFORM_AGENT
 } from './commonActions';
 
 // Internal action types (only used within this slice)
@@ -98,6 +98,7 @@ export const agentReducer = (state, action) => {
       return state;
 
     case DELETE_PLATFORM_AGENT.SUCCESS:
+    case DISCONNECT_PLATFORM_AGENT:
     case LOGOUT_FROM_JOTFORM.SUCCESS:
       return {
         ...state,

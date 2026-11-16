@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Jotform - AI Chatbot 3.8.4\n"
+"Project-Id-Version: Jotform - AI Chatbot 3.8.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wordpress-ai-chatbot-plugin\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-23T13:48:26+00:00\n"
+"POT-Creation-Date: 2026-11-16T07:39:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: jotform-ai-chatbot\n"
@@ -64,7 +64,7 @@ msgstr ""
 #: jotform-ai-chatbot.php:146
 #: jotform-ai-chatbot.php:221
 #: lib/app/app.js:1
-#: src/constants/texts.js:127
+#: src/constants/texts.js:136
 msgid "Conversations"
 msgstr ""
 
@@ -72,7 +72,7 @@ msgstr ""
 #: jotform-ai-chatbot.php:155
 #: jotform-ai-chatbot.php:229
 #: lib/app/app.js:1
-#: src/constants/texts.js:148
+#: src/constants/texts.js:157
 msgid "Settings"
 msgstr ""
 
@@ -172,7 +172,7 @@ msgstr ""
 
 #: jotform-ai-chatbot.php:761
 #: lib/app/app.js:1
-#: src/constants/texts.js:49
+#: src/constants/texts.js:58
 msgid "Give Feedback"
 msgstr ""
 
@@ -254,7 +254,7 @@ msgstr ""
 #: lib/app/app.js:1
 #: src/constants/texts.js:14
 #: lib/app/app.js:1
-#: src/constants/texts.js:102
+#: src/constants/texts.js:111
 msgid "Show a message to greet users"
 msgstr ""
 
@@ -374,896 +374,941 @@ msgid "Describe the agent you want to create"
 msgstr ""
 
 #: lib/app/app.js:1
+#: src/constants/texts.js:41
+msgid "You no longer have access to this chatbot. If it belongs to a team, ask a team admin to restore your access, then retry."
+msgstr ""
+
+#: lib/app/app.js:1
 #: src/constants/texts.js:42
-msgid "Example: Provide customer support by answering FAQs and guiding users through troubleshooting steps."
+msgid "This chatbot is unavailable or its website connection has changed. Check it in Jotform and retry, or set up another chatbot."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:43
-msgid "Feedback"
+msgid "Unable to load your connected agent. Your saved connection has been kept. Please retry."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:44
-msgid "Show AI Chatbot on"
+msgid "Your chatbot is unavailable"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:45
-msgid "Choose pages the AI Chatbot will be shown on."
+msgid "Set up another chatbot"
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:46
+msgid "You can also select or create another chatbot. This removes the current chatbot from your website and keeps it saved in Jotform."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:47
-msgid "View Conversations"
+msgid "We couldn’t clear the website connection. Please try again."
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:48
+msgid "Manage connected account"
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:49
+msgid "Retry"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:51
-msgid "Remove Chatbot from Website?"
+msgid "Example: Provide customer support by answering FAQs and guiding users through troubleshooting steps."
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:52
+msgid "Feedback"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:53
-msgid "Click Remove from Website to permanently delete this chatbot’s site-specific settings and remove it from your website."
+msgid "Show AI Chatbot on"
 msgstr ""
 
 #: lib/app/app.js:1
-#: src/constants/texts.js:55
-msgid "Your chatbot and its training data will still be saved, but you’ll need to configure site-specific settings again if you add it back."
+#: src/constants/texts.js:54
+msgid "Choose pages the AI Chatbot will be shown on."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:56
-msgid "Unpublish Chatbot from Website?"
+msgid "View Conversations"
 msgstr ""
 
 #: lib/app/app.js:1
-#: src/constants/texts.js:58
-msgid "Click Unpublish to remove the chatbot from your website while keeping its site-specific settings saved. You can republish it later without losing your setup."
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:59
-msgid "Your chatbot and its training data will remain saved."
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:61
-msgid "Open a Support Ticket"
+#: src/constants/texts.js:60
+msgid "Remove Chatbot from Website?"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:62
-msgid "You’ll be redirected to the Jotform AI Chatbot support page on WordPress.org."
+msgid "Click Remove from Website to permanently delete this chatbot’s site-specific settings and remove it from your website."
 msgstr ""
 
 #: lib/app/app.js:1
-#: src/constants/texts.js:63
-msgid "To submit a ticket, please make sure you’re [1[logged in]] or [2[create a free WordPress.org account.]]"
+#: src/constants/texts.js:64
+msgid "Your chatbot and its training data will still be saved, but you’ll need to configure site-specific settings again if you add it back."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:65
-msgid "Unpublish"
+msgid "Unpublish Chatbot from Website?"
 msgstr ""
 
 #: lib/app/app.js:1
-#: src/constants/texts.js:66
-msgid "Unpublishing..."
+#: src/constants/texts.js:67
+msgid "Click Unpublish to remove the chatbot from your website while keeping its site-specific settings saved. You can republish it later without losing your setup."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:68
-msgid "Remove from Website"
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:69
-msgid "Remove from website"
+msgid "Your chatbot and its training data will remain saved."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:70
-msgid "Removing..."
+msgid "Open a Support Ticket"
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:71
+msgid "You’ll be redirected to the Jotform AI Chatbot support page on WordPress.org."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:72
-msgid "Chatbot Introduction Animation"
+msgid "To submit a ticket, please make sure you’re [1[logged in]] or [2[create a free WordPress.org account.]]"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:74
-msgid "Agent Avatar"
+msgid "Unpublish"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:75
-msgid "Select an avatar for your agent."
+msgid "Unpublishing..."
 msgstr ""
 
 #: lib/app/app.js:1
-#: src/constants/texts.js:76
-msgid "AI Persona"
+#: src/constants/texts.js:77
+msgid "Remove from Website"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:78
-msgid "Current Avatar"
+msgid "Remove from website"
 msgstr ""
 
 #: lib/app/app.js:1
-#: src/constants/texts.js:80
-msgid "Agent Name"
+#: src/constants/texts.js:79
+msgid "Removing..."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:81
-msgid "Give a name to your agent that will be displayed in the conversation"
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:82
-msgid "Agent Role"
+msgid "Chatbot Introduction Animation"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:83
-msgid "Describe your agent’s job title"
+msgid "Agent Avatar"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:84
-msgid "Chattiness"
+msgid "Select an avatar for your agent."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:85
-msgid "Specify the desired level of detail in the agent's responses"
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:86
-msgid "Go to Pricing"
+msgid "AI Persona"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:87
-msgid "You've reached your AI Chatbot limit."
+msgid "Current Avatar"
 msgstr ""
 
 #: lib/app/app.js:1
-#: src/constants/texts.js:88
-msgid "Delete an existing agent or upgrade to add more."
+#: src/constants/texts.js:89
+msgid "Agent Name"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:90
-msgid "Describe"
+msgid "Give a name to your agent that will be displayed in the conversation"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:91
-msgid "Select from My AI Agents"
+msgid "Agent Role"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:92
-msgid "Default Language"
+msgid "Describe your agent’s job title"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:93
-msgid "Select the language in which your agents greet users"
+msgid "Chattiness"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:94
-msgid "Tone of Voice"
+msgid "Specify the desired level of detail in the agent's responses"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:95
-msgid "Select how you would like the AI to communicate"
+msgid "Go to Pricing"
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:96
+msgid "You've reached your AI Chatbot limit."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:97
-msgid "How to use Jotform AI Chatbot?"
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:98
-msgid "Agent style"
+msgid "Delete an existing agent or upgrade to add more."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:99
-msgid "Visibility"
+msgid "Describe"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:100
-msgid "Knowledge base"
+msgid "Select from My AI Agents"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:101
-msgid "Greeting Message"
+msgid "Default Language"
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:102
+msgid "Select the language in which your agents greet users"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:103
-msgid "Chat Guidelines"
+msgid "Tone of Voice"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:104
-msgid "Set clear rules for how your agent should respond in chat channels"
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:105
-msgid "Add New"
+msgid "Select how you would like the AI to communicate"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:106
-msgid "Visible on"
+msgid "How to use Jotform AI Chatbot?"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:107
-msgid "Choose where the chatbot should appear"
+msgid "Agent style"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:108
-msgid "Open by default"
+msgid "Visibility"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:109
-msgid "Choose when chatbot will appear"
+msgid "Knowledge base"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:110
-msgid "Advanced Visibility"
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:111
-msgid "Choose where chatbot will be shown or hidden"
+msgid "Greeting Message"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:112
-msgid "Show on"
+msgid "Chat Guidelines"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:113
-msgid "Hide on"
+msgid "Set clear rules for how your agent should respond in chat channels"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:114
-msgid "Do not open automatically"
+msgid "Add New"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:115
-msgid "Always open"
+msgid "Visible on"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:116
-msgid "Open after 5 seconds"
+msgid "Choose where the chatbot should appear"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:117
-msgid "Open after 10 seconds"
+msgid "Open by default"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:118
-msgid "Do you want to delete this instruction?"
+msgid "Choose when chatbot will appear"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:119
-msgid "This instruction will be removed permanently."
+msgid "Advanced Visibility"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:120
-msgid "No, keep"
+msgid "Choose where chatbot will be shown or hidden"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:121
-msgid "Yes, delete"
+msgid "Show on"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:122
-msgid "Add"
+msgid "Hide on"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:123
-msgid "Enter URL"
+msgid "Do not open automatically"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:124
-msgid "URL"
+msgid "Always open"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:125
-msgid "Remove AI Chatbot from My Website"
+msgid "Open after 5 seconds"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:126
-msgid "Anonymous"
+msgid "Open after 10 seconds"
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:127
+msgid "Do you want to delete this instruction?"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:128
-msgid "See conversation on Jotform"
+msgid "This instruction will be removed permanently."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:129
-msgid "Go to Jotform"
+msgid "No, keep"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:130
-msgid "Preview"
+msgid "Yes, delete"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:131
-msgid "Publish"
+msgid "Add"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:132
-msgid "Published"
+msgid "Enter URL"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:133
-msgid "Auto-trained knowledge"
+msgid "URL"
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:134
+msgid "Remove AI Chatbot from My Website"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:135
-msgid "Your AI chatbot is automatically trained with your website's content, such as pages, posts, and more, to provide a smarter, more relevant experience for your users."
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:136
-msgid "Conversations will be listed here"
+msgid "Anonymous"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:137
-msgid "You don't have any conversations"
+msgid "See conversation on Jotform"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:138
-msgid "Continue"
+msgid "Go to Jotform"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:139
-msgid "Your AI chatbot will be live on all pages once published."
+msgid "Preview"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:140
-msgid "Your AI chatbot is currently live on all pages."
+msgid "Publish"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:141
-msgid "Layout"
+msgid "Published"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:142
-msgid "Extended"
+msgid "Auto-trained knowledge"
 msgstr ""
 
 #: lib/app/app.js:1
-#: src/constants/texts.js:143
-msgid "Choose how the chatbot appears on your website"
+#: src/constants/texts.js:144
+msgid "Your AI chatbot is automatically trained with your website's content, such as pages, posts, and more, to provide a smarter, more relevant experience for your users."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:145
-msgid "What’s new 🔥"
+msgid "Conversations will be listed here"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:146
-msgid "Get the latest changes and updates"
+msgid "You don't have any conversations"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:147
-msgid "Try it now"
+msgid "Continue"
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:148
+msgid "Your AI chatbot will be live on all pages once published."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:149
-msgid "General"
+msgid "Your AI chatbot is currently live on all pages."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:150
-msgid "Agent Skills"
+msgid "Layout"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:151
-msgid "WooCommerce"
+msgid "Extended"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:152
-msgid "WOOCOMMERCE STORE SETTINGS"
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:153
-msgid "Consumer Key"
+msgid "Choose how the chatbot appears on your website"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:154
-msgid "Your WooCommerce API key used to connect the store."
+msgid "What’s new 🔥"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:155
-msgid "Consumer Secret"
+msgid "Get the latest changes and updates"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:156
-msgid "Your WooCommerce API secret for secure access."
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:157
-msgid "Find Products"
+msgid "Try it now"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:158
-msgid "Helps customers search or filter products by attributes such as price, size, or color."
+msgid "General"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:159
-msgid "Recommend Products"
+msgid "Agent Skills"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:160
-msgid "Suggests best sellers, trending items, or personalized recommendations to guide customer choices."
+msgid "WooCommerce"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:161
-msgid "Add Products to Cart"
+msgid "WOOCOMMERCE STORE SETTINGS"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:162
-msgid " Adds items to the shopping cart based on customer requests."
+msgid "Consumer Key"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:163
-msgid "Show Order Status"
+msgid "Your WooCommerce API key used to connect the store."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:164
-msgid "Provides real-time updates so customers can track their orders with ease. "
+msgid "Consumer Secret"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:165
-msgid "Manage Refunds"
+msgid "Your WooCommerce API secret for secure access."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:166
-msgid "Handle customer refund requests, approve or decline them, and share status updates."
+msgid "Find Products"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:167
-msgid "Connect Store"
+msgid "Helps customers search or filter products by attributes such as price, size, or color."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:168
-msgid "Please enter your key here"
+msgid "Recommend Products"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:169
-msgid "Please enter your secret here"
+msgid "Suggests best sellers, trending items, or personalized recommendations to guide customer choices."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:170
-msgid "CHATBOT ABILITIES"
+msgid "Add Products to Cart"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:171
-msgid "Coming Soon"
+msgid " Adds items to the shopping cart based on customer requests."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:172
-msgid "Disconnect Store"
+msgid "Show Order Status"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:173
-msgid "Upgrade Plan"
+msgid "Provides real-time updates so customers can track their orders with ease. "
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:174
-msgid "Publishing..."
+msgid "Manage Refunds"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:175
-msgid "Cancel"
+msgid "Handle customer refund requests, approve or decline them, and share status updates."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:176
-msgid "Connected Chatbot"
+msgid "Connect Store"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:177
-msgid "Connected Jotform Account"
+msgid "Please enter your key here"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:178
-msgid "Logout"
+msgid "Please enter your secret here"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:179
-msgid "Logging out..."
+msgid "CHATBOT ABILITIES"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:180
-msgid "Log Out from Your Account?"
+msgid "Coming Soon"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:181
-msgid "Click Logout to sign out of your account. Your settings and preferences will remain saved, and you can log back in anytime without losing your setup."
+msgid "Disconnect Store"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:182
-msgid "All your data and saved progress will remain secure."
+msgid "Upgrade Plan"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:183
-msgid "Connected Store"
+msgid "Publishing..."
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:184
+msgid "Cancel"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:185
-msgid "Unable to connect to the server. Please check your internet connection and try again. If you’re using an enterprise account, contact your system administrator for assistance."
+msgid "Connected Chatbot"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:186
-msgid "You don’t have permission to use this plugin. Please contact your system administrator to enable access."
+msgid "Connected Jotform Account"
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:187
+msgid "Logout"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:188
-msgid "To use this feature, please make sure the [1[WooCommerce plugin is installed and active]] on your site."
+msgid "Logging out..."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:189
-msgid "You can create your Consumer Secret and Key in [1[WooCommerce > Settings > Advanced > REST API.]]"
+msgid "Log Out from Your Account?"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:190
-msgid "Your site is using [1[Plain permalinks]], which prevents the integration from working. Please update your permalink settings [2[here.]]"
+msgid "Click Logout to sign out of your account. Your settings and preferences will remain saved, and you can log back in anytime without losing your setup."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:191
-msgid "Please [1[create an agent]] first to connect your store."
+msgid "All your data and saved progress will remain secure."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:192
-msgid "Connection issue"
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:193
-msgid "Can’t connect to the server. Please check your internet connection or try again."
+msgid "Connected Store"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:194
-msgid "Unauthorized Access"
+msgid "Unable to connect to the server. Please check your internet connection and try again. If you’re using an enterprise account, contact your system administrator for assistance."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:195
-msgid "You’re close to your [1[{limit}]] [2[limit]]. Upgrade to keep your agent active."
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:196
-msgid "You’ve reached your [1[{limit}]] [2[limit]]. Upgrade to keep your agent active."
+msgid "You don’t have permission to use this plugin. Please contact your system administrator to enable access."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:197
-msgid "Upgrade Now"
+msgid "To use this feature, please make sure the [1[WooCommerce plugin is installed and active]] on your site."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:198
-msgid "WooCommerce features can’t be used on a [1[local server.]]"
+msgid "You can create your Consumer Secret and Key in [1[WooCommerce > Settings > Advanced > REST API.]]"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:199
-msgid "Show more"
+msgid "Your site is using [1[Plain permalinks]], which prevents the integration from working. Please update your permalink settings [2[here.]]"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:200
-msgid "Loading..."
+msgid "Please [1[create an agent]] first to connect your store."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:201
-msgid "Go to support page"
+msgid "Connection issue"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:202
-msgid "Get Support"
+msgid "Can’t connect to the server. Please check your internet connection or try again."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:203
-msgid "Change Image"
+msgid "Unauthorized Access"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:204
-msgid "Save"
+msgid "You’re close to your [1[{limit}]] [2[limit]]. Upgrade to keep your agent active."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:205
-msgid "Custom Avatar"
+msgid "You’ve reached your [1[{limit}]] [2[limit]]. Upgrade to keep your agent active."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:206
-msgid "Edit Avatar"
+msgid "Upgrade Now"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:207
-msgid "Change Avatar"
+msgid "WooCommerce features can’t be used on a [1[local server.]]"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:208
-msgid "Image Size"
+msgid "Show more"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:209
-msgid "Enter a brief, clear question that you'd like the chatbot to answer."
+msgid "Loading..."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:210
-msgid "Provide a detailed and informative answer that will help the chatbot respond accurately to the question."
+msgid "Go to support page"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:211
-msgid "Answer"
+msgid "Get Support"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:212
-msgid "Train the AI based on your questions & answers"
+msgid "Change Image"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:213
-msgid "Question"
+msgid "Save"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:214
-msgid "Information for Your Chatbot"
+msgid "Custom Avatar"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:215
-msgid "Enter accurate info your AI can use as answers"
+msgid "Edit Avatar"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:216
-msgid "Company overview, product features, customer FAQs, service guidelines..."
+msgid "Change Avatar"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:217
-msgid "Please upload a PDF or DOCX file"
+msgid "Image Size"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:218
-msgid "Upload a Document"
+msgid "Enter a brief, clear question that you'd like the chatbot to answer."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:219
-msgid "Drag and drop your files here or"
+msgid "Provide a detailed and informative answer that will help the chatbot respond accurately to the question."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:220
-msgid "Train your chatbot with uploaded content"
+msgid "Answer"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:221
-msgid "Enter a URL"
+msgid "Train the AI based on your questions & answers"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:222
-msgid "Provide a URL for your chatbot to analyze"
+msgid "Question"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:223
-msgid "Crawl"
+msgid "Information for Your Chatbot"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:224
-msgid "Material Confirmation Modal"
+msgid "Enter accurate info your AI can use as answers"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:225
-msgid "Do you want to delete this material?"
+msgid "Company overview, product features, customer FAQs, service guidelines..."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:226
-msgid "Once removed, the AI Agent will no longer have access to it."
+msgid "Please upload a PDF or DOCX file"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:227
-msgid "An error occured."
+msgid "Upload a Document"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:228
-msgid "Answer needed."
+msgid "Drag and drop your files here or"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:229
-msgid "Search"
+msgid "Train your chatbot with uploaded content"
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:230
+msgid "Enter a URL"
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:231
+msgid "Provide a URL for your chatbot to analyze"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:232
-msgid "Store URL, consumer key and consumer secret are all required."
+msgid "Crawl"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:233
-msgid "Consumer key must start with \"ck_\" and consumer secret must start with \"cs_\"."
+msgid "Material Confirmation Modal"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:234
-msgid "Could not connect to the store. Please verify the store URL is correct and the store is online."
+msgid "Do you want to delete this material?"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:235
-msgid "The store appears to be blocking external API requests. The store owner should whitelist server-to-server requests in their firewall or security plugin (e.g. Wordfence)."
+msgid "Once removed, the AI Agent will no longer have access to it."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:236
-msgid "The store URL is redirecting to another address. Please use the final destination URL (e.g. ensure HTTP/HTTPS and www/non-www match the store's canonical URL)."
+msgid "An error occured."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:237
-msgid "The store's server is experiencing issues. This is usually temporary — please try again in a few minutes."
+msgid "Answer needed."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:238
-msgid "The store's server is experiencing issues behind Cloudflare. This is usually temporary — please try again in a few minutes."
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:239
-msgid "The consumer key or secret was rejected by the store. Please double-check your WooCommerce API credentials."
-msgstr ""
-
-#: lib/app/app.js:1
-#: src/constants/texts.js:240
-msgid "Access to the store API was forbidden. This may be caused by an IP block, a security plugin or insufficient API key permissions."
+msgid "Search"
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:241
-msgid "This store's Cloudflare bot protection is blocking API access. The store owner needs to whitelist server-to-server requests or disable Bot Fight Mode for the WooCommerce API path (/wp-json/wc/)."
+msgid "Store URL, consumer key and consumer secret are all required."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:242
-msgid "The WooCommerce REST API endpoint was not found. Please ensure WooCommerce is installed and active, and that WordPress permalinks are not set to \"Plain\" (Settings → Permalinks)."
+msgid "Consumer key must start with \"ck_\" and consumer secret must start with \"cs_\"."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:243
-msgid "The store is rate-limiting requests. Please wait a moment and try again."
+msgid "Could not connect to the store. Please verify the store URL is correct and the store is online."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:244
-msgid "An unexpected error occurred while trying to reach the store. Please try again."
+msgid "The store appears to be blocking external API requests. The store owner should whitelist server-to-server requests in their firewall or security plugin (e.g. Wordfence)."
 msgstr ""
 
 #: lib/app/app.js:1
 #: src/constants/texts.js:245
+msgid "The store URL is redirecting to another address. Please use the final destination URL (e.g. ensure HTTP/HTTPS and www/non-www match the store's canonical URL)."
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:246
+msgid "The store's server is experiencing issues. This is usually temporary — please try again in a few minutes."
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:247
+msgid "The store's server is experiencing issues behind Cloudflare. This is usually temporary — please try again in a few minutes."
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:248
+msgid "The consumer key or secret was rejected by the store. Please double-check your WooCommerce API credentials."
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:249
+msgid "Access to the store API was forbidden. This may be caused by an IP block, a security plugin or insufficient API key permissions."
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:250
+msgid "This store's Cloudflare bot protection is blocking API access. The store owner needs to whitelist server-to-server requests or disable Bot Fight Mode for the WooCommerce API path (/wp-json/wc/)."
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:251
+msgid "The WooCommerce REST API endpoint was not found. Please ensure WooCommerce is installed and active, and that WordPress permalinks are not set to \"Plain\" (Settings → Permalinks)."
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:252
+msgid "The store is rate-limiting requests. Please wait a moment and try again."
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:253
+msgid "An unexpected error occurred while trying to reach the store. Please try again."
+msgstr ""
+
+#: lib/app/app.js:1
+#: src/constants/texts.js:254
 msgid "Received an unexpected response from the store. Please verify the store URL and try again."
 msgstr ""

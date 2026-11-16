@@ -7,7 +7,8 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.8.4
+* Version: 3.8.5
+* Requires at least: 6.6
 * Author URI: https://www.jotform.com/
 * Text Domain: jotform-ai-chatbot
 * Domain Path: /languages
@@ -19,7 +20,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants for main file, directory path, and URL
-define('JAIC_PLUGIN_VERSION', '3.8.4');
+define('JAIC_PLUGIN_VERSION', '3.8.5');
 define('JAIC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('JAIC_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -47,7 +48,7 @@ function jotform_ai_chatbot_admin_enqueue($hook) {
     wp_register_script(
         'plugin-script',
         JAIC_PLUGIN_URL . "{$buildDir}/app/app.js",
-        ['wp-i18n'],
+        ['wp-i18n', 'wp-element', 'react', 'react-dom', 'react-jsx-runtime'],
         JAIC_PLUGIN_VERSION,
         true
     );

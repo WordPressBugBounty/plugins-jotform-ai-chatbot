@@ -1,9 +1,9 @@
+import { createRoot } from '@wordpress/element';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import jsBeautify from 'js-beautify';
-import { createRoot } from 'react-dom/client';
 
 import ChatbotPlaceholder from '../assets/svg/chatbot-no-avatar.svg';
 import {

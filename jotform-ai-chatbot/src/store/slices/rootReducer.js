@@ -109,7 +109,8 @@ const reducers = {
       tryGetPlatformAgentOnce: state.tryGetPlatformAgentOnce,
       errorMessage: state.errorMessage,
       activeSettingsTab: state.activeSettingsTab,
-      showUnauthorizedUserError: state.showUnauthorizedUserError
+      showUnauthorizedUserError: state.showUnauthorizedUserError,
+      platformAgentError: state.platformAgentError
     })
   },
   woocommerce: {

@@ -25,7 +25,13 @@
   },
   "alias": {
     "process": false,
-    "buffer": false
+    "buffer": false,
+    "react": { "global": "window.React" },
+    "react-dom": { "global": "window.ReactDOM" },
+    "react-dom/client": { "global": "window.wp.element" },
+    "react/jsx-runtime": { "global": "window.ReactJSXRuntime" },
+    "react/jsx-dev-runtime": "./src/utils/wordpressJSXDevRuntime.js",
+    "@wordpress/element": { "global": "window.wp.element" }
   },
   "scripts": {
     "prebuild": "pnpm lint && pnpm test && pnpm checkdeps && rimraf .parcel-cache lib/app",
@@ -34,7 +40,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "dev": "parcel watch src/app.js --target dev",
+    "dev": "parcel watch src/app.js --target dev --no-hmr",
     "build": "parcel build src/app.js --target build"
   },
   "keywords": [],
