@@ -1,5 +1,8 @@
 *** Jotform AI Chatbot Changelog ***
 
+2026-11-17 - version 3.8.6
+* Fixed - Prevent duplicate WooCommerce cart additions when refreshing after adding products through the chatbot
+
 2026-11-16 - version 3.8.5
 * Fixed - Use WordPress-provided React libraries instead of bundling a separate copy
 * Updated - Require WordPress 6.6 or later for the shared JSX runtime

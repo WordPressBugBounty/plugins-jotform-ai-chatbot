@@ -7,7 +7,7 @@
 * Author: Jotform
 * License: GPLv2 or later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
-* Version: 3.8.5
+* Version: 3.8.6
 * Requires at least: 6.6
 * Author URI: https://www.jotform.com/
 * Text Domain: jotform-ai-chatbot
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants for main file, directory path, and URL
-define('JAIC_PLUGIN_VERSION', '3.8.5');
+define('JAIC_PLUGIN_VERSION', '3.8.6');
 define('JAIC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('JAIC_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -738,6 +738,62 @@ function jotform_ai_chatbot_show_plugin() {
     }
 }
 add_action("wp_footer", "jotform_ai_chatbot_show_plugin");
+
+/**
+ * Leave chatbot cart-action URLs after WooCommerce successfully adds a product.
+ * WooCommerce performs the safe redirect and keeps its normal validation/notices.
+ */
+function jotform_ai_chatbot_cart_redirect($url, $product) {
+    // This filter is also used to populate frontend script settings, with no product.
+    if (!$product || is_admin() || wp_doing_ajax()
+        || (defined('REST_REQUEST') && REST_REQUEST)
+        || !isset($_SERVER['REQUEST_METHOD'])
+        || !is_string($_SERVER['REQUEST_METHOD'])
+        || sanitize_text_field(wp_unslash($_SERVER['REQUEST_METHOD'])) !== 'GET'
+    ) {
+        return $url;
+    }
+
+    // Inspect the URL that needs cleanup; WooCommerce has already processed the cart action.
+    $requestUri = isset($_SERVER['REQUEST_URI']) && is_string($_SERVER['REQUEST_URI'])
+        ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI']))
+        : '';
+    $requestQuery = wp_parse_url($requestUri, PHP_URL_QUERY);
+    $requestParams = [];
+    if (is_string($requestQuery)) {
+        wp_parse_str($requestQuery, $requestParams);
+    }
+
+    $isChatbotCartRequest = isset($requestParams['add-to-cart'], $requestParams['jaic_source'])
+        && is_string($requestParams['jaic_source'])
+        && sanitize_text_field($requestParams['jaic_source']) === 'chatbot';
+    if (!$isChatbotCartRequest) {
+        return $url;
+    }
+
+    // Preserve custom redirects first, then the store's redirect-to-cart setting.
+    if (is_string($url) && $url !== '') {
+        $redirect = $url;
+    } elseif (get_option('woocommerce_cart_redirect_after_add') === 'yes') {
+        $redirect = wc_get_cart_url();
+    } else {
+        $redirect = $requestUri;
+    }
+
+    $remove = ['add-to-cart', 'quantity', 'variation_id', 'jaic_source'];
+    $query = wp_parse_url($redirect, PHP_URL_QUERY);
+    if (is_string($query)) {
+        wp_parse_str($query, $params);
+        foreach (array_keys($params) as $key) {
+            if (strpos($key, 'attribute_') === 0) {
+                $remove[] = $key;
+            }
+        }
+    }
+
+    return remove_query_arg($remove, $redirect) ?: home_url('/');
+}
+add_filter('woocommerce_add_to_cart_redirect', 'jotform_ai_chatbot_cart_redirect', 99, 2);
 
 // Hook the function to register plugin
 function jotform_ai_chatbot_register_plugin() {

@@ -5,7 +5,7 @@ Tags: AI, chatbot, chatGPT, helpdesk, live chat
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.8.5
+Stable tag: 3.8.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -179,6 +179,9 @@ See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org
 5. How It Works
 
 == Changelog ==
+= 3.8.6 (2026-11-17) =
+* Fixed - Prevent duplicate WooCommerce cart additions when refreshing after adding products through the chatbot
+
 = 3.8.5 (2026-11-16) =
 * Fix: Use WordPress-provided React libraries instead of bundling a separate copy
 * Update: Require WordPress 6.6 or later for the shared JSX runtime
