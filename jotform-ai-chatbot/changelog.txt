@@ -1,5 +1,8 @@
 *** Jotform AI Chatbot Changelog ***
 
+2026-11-18 - version 3.8.7
+* Fixed - Include readable private pages in chatbot visibility settings while keeping private content out of automatic training
+
 2026-11-17 - version 3.8.6
 * Fixed - Prevent duplicate WooCommerce cart additions when refreshing after adding products through the chatbot
 

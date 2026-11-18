@@ -556,7 +556,7 @@ class JAIC_Core {
      * @return void
      */
     private function createSettings() {
-        $pages = $this->getPages();
+        $pages = $this->getPages(true);
         $customPages = [
             ["text" => "All Category Pages", "value" => "all-categories"],
             ["text" => "All Blog Posts", "value" => "all-posts"]
@@ -1000,20 +1000,28 @@ class JAIC_Core {
     }
 
     /**
-     * Retrieves and sorts all pages by their IDs.
+     * Retrieves published pages, optionally including readable private pages for visibility.
      *
-     * This function fetches all pages using the `getPages()` function
-     * and sorts them in ascending order based on their ID.
+     * Knowledge-base callers keep the published-only default and existing limit.
      *
+     * @param bool $includePrivate Whether to include private pages in the admin visibility selector.
      * @return array An array of page objects sorted by ID.
      */
-    private function getPages(): array {
+    private function getPages(bool $includePrivate = false): array {
         $pages = get_pages();
-        if (empty($pages) || !is_array($pages)) {
-            return [];
+        $pages = is_array($pages) ? array_slice($pages, 0, 100) : [];
+
+        if ($includePrivate) {
+            // Add private pages after the limit so existing published choices are retained.
+            // Disable hierarchy filtering to include private children of published parents.
+            $privatePages = get_pages(['post_status' => 'private', 'hierarchical' => false]);
+            if (is_array($privatePages)) {
+                $pages = array_merge($pages, array_filter($privatePages, function ($page) {
+                    return current_user_can('read_post', $page->ID);
+                }));
+            }
         }
 
-        $pages = array_slice($pages, 0, 100);
         usort($pages, function ($a, $b) {
             return $a->ID <=> $b->ID;
         });
