@@ -698,6 +698,7 @@
             flex-direction: column;
             gap: 4px;
             width: 100%;
+            min-width: 0;
           }
           &-avatar {
             border-radius: 50%;
@@ -724,6 +725,10 @@
             letter-spacing: -0.084px;
             word-break: break-word;
             width: fit-content;
+            &:has(.jaic-commerce) {
+              width: 100%;
+              max-width: 580px;
+            }
           }
           &-time {
             font-size: 12px;

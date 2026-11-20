@@ -5,7 +5,7 @@ Tags: AI, chatbot, chatGPT, helpdesk, live chat
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.8.7
+Stable tag: 3.8.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -179,6 +179,9 @@ See [the Jotform AI Chatbot WordPress Plugin support page](https://wordpress.org
 5. How It Works
 
 == Changelog ==
+= 3.8.8 (2026-11-20) =
+* Fixed - Show WooCommerce order summaries and product cards in saved conversations on the WordPress Conversations page
+
 = 3.8.7 (2026-11-18) =
 * Fixed - Include readable private pages in chatbot visibility settings while keeping private content out of automatic training
 

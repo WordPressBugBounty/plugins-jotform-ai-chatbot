@@ -8,6 +8,7 @@ import AvatarPlaceholder from '../../assets/svg/user-no-avatar.svg';
 import { ALL_TEXTS, THEME_CUSTOMIZATION_KEYS } from '../../constants';
 import { useWizard } from '../../hooks';
 import { formatDate } from '../../utils';
+import WooCommerceActions from './WooCommerceActions';
 
 const ChatHistory = ({ chat }) => {
   const { state } = useWizard();
@@ -44,7 +45,10 @@ const ChatHistory = ({ chat }) => {
               </div>
               <div className='jfpContent-wrapper--conversations-chats-message-wrapper'>
                 <span className='jfpContent-wrapper--conversations-chats-time'>{formatDate(time)}</span>
-                <p className='jfpContent-wrapper--conversations-chats-message' dangerouslySetInnerHTML={{ __html: getChatHTML(msg.content) }} />
+                <div className='jfpContent-wrapper--conversations-chats-message'>
+                  <div dangerouslySetInnerHTML={{ __html: getChatHTML(msg.content) }} />
+                  {!isUser && <WooCommerceActions action={msg.action} />}
+                </div>
               </div>
             </div>
           </div>

@@ -1,5 +1,8 @@
 *** Jotform AI Chatbot Changelog ***
 
+2026-11-20 - version 3.8.8
+* Fixed - Show WooCommerce order summaries and product cards in saved conversations on the WordPress Conversations page
+
 2026-11-18 - version 3.8.7
 * Fixed - Include readable private pages in chatbot visibility settings while keeping private content out of automatic training
 
